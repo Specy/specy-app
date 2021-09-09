@@ -5,7 +5,7 @@
         image: string;
         url: string;
         github: string;
-
+        color: string;
     }
 export type{
     ProjectData

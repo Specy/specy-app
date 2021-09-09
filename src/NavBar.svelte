@@ -1,8 +1,9 @@
 <script lang="ts">
+     import { scrollto } from "svelte-scrollto"
 	let logoToggled = false
 </script>
 
-<div class="nav">
+<div class="nav" id="nav">
 	<div
 		class="logo-wrapper"
 		on:mouseenter={() => (logoToggled = true)}
@@ -23,9 +24,9 @@
 		</div>
 	</div>
 	<div class="links">
-		<div>Apps</div>
-		<div>Contact</div>
-		<div>Support Me</div>
+		<div use:scrollto={'#apps'} >Apps</div>
+		<div use:scrollto={'#contact'} >Contact</div>
+		<div use:scrollto={'#support'} >Support Me</div>
 	</div>
 	<button class="login"> Login </button>
 </div>
@@ -113,4 +114,14 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
+    @media screen and (orientation:portrait){
+        .nav{
+            margin: 0rem;
+        }
+        .links{
+            display: none;
+            flex-direction:column;
+        }
+    }
 </style>

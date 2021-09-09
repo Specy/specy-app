@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Orienta;
+  src: url(Orienta-Regular.ttf);
+}
+
 html, body {
 	position: relative;
 	width: 100%;

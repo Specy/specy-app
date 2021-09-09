@@ -10,7 +10,7 @@
 		<div>SPECY DEV</div>
 		<div>The hub of all apps</div>
 	</div>
-	<div class="apps">
+	<div class="apps" id="apps">
 		<div class="title project-title">Apps</div>
 		<div class="projects-wrapper">
 			{#each projects as project (project.title)}
@@ -23,30 +23,31 @@
 <style lang="scss">
 	@import "variables.scss";
 	.main {
-		padding: 1rem;
 		display: flex;
 		flex-direction: column;
-        align-items: center;
+		align-items: center;
 
 	}
 	.main-title {
 		margin-top: 4rem;
 		font-weight: bold;
+        text-align: center;
 		display: flex;
-        flex-direction: column;
-        align-items: center;
+		flex-direction: column;
+		align-items: center;
 		justify-content: center;
 		> :nth-child(1) {
-            font-size: 5rem;
+			font-size: 5rem; 
+            font-family: Arial;
 		}
 		> :nth-child(2) {
-            color: $accent;
+			color: $accent;
 		}
 	}
-    .apps{
-        width: 60%;
-        margin-top: 4rem;
-    }
+	.apps {
+		width: 60%;
+		margin-top: 4rem;
+	}
 	.title {
 		font-size: 1.6rem;
 		font-weight: bold;
@@ -56,8 +57,17 @@
 	}
 	.projects-wrapper {
 		display: grid;
-        margin-top: 1rem;
+		margin-top: 1rem;
 		grid-template-columns: 1fr 1fr 1fr;
-		grid-gap: 2rem;
+		gap: 2rem;
 	}
+    @media screen and (orientation:portrait){
+        .projects-wrapper {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .apps{
+            width: 100%;
+        }
+    }
 </style>

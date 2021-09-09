@@ -48,16 +48,18 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 5rem;
-
 		justify-content: flex-end;
 	}
 	.footer {
-		min-height: 5rem;
+		height: 5rem;
 		background-color: $dark;
 		color: $textWhite;
 		padding: 3rem 3rem 3rem 3rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: absolute;
+        width: 100%;
+        left: 0;
 	}
 </style>
