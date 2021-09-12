@@ -6,11 +6,11 @@
 			anything, you can contact me at:
 			<div class="contact-info">
 				<span>Email: </span>&nbsp;&nbsp;&nbsp;
-                <div>Specy.dev@gmail.com</div>
+				<div>Specy.dev@gmail.com</div>
 			</div>
 			<div class="contact-info">
 				<span>Discord: </span>
-                <div>Specy#7347</div>
+				<div>Specy#7347</div>
 			</div>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 		display: flex;
 		justify-content: center;
 		margin-top: 6rem;
-        margin-bottom: 5rem;
+		margin-bottom: 5rem;
 	}
 
 	.contact {
@@ -34,8 +34,8 @@
 		> .text {
 			margin: 1rem;
 			width: 80%;
-            line-height: 1.3rem;
-			:nth-child(1){
+			line-height: 1.3rem;
+			:nth-child(1) {
 				margin-top: 1rem;
 			}
 		}
@@ -46,18 +46,18 @@
 		> span {
 			color: $accent;
 		}
-        >div{
-            display: inline;
-            user-select: all;
-        }
+		> div {
+			display: inline;
+			user-select: all;
+		}
 	}
 	.title {
 		font-size: 1.6rem;
 		font-weight: bold;
 	}
-    @media screen and (orientation:portrait){
-        .contact{
-            width: 100%;
-        }
-    }
+	@media screen and (orientation: portrait) {
+		.contact {
+			width: 100%;
+		}
+	}
 </style>

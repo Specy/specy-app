@@ -29,7 +29,6 @@
 		display: flex;
 		justify-content: center;
 		margin-top: 6rem;
-        
 	}
 
 	.support {
@@ -37,10 +36,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-        
+
 		> .row {
 			display: flex;
-			width: 100%;
+			justify-content: space-around;
+			width: 80%;
 			margin-top: 1rem;
 			> a img {
 				height: 4rem;
@@ -50,7 +50,7 @@
 		> .text {
 			margin: 1rem;
 			width: 80%;
-            line-height: 1.3rem;
+			line-height: 1.3rem;
 		}
 	}
 	.title {
@@ -62,13 +62,25 @@
 			width: 100%;
 			.text {
 				width: 100%;
-                margin:0;
-                margin-top: 1rem;
+				margin: 0;
+				margin-top: 1rem;
+			}
+
+			.row {
+				flex-direction: column;
+				align-items: center;
+				width: 100%;
+				> a img {
+					margin-right: 0;
+					margin-bottom: 0.5rem;
+				}
 			}
 		}
-		.row {
-			flex-direction: column;
-            align-items: center;
-		}
+	}
+	.paypal {
+		background-color: #efefef;
+		padding-left: 1rem;
+		height: 4rem;
+		border-radius: 0.8rem;
 	}
 </style>

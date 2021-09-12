@@ -1,5 +1,5 @@
 <script lang="ts">
-     import { scrollto } from "svelte-scrollto"
+	import { scrollto } from "svelte-scrollto"
 	let logoToggled = false
 </script>
 
@@ -12,21 +12,21 @@
 		<img src="/images/logo.png" alt="logo" class="logo" />
 		<div class="name">
 			<div>Specy</div>
-            <div class="overflow-wrapper">
-                <div class="logo-line-wrapper">
-                    <div class="logo-line" class:logoToggled />
-                    <div class="logo-app">
-                        <span> . </span>
-                        app
-                    </div>
-                </div>
-            </div>
+			<div class="overflow-wrapper">
+				<div class="logo-line-wrapper">
+					<div class="logo-line" class:logoToggled />
+					<div class="logo-app">
+						<span> . </span>
+						app
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="links">
-		<div use:scrollto={'#apps'} >Apps</div>
-		<div use:scrollto={'#contact'} >Contact</div>
-		<div use:scrollto={'#support'} >Support Me</div>
+		<div use:scrollto={"#apps"}>Apps</div>
+		<div use:scrollto={"#contact"}>Contact</div>
+		<div use:scrollto={"#support"}>Support Me</div>
 	</div>
 	<button class="login"> Login </button>
 </div>
@@ -35,21 +35,21 @@
 	@import "variables.scss";
 	.logo {
 		width: 3rem;
-        height: 3rem;
+		height: 3rem;
 		margin-right: 0.5rem;
 	}
-    .overflow-wrapper {
-        width: 62px; 
-        overflow: hidden;
-    }
+	.overflow-wrapper {
+		width: 62px;
+		overflow: hidden;
+	}
 	.logo-line-wrapper {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		margin-top: -0.2rem;
 		height: 1.2rem;
-        width: 140px;
-        > .logo-line {
+		width: 140px;
+		> .logo-line {
 			width: 30px;
 			height: 2px;
 			background-color: $accent;
@@ -115,13 +115,13 @@
 		align-items: center;
 	}
 
-    @media screen and (orientation:portrait){
-        .nav{
-            margin: 0rem;
-        }
-        .links{
-            display: none;
-            flex-direction:column;
-        }
-    }
+	@media screen and (orientation: portrait) {
+		.nav {
+			margin: 0rem;
+		}
+		.links {
+			display: none;
+			flex-direction: column;
+		}
+	}
 </style>

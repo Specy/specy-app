@@ -21,16 +21,17 @@
 		style="background-color: {data.color}"
 	>
 		<div>Open</div>
-        <div class="icon">
-            <MdOpenInNew />
-        </div>
+		<div class="icon">
+			<MdOpenInNew />
+		</div>
 	</a>
 </div>
 
 <style lang="scss">
 	@import "variables.scss";
 	.project {
-		background-color: #fafafa;
+		background-color: #f6f6f6c4;
+    	backdrop-filter: blur(4px);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -57,19 +58,23 @@
 		color: white;
 		text-align: center;
 		font-weight: bold;
-        display: flex;
-        padding-left: 0.8rem;
-        justify-content: center;
-        >.icon{
-            width: 0.9rem;
-            margin-left: 0.2rem;
-            margin-top: 0.1rem;
-        }
+		display: flex;
+		transition: all 0.2s;
+		padding-left: 0.8rem;
+		justify-content: center;
+		> .icon {
+			width: 0.9rem;
+			margin-left: 0.2rem;
+			margin-top: 0.1rem;
+		}
+	}
+	.open-btn:hover{
+		filter: brightness(1.1);
+		
 	}
 	.description {
 		margin-top: 1rem;
 		flex: 1;
-		;
 		width: 100%;
 		overflow-y: scroll;
 		padding: 0.5rem;

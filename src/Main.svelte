@@ -26,19 +26,18 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-
 	}
 	.main-title {
 		margin-top: 4rem;
 		font-weight: bold;
-        text-align: center;
+		text-align: center;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		> :nth-child(1) {
-			font-size: 5rem; 
-            font-family: Arial;
+			font-size: 5rem;
+			font-family: Arial;
 		}
 		> :nth-child(2) {
 			color: $accent;
@@ -61,13 +60,13 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 2rem;
 	}
-    @media screen and (orientation:portrait){
-        .projects-wrapper {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        .apps{
-            width: 100%;
-        }
-    }
+	@media screen and (orientation: portrait) {
+		.projects-wrapper {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+		.apps {
+			width: 100%;
+		}
+	}
 </style>

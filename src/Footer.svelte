@@ -1,6 +1,6 @@
 <script lang="ts">
-    import FaGithub from 'svelte-icons/fa/FaGithub.svelte'
-    import FaDiscord from 'svelte-icons/fa/FaDiscord.svelte'
+	import FaGithub from "svelte-icons/fa/FaGithub.svelte"
+	import FaDiscord from "svelte-icons/fa/FaDiscord.svelte"
 </script>
 
 <div class="footer-wrapper ">
@@ -9,40 +9,49 @@
 			<img src="/images/logo.png" alt="logo" class="logo" />
 			<div>Specy</div>
 		</div>
-        <div class="icon-wrapper">
-            <div class="icon">
-                <FaGithub/>
-            </div>
-            <div class="icon">
-                <FaDiscord/>
-            </div>
-        </div>
+		<div>
+			<a href="https://specy.github.io/" target="_blank"> Portfolio </a>
+		</div>
+		<div class="icon-wrapper">
+			<a class="icon" href="https://github.com/Specy" target="_blank">
+				<FaGithub />
+			</a>
+			<a class="icon" href="https://discord.gg/kBUjXGqnut" target="_blank">
+				<FaDiscord />
+			</a>
+		</div>
 	</div>
-
 </div>
 
 <style lang="scss">
 	@import "variables.scss";
 	.logo-wrapper {
-        display: flex;
-        align-items: center;
+		display: flex;
+		align-items: center;
 		> .logo {
 			width: 3rem;
 			height: 3rem;
 			margin-right: 0.5rem;
 		}
-        > div {
-            font-size: 1.5rem;
-        }
+		> div {
+			font-size: 1.5rem;
+		}
 	}
-    .icon-wrapper{
-        display: flex;
-        flex-direction: row;
-        > .icon {
-            width: 2rem;
-            margin-left: 1rem;
-        }
-    }
+	a {
+		color: white;
+		transition: all 0.2s ease-in-out;
+	}
+	a:hover {
+		color: $accent;
+	}
+	.icon-wrapper {
+		display: flex;
+		flex-direction: row;
+		> .icon {
+			width: 2rem;
+			margin-left: 1rem;
+		}
+	}
 	.footer-wrapper {
 		flex: 1;
 		display: flex;
@@ -54,12 +63,26 @@
 		height: 5rem;
 		background-color: $dark;
 		color: $textWhite;
-		padding: 3rem 3rem 3rem 3rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: absolute;
-        width: 100%;
-        left: 0;
+		padding: 3rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: absolute;
+		width: 100%;
+		left: 0;
+	}
+	@media screen and (orientation: portrait) {
+		.footer {
+			padding: 1rem;
+		}
+		.logo-wrapper {
+			> .logo {
+				width: 2rem;
+				height: 2rem;
+			}
+			> div{
+				font-size: 1.2rem;
+			}
+		}
 	}
 </style>
