@@ -4,17 +4,17 @@
 	import Main from "./Main.svelte"
 	import Support from "./Support.svelte"
 	import Contact from "./Contact.svelte"
-import { onDestroy, onMount } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 	let zoom = 1
 
 	function handleZoom(){
 		let currentPosition = window.scrollY
 		let value = currentPosition / 600 + 1
-		if(value < 2.5) zoom = value
+		if(value < 2) zoom = value
 	}
 	let interval
 	onMount(() => {
-		interval = setInterval(handleZoom, 16)
+		interval = setInterval(handleZoom, 30)
 	})
 	onDestroy(() => {
 		alert('a')
@@ -26,6 +26,7 @@ import { onDestroy, onMount } from "svelte";
 <Main />
 <Support />
 <Contact />
+
 <Footer />
 <div class="background" >
 	<div class="background-image" style={`transform: scale(${zoom})`}></div>

@@ -1,27 +1,25 @@
 <script lang="ts">
-	import FaGithub from "svelte-icons/fa/FaGithub.svelte"
-	import FaDiscord from "svelte-icons/fa/FaDiscord.svelte"
+	import FaGithub from "svelte-icons/fa/FaGithub.svelte";
+	import FaDiscord from "svelte-icons/fa/FaDiscord.svelte";
 </script>
 
-<div class="footer-wrapper ">
-	<div class="footer">
-		<div class="logo-wrapper">
-			<img src="/images/logo.png" alt="logo" class="logo" />
-			<div>Specy</div>
-		</div>
-		<div>
-			<a href="https://specy.github.io/" target="_blank"> Portfolio </a>
-		</div>
-		<div class="icon-wrapper">
-			<a class="icon" href="https://github.com/Specy" target="_blank">
-				<FaGithub />
-			</a>
-			<a class="icon" href="https://discord.gg/kBUjXGqnut" target="_blank">
-				<FaDiscord />
-			</a>
-		</div>
+<footer class="footer">
+	<div class="logo-wrapper">
+		<img src="/images/logo.png" alt="logo" class="logo" />
+		<div>Specy</div>
 	</div>
-</div>
+	<div>
+		<a href="https://specy.github.io/" target="_blank"> Portfolio </a>
+	</div>
+	<div class="icon-wrapper">
+		<a class="icon" href="https://github.com/Specy" target="_blank">
+			<FaGithub />
+		</a>
+		<a class="icon" href="https://discord.gg/kBUjXGqnut" target="_blank">
+			<FaDiscord />
+		</a>
+	</div>
+</footer>
 
 <style lang="scss">
 	@import "variables.scss";
@@ -50,14 +48,8 @@
 		> .icon {
 			width: 2rem;
 			margin-left: 1rem;
+
 		}
-	}
-	.footer-wrapper {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		margin-top: 5rem;
-		justify-content: flex-end;
 	}
 	.footer {
 		height: 5rem;
@@ -67,22 +59,31 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		position: absolute;
 		width: 100%;
 		left: 0;
 	}
 	@media screen and (orientation: portrait) {
 		.footer {
 			padding: 1rem;
+			border-top: 2px solid $textDark;
+			background-color: transparent;
+			color: $textDark;
 		}
 		.logo-wrapper {
 			> .logo {
 				width: 2rem;
 				height: 2rem;
 			}
-			> div{
+			> div {
 				font-size: 1.2rem;
 			}
 		}
+		.icon-wrapper .icon{
+			color: $dark;
+		}
+		a {
+		color: $textDark;
+		transition: all 0.2s ease-in-out;
+	}
 	}
 </style>
