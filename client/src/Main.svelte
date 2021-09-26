@@ -5,7 +5,7 @@
 	const projects: ProjectData[] = data
 </script>
 
-<div class="main">
+<main class="main">
 	<div class="main-title">
 		<div>SPECY DEV</div>
 		<div>The hub of all apps</div>
@@ -18,7 +18,7 @@
 			{/each}
 		</div>
 	</div>
-</div>
+</main>
 
 <style lang="scss">
 	@import "variables.scss";

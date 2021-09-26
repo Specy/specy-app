@@ -3,7 +3,7 @@
 	let logoToggled = false
 </script>
 
-<div class="nav" id="nav">
+<nav class="nav" id="nav">
 	<div
 		class="logo-wrapper"
 		on:mouseenter={() => (logoToggled = true)}
@@ -28,8 +28,8 @@
 		<div use:scrollto={"#contact"}>Contact</div>
 		<div use:scrollto={"#support"}>Support Me</div>
 	</div>
-	<button class="login"> Login </button>
-</div>
+	<button class="login" on:click={() => alert("Coming soon")}> Login </button>
+</nav>
 
 <style lang="scss">
 	@import "variables.scss";
