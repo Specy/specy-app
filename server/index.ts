@@ -1,14 +1,12 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import express from "express";
+const app = express()
+const PORT = 3000
+import routes from "./api/routes"
 
-async function main() {
+app.use(express.json()) 
+app.use("/api/",routes)
 
-}
 
-main()
-  .catch((e) => {
-    throw e
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+app.listen(PORT,() =>{
+  console.log(`Listening on port ${PORT}`)
+}) 
