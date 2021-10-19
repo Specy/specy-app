@@ -1,3 +1,6 @@
+<script lang='ts'> 
+
+</script>
 <div class="wrapper">
 	<div class="support" id="support">
 		<div class="title">Support Me</div>
