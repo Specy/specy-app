@@ -1,5 +1,5 @@
 <script>
-    
+
 </script>
 <div class="page">
     <div class="center-wrapper">
@@ -74,7 +74,7 @@
 		flex-direction: column;
 		flex: 1;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.floating-middle {
 			width:95vw;
 		}

@@ -115,7 +115,7 @@
 		align-items: center;
 	}
 
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.nav {
 			margin: 0rem;
 		}

@@ -60,7 +60,7 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 2rem;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.projects-wrapper {
 			grid-template-columns: 1fr;
 			gap: 1rem;

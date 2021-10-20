@@ -60,7 +60,7 @@
 		font-size: 1.6rem;
 		font-weight: bold;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.support {
 			width: 100%;
 			.text {

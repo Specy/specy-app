@@ -1,4 +1,5 @@
 <script>
+	import Input from '../components/Input.svelte'
 	let email = ''
 	let password = ''
 	async function login(){
@@ -12,7 +13,6 @@
 		})
 		console.log(response)
 	}
-
 </script>
 
 <div class="page">
@@ -21,36 +21,27 @@
 			Login
 		</div>
 		<div class="floating-middle">
-			<div>
-				You will use those credentials in all apps
-			</div>
-			<form on:submit={(e) =>{e.preventDefault(); login()}} class='form-wrapper'>
+			<form on:submit={(e) =>{e.preventDefault(); login()}}>
 				<div>
-					<div>E-mail</div>
-					<input bind:value={email} class="form-input" placeholder="Email"/>
+					<Input bind:value={email} title='Email' />
 				</div>
 				<div>
-					<div>Password</div>
-					<input type='password' bind:value={password} class="form-input" placeholder="Password"/>
+					<Input bind:value={password} title='Password'/>
 				</div>
 				<div class="form-buttons-wrapper">
+					<div class="note">
+						* You will use those credentials in all apps
+					</div>
 					<input type="submit" class="form-btn" style="background-color: rgb(219, 0, 97)" value="Login"> 
 				</div>
-				
-			</form>
 
+			</form>
 		</div>
+
 	</div>
 </div>
 
 <style lang="scss">
-	.form-input{
-		width: 100%;
-		height: 2rem;
-		border-radius: 0.5rem;
-		border: 1px solid #ccc;
-		padding: 0.5rem;
-	}
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -77,10 +68,9 @@
 		display: flex;
 		flex-direction: column;
 		flex:1;
-		margin-top: 2rem;
 		> div{
-            margin-top: 1rem;
-        }
+			margin-bottom: 1rem;
+		}
 	}
 	.big-title {
 		font-size: 2.5rem;
@@ -101,7 +91,13 @@
 		flex-direction: column;
 		flex: 1;
 	}
-	@media screen and (orientation: portrait) {
+	.note{
+		font-size: 0.9rem;
+		color: #999;
+		text-align: left;
+		width: 100%;
+	}
+	@media (max-width: 480px) {
 		.floating-middle {
 			width:95vw;
 		}

@@ -55,7 +55,7 @@
 		font-size: 1.6rem;
 		font-weight: bold;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.contact {
 			width: 100%;
 		}

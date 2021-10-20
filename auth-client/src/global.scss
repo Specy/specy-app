@@ -1,13 +1,15 @@
 @import 'variables.scss';
 @font-face {
 	font-family: Orienta;
-	src: url(Orienta-Regular.ttf);
+	src: url(/Orienta-Regular.ttf);
 }
 * {
 	margin: 0;
 	padding: 0;
 	font-family: Orienta;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
 }
 body,
 html {

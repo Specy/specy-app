@@ -76,7 +76,7 @@
 		left: 0;
 
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		:global(body) {
 			padding: 1rem;
 		}

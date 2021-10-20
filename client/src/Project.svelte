@@ -93,7 +93,7 @@
 	.description:hover::-webkit-scrollbar-thumb {
 		background: #555;
 	}
-	@media screen and (orientation:portrait) {
+	@media (max-width: 480px) {
 		.project {
 			backdrop-filter: none;
 			background-color: #f6f6f6f5;

@@ -57,16 +57,16 @@
 		color: $textWhite;
 		padding: 3rem;
 		display: flex;
+		margin-top: auto;
 		justify-content: space-between;
 		align-items: center;
 		left: 0;
 	}
-	@media screen and (orientation: portrait) {
+	
+	@media (max-width: 480px) {
 		.footer {
 			padding: 1rem;
-			border-top: 2px solid $textDark;
-			background-color: transparent;
-			color: $textDark;
+
 		}
 		.logo-wrapper {
 			> .logo {
@@ -77,12 +77,6 @@
 				font-size: 1.2rem;
 			}
 		}
-		.icon-wrapper .icon{
-			color: $dark;
-		}
-		a {
-		color: $textDark;
-		transition: all 0.2s ease-in-out;
-	}
+
 	}
 </style>

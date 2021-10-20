@@ -1,4 +1,7 @@
 <script>
+	import Input from '../components/Input.svelte';
+	import * as EmailValidator from 'email-validator';
+	import { passwordStrength } from 'check-password-strength'
 	let email = '';
 	let password = '';
 	let username = '';
@@ -7,8 +10,8 @@
 		let body = {
 			email: email,
 			password: password,
-            username: username,
-            verifyPassword: verifyPassword
+			username: username,
+			verifyPassword: verifyPassword
 		};
 		let response = await fetch('someApi', {
 			method: 'POST',
@@ -22,7 +25,6 @@
 	<div class="center-wrapper">
 		<div class="big-title" style="margin:  2rem 0;">Register</div>
 		<div class="floating-middle">
-			<div>You will use those credentials to login in all apps</div>
 			<form
 				on:submit={(e) => {
 					e.preventDefault();
@@ -30,23 +32,22 @@
 				}}
 			>
 				<div>
-					<div>E-mail</div>
-					<input bind:value={email} class="form-input" placeholder="Email"/>
+					<Input bind:value={email} title="Email" status={EmailValidator.validate(email) ? "correct" : "wrong"}/>
 				</div>
 				<div>
-					<div>Username</div>
-					<input bind:value={username} class="form-input" placeholder="Username"/>
+					<Input bind:value={username} title="Username"  status={username.length > 3 ? "correct" : "wrong"}/>
 				</div>
 				<div>
-					<div>Password</div>
-					<input type='password' bind:value={password} class="form-input" placeholder="Password"/>
+					<Input bind:value={password} title="Password" type="password" status={passwordStrength(password).id > 0 ? "correct": "wrong"}/>
 				</div>
 				<div>
-					<div>Rewrite password</div>
-					<input type='password' bind:value={verifyPassword} class="form-input" placeholder="Rewrite password"/>
+					<Input bind:value={verifyPassword} title="Confirm password" type="password" status={password === verifyPassword ? "correct" : "wrong"}/>
 				</div>
 
 				<div class="form-buttons-wrapper">
+					<div class="note">
+						* You will use those credentials to login in all apps
+					</div>
 					<input
 						type="submit"
 						class="form-btn"
@@ -60,16 +61,6 @@
 </div>
 
 <style lang="scss">
-	.form-input {
-		width: 100%;
-		height: 2rem;
-		border-radius: 0.5rem;
-		border: 1px solid #ccc;
-		padding: 0.5rem;
-	}
-    input::placeholder{
-        color:#ccc
-    }
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -85,21 +76,29 @@
 		justify-content: center;
 		border: none;
 	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		> div {
+			margin-bottom: 1rem;
+		}
+	}
 	.form-buttons-wrapper {
 		display: flex;
 		flex: 1;
 		justify-content: flex-end;
 		flex-direction: column;
 		align-items: center;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
+		margin: 0;
 		margin-top: 2rem;
-        > div{
-            margin-top: 1rem;
-        }
+	}
+	.note{
+		font-size: 0.9rem;
+		color: #999;
+		text-align: left;
+		width: 100%;
 	}
 	.big-title {
 		font-size: 2.5rem;
@@ -120,7 +119,7 @@
 		flex-direction: column;
 		flex: 1;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.floating-middle {
 			width: 95vw;
 		}

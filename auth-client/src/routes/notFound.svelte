@@ -6,7 +6,12 @@
         <div class="floating-middle">
             <a href='/'> 
                 <div class="go-back">
-                    404
+                    <div>
+                        404
+                    </div>
+                    <div class="go-back-text">
+                        Click to go back
+                    </div>
                 </div>
             </a>
         </div>
@@ -27,8 +32,16 @@
 		border-radius: 0.5rem;
 	}
     .go-back{
-        font-size: 4rem;
+        font-size: 10rem;
         color: $accent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .go-back-text{
+        font-size: 1rem;
+        margin-top: -1rem;
+        color: #bd7796;
     }
 	.center-wrapper{
 		display: flex;

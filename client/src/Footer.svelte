@@ -62,7 +62,7 @@
 		width: 100%;
 		left: 0;
 	}
-	@media screen and (orientation: portrait) {
+	@media (max-width: 480px) {
 		.footer {
 			padding: 1rem;
 			border-top: 2px solid $textDark;
