@@ -9,6 +9,7 @@ import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
     export let status :statusType = ""
     $: if(value === "") status = ""
     export let type = "text"
+    export let hideStatus = false
     const setType = (node) => {
         node.type = type
     }
@@ -16,16 +17,24 @@ import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
 <div class="input-wrapper">
     <div>{title}</div>
     <div class="input-row">
-        <input bind:value class="form-input"  use:setType placeholder={title.toUpperCase()}/>
-        <div class={status + " icon-wrapper"} >
-            {#if status === "wrong"}
-                <FaExclamationCircle />
-            {:else if status === "correct"}
-                <FaCheckCircle />
-            {:else}
-                <FaRegCircle />
-            {/if}
-        </div>
+        <input 
+            bind:value 
+            class="form-input"  
+            use:setType 
+            placeholder={title.toUpperCase()}
+            style={hideStatus ? "border:none;" : "" + value === "" ? " border: none;" : ""}
+        />
+        {#if !hideStatus}
+            <div class={status + " icon-wrapper"} >
+                {#if status === "wrong"}
+                    <FaExclamationCircle />
+                {:else if status === "correct"}
+                    <FaCheckCircle />
+                {:else}
+                    <FaRegCircle />
+                {/if}
+            </div>
+        {/if}
     </div>
 </div>
 <style lang="scss">
@@ -49,6 +58,7 @@ import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
         display: flex;
         align-items: center;
         color: transparent;
+        cursor: pointer;
     }
     .correct{
         color: rgb(16, 185, 129);

@@ -40,7 +40,7 @@
 	.floating-middle {
 		display: flex;
 		flex-direction: column;
-		width: 30rem;
+		width: 35rem;
 		min-height: 20rem;
 		background-color: #fbfbfb;
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);

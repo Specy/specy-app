@@ -1,12 +1,17 @@
 <script>
 	import Input from '../components/Input.svelte';
+	import PasswordInput from '../components/PasswordInput.svelte';
 	import * as EmailValidator from 'email-validator';
-	import { passwordStrength } from 'check-password-strength'
+	import checkStrenght from '../lib/checkPassword';
 	let email = '';
 	let password = '';
 	let username = '';
 	let verifyPassword = '';
 	async function register() {
+		if(!EmailValidator.validate(email)) return alert('Invalid email');
+		if(checkStrenght(password).id < 2 ) return alert('Password must be at least 8 characters long, have An uppercase letter and one number');
+		if (password !== verifyPassword) return alert('Passwords do not match')
+		if(username.length > 3) return alert('Username must be at least 4 characters long');
 		let body = {
 			email: email,
 			password: password,
@@ -32,18 +37,35 @@
 				}}
 			>
 				<div>
-					<Input bind:value={email} title="Email" status={EmailValidator.validate(email) ? "correct" : "wrong"}/>
+					<Input 
+						bind:value={email} 
+						title="Email" 
+						status={EmailValidator.validate(email) ? "correct" : "wrong"}
+					/>
 				</div>
 				<div>
-					<Input bind:value={username} title="Username"  status={username.length > 3 ? "correct" : "wrong"}/>
+					<Input 
+						bind:value={username} 
+						title="Username"  
+						status={username.length > 3 ? "correct" : "wrong"}
+					/>
+				</div>
+				<div style="margin-bottom: 0;">
+					<PasswordInput 
+						bind:value={password} 
+						title="Password" 
+					/>
 				</div>
 				<div>
-					<Input bind:value={password} title="Password" type="password" status={passwordStrength(password).id > 0 ? "correct": "wrong"}/>
+					<PasswordInput 
+						bind:value={verifyPassword} 
+						title="Confirm password" 
+						passwordToCheck={password}
+					/>
 				</div>
-				<div>
-					<Input bind:value={verifyPassword} title="Confirm password" type="password" status={password === verifyPassword ? "correct" : "wrong"}/>
+				<div class="note">
+					Passwords must be at least 8 characters long, have an uppercase letter and one number
 				</div>
-
 				<div class="form-buttons-wrapper">
 					<div class="note">
 						* You will use those credentials to login in all apps
@@ -75,8 +97,11 @@
 		font-size: 1rem;
 		justify-content: center;
 		border: none;
+		cursor: pointer;
 	}
-
+	.form-btn:hover {
+		filter:brightness(1.2);
+	}
 	form {
 		display: flex;
 		flex-direction: column;
@@ -92,7 +117,7 @@
 		flex-direction: column;
 		align-items: center;
 		margin: 0;
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 	.note{
 		font-size: 0.9rem;

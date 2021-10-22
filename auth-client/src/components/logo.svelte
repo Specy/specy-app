@@ -2,10 +2,11 @@
 	export let logoToggled = false;
 </script>
 
-<div
+<a
 	class="logo-wrapper"
 	on:mouseenter={() => (logoToggled = true)}
 	on:mouseleave={() => (logoToggled = false)}
+	href="/"
 >
 	<img src="/images/logo.png" alt="logo" class="logo" />
 	<div class="name">
@@ -20,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</a>
 
 <style lang="scss">
 	@import '../variables.scss';

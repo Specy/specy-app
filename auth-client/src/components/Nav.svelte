@@ -2,17 +2,23 @@
 	import MdClose from 'svelte-icons/md/MdClose.svelte';
 	import MdMenu from 'svelte-icons/md/MdMenu.svelte';
 	import Logo from './logo.svelte'
+	import { page } from '$app/stores';
+	let path = $page.path
+	$: path = $page.path
 	let menuOpen = false;
+	function closeMenu(){
+		menuOpen = false
+	}
 </script>
 
 <nav class="nav" id="nav">
 	<div class="desktop-menu">
 		<Logo />
 		<div class="links">
-			<a href="/">Home</a>
-			<a href="/login">Login</a>
-			<a href="/register">Register</a>
-			<a href="/support">Support me</a>
+			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
+			<a href="/login" style={path === "/login" ? "color:#b00752" : ""}>Login</a>
+			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
+			<a href="/support" style={path === "/support" ? "color:#b00752" : ""}>Support me</a>
 		</div>
 	</div>
 
@@ -29,10 +35,26 @@
 		</div>
 
 		<div class="links-mobile" class:menuOpen>
-			<a href="/" on:click={() => menuOpen = false}>Home</a>
-			<a href="/login" on:click={() => menuOpen = false}>Login</a>
-			<a href="/register" on:click={() => menuOpen = false}>Register</a>
-			<a href="/support" on:click={() => menuOpen = false}>Support me</a>
+			<a 
+				href="/" 
+				on:click={closeMenu}
+				style={path === "/" ? "color:#b00752" : ""}
+			>Home</a>
+			<a 
+				href="/login" 
+				on:click={closeMenu}
+				style={path === "/login" ? "color:#b00752" : ""}
+			>Login</a>
+			<a 
+				href="/register" 
+				on:click={closeMenu}
+				style={path === "/register" ? "color:#b00752" : ""}
+			>Register</a>
+			<a 
+				href="/support" 
+				on:click={closeMenu}
+				style={path === "/support" ? "color:#b00752" : ""}
+			>Support me</a>
 		</div>
 	</div>
 </nav>
@@ -106,12 +128,13 @@
 	.nav {
 		padding: 0.2rem;
 		margin: 3rem;
-
+		margin-top: 2rem;
+		margin-bottom: 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
-	@media (max-width: 650px) {
+	@media (max-width: 655px) {
 		.mobile-menu{
 			display:flex
 		}

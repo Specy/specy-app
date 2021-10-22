@@ -1,5 +1,6 @@
 <script>
 	import Input from '../components/Input.svelte'
+	import PasswordInput from '../components/PasswordInput.svelte';
 	let email = ''
 	let password = ''
 	async function login(){
@@ -22,11 +23,19 @@
 		</div>
 		<div class="floating-middle">
 			<form on:submit={(e) =>{e.preventDefault(); login()}}>
-				<div>
-					<Input bind:value={email} title='Email' />
+				<div class="input-wrapper">
+					<Input 
+						bind:value={email} 
+						title='Email' 
+						hideStatus = {true}
+					/>
 				</div>
-				<div>
-					<Input bind:value={password} title='Password'/>
+				<div class="input-wrapper">
+					<PasswordInput 
+						bind:value={password} 
+						title='Password'
+						hideStatus = {true}
+					/>
 				</div>
 				<div class="form-buttons-wrapper">
 					<div class="note">
@@ -56,6 +65,10 @@
 		font-size: 1rem;
 		justify-content: center;
 		border: none;
+		cursor: pointer;
+	}
+	.form-btn:hover {
+		filter:brightness(1.2);
 	}
 	.form-buttons-wrapper {
 		display: flex;
@@ -68,7 +81,7 @@
 		display: flex;
 		flex-direction: column;
 		flex:1;
-		> div{
+		> .input-wrapper{
 			margin-bottom: 1rem;
 		}
 	}

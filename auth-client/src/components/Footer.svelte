@@ -4,20 +4,22 @@
 </script>
 
 <footer class="footer">
-	<div class="logo-wrapper">
-		<img src="/images/logo.png" alt="logo" class="logo" />
-		<div>Specy</div>
-	</div>
-	<div>
-		<a href="https://specy.github.io/" target="_blank"> Portfolio </a>
-	</div>
-	<div class="icon-wrapper">
-		<a class="icon" href="https://github.com/Specy" target="_blank">
-			<FaGithub />
-		</a>
-		<a class="icon" href="https://discord.gg/kBUjXGqnut" target="_blank">
-			<FaDiscord />
-		</a>
+	<div class="footer-inner">
+		<div class="logo-wrapper">
+			<img src="/images/logo.png" alt="logo" class="logo" />
+			<div>Specy</div>
+		</div>
+		<div>
+			<a href="https://specy.github.io/" target="_blank"> Portfolio </a>
+		</div>
+		<div class="icon-wrapper">
+			<a class="icon" href="https://github.com/Specy" target="_blank">
+				<FaGithub />
+			</a>
+			<a class="icon" href="https://discord.gg/kBUjXGqnut" target="_blank">
+				<FaDiscord />
+			</a>
+		</div>
 	</div>
 </footer>
 
@@ -52,19 +54,20 @@
 		}
 	}
 	.footer {
+		margin-top: auto;
+	}
+	.footer-inner{
 		height: 5rem;
 		background-color: $dark;
 		color: $textWhite;
 		padding: 3rem;
 		display: flex;
-		margin-top: auto;
+		margin-top: 3rem;
 		justify-content: space-between;
 		align-items: center;
-		left: 0;
 	}
-	
 	@media (max-width: 480px) {
-		.footer {
+		.footer-inner {
 			padding: 1rem;
 
 		}
