@@ -17,23 +17,23 @@
 </div>
 
 <style lang="scss">
-	@import "variables.scss";
+	@import "../variables.scss";
 	.wrapper {
 		width: 100%;
 		display: flex;
 		justify-content: center;
 		margin-top: 6rem;
 		margin-bottom: 5rem;
+		padding: 1rem;
 	}
 
 	.contact {
-		width: 60%;
+		max-width: 50rem;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		> .text {
 			margin: 1rem;
-			width: 80%;
 			line-height: 1.3rem;
 			:nth-child(1) {
 				margin-top: 1rem;
@@ -55,9 +55,5 @@
 		font-size: 1.6rem;
 		font-weight: bold;
 	}
-	@media (max-width: 480px) {
-		.contact {
-			width: 100%;
-		}
-	}
+
 </style>

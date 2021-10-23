@@ -16,9 +16,9 @@
 		<Logo />
 		<div class="links">
 			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
-			<a href="/login" style={path === "/login" ? "color:#b00752" : ""}>Login</a>
+			
 			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
-			<a href="/support" style={path === "/support" ? "color:#b00752" : ""}>Support me</a>
+			<a href="/login" class='login'>Login</a>
 		</div>
 	</div>
 
@@ -42,6 +42,7 @@
 			>Home</a>
 			<a 
 				href="/login" 
+
 				on:click={closeMenu}
 				style={path === "/login" ? "color:#b00752" : ""}
 			>Login</a>
@@ -50,17 +51,24 @@
 				on:click={closeMenu}
 				style={path === "/register" ? "color:#b00752" : ""}
 			>Register</a>
-			<a 
-				href="/support" 
-				on:click={closeMenu}
-				style={path === "/support" ? "color:#b00752" : ""}
-			>Support me</a>
 		</div>
 	</div>
 </nav>
 
 <style lang="scss">
 	@import '../variables.scss';
+	.login {
+		background-color: transparent;
+		border: solid 2px $accent;
+		color: $accent;
+		padding: 0.5rem 1.5rem;
+		border-radius: 2rem;
+		transition: all 0.2s ease-in-out;
+	}
+	.login:hover {
+		background-color: $accent;
+		color: white !important;
+	}
 	.desktop-menu{
 		width: 100%;
 		display: flex;
@@ -91,8 +99,9 @@
 	.links{
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		> a {
-			margin: 1.5rem;
+			margin-left: 1.5rem;
 			transition: all 0.2s ease-in-out;
 			cursor: pointer;
 			text-decoration: none;
@@ -131,10 +140,11 @@
 		margin-top: 2rem;
 		margin-bottom: 0;
 		display: flex;
+		z-index: 10;
 		justify-content: space-between;
 		align-items: center;
 	}
-	@media (max-width: 655px) {
+	@media (max-width: 650px) {
 		.mobile-menu{
 			display:flex
 		}

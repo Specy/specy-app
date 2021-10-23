@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProjectData } from "./Types.js"
+	import type { ProjectData } from "../types/Types.js"
 	import MdOpenInNew from "svelte-icons/md/MdOpenInNew.svelte"
 	export let data: ProjectData
 </script>
@@ -28,7 +28,7 @@
 </div>
 
 <style lang="scss">
-	@import "variables.scss";
+	@import "../variables.scss";
 	.project {
 		background-color: #f6f6f6c4;
     	backdrop-filter: blur(4px);
@@ -37,8 +37,11 @@
 		justify-content: space-between;
 		padding: 0.8rem;
 		border-radius: 1rem;
+		min-width: 16rem;
+		flex: 1;
 	}
 	.row {
+		display: flex;
 		align-items: center;
 		> img {
 			width: 3rem;

@@ -133,7 +133,8 @@
 		flex-direction: column;
 		width: 30rem;
 		min-height: 20rem;
-		background-color: #fbfbfb;
+		background-color: #f6f6f6c4;
+    	backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;
 		border-radius: 0.5rem;

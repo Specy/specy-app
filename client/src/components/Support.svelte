@@ -15,12 +15,12 @@
 			I would be really thankful if you could consider donating in order to fund
 			development and costs
 		</div>
-		<div class="row">
+		<div class="donation-wrapper">
 			<a href="https://www.buymeacoffee.com/specy" target="_blank">
-				<img src="/images/buymeacoffee.svg" alt="buymeacoffee" />
+				<img src="/images/buymeacoffee.svg" alt="buymeacoffee" class="donation-img" />
 			</a>
 			<a href="https://paypal.me/specyDev" target="_blank" class="paypal">
-				<img src="/images/paypalme.png" alt="buymeacoffee" />
+				<img src="/images/paypalme.png" alt="buymeacoffee" class="donation-img" />
 			</a>
 		</div>
 	</div>
@@ -32,27 +32,16 @@
 		display: flex;
 		justify-content: center;
 		margin-top: 6rem;
+		padding: 1rem;
 	}
 
 	.support {
-		width: 60%;
+		max-width: 50rem;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-
-		> .row {
-			display: flex;
-			justify-content: space-around;
-			width: 80%;
-			margin-top: 1rem;
-			> a img {
-				height: 4rem;
-				margin-right: 2rem;
-			}
-		}
 		> .text {
 			margin: 1rem;
-			width: 80%;
 			line-height: 1.3rem;
 		}
 	}
@@ -60,26 +49,27 @@
 		font-size: 1.6rem;
 		font-weight: bold;
 	}
-	@media (max-width: 480px) {
-		.support {
-			width: 100%;
-			.text {
-				width: 100%;
-				margin: 0;
-				margin-top: 1rem;
-			}
-
-			.row {
-				flex-direction: column;
-				align-items: center;
-				width: 100%;
-				> a img {
-					margin-right: 0;
-					margin-bottom: 0.5rem;
-				}
-			}
-		}
+	.donation-wrapper {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+		justify-content: space-around;
+		margin-top: 2rem;
 	}
+	.donation-wrapper a {
+		margin-top: 0.5rem;
+	}
+	.donation-img {
+		height: 4rem;
+	}
+	.paypal {
+		background-color: #efefef;
+		padding-left: 1rem;
+		height: 4rem;
+		border-radius: 0.8rem;
+	}
+
 	.paypal {
 		background-color: #efefef;
 		padding-left: 1rem;

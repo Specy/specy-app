@@ -36,6 +36,7 @@
 		align-items: center;
 		flex-direction: column;
 		flex: 1;
+
 	}
 	.floating-middle {
 		display: flex;
@@ -47,25 +48,7 @@
 		padding: 1rem;
 		border-radius: 0.5rem;
 	}
-	.donation-wrapper {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-around;
-		margin-top: 2rem;
-	}
-	.donation-wrapper a {
-		margin-top: 0.5rem;
-	}
-	.donation-img {
-		height: 4rem;
-	}
-	.paypal {
-		background-color: #efefef;
-		padding-left: 1rem;
-		height: 4rem;
-		border-radius: 0.8rem;
-	}
+
 	@media (max-width: 480px) {
 		.floating-middle {
 			width: 95vw;

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Project from "./Project.svelte"
-	import type { ProjectData } from "./Types.js"
-	import { data } from "./Projects.js"
+	import Project from "../components/Project.svelte"
+	import type { ProjectData } from "../types/Types"
+	import { data } from "../types/Projects"
 	const projects: ProjectData[] = data
 </script>
 
@@ -21,11 +21,12 @@
 </main>
 
 <style lang="scss">
-	@import "variables.scss";
+	@import "../variables.scss";
 	.main {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		padding: 1rem;
 	}
 	.main-title {
 		margin-top: 4rem;
@@ -43,10 +44,7 @@
 			color: $accent;
 		}
 	}
-	.apps {
-		width: 60%;
-		margin-top: 4rem;
-	}
+
 	.title {
 		font-size: 1.6rem;
 		font-weight: bold;
@@ -54,19 +52,29 @@
 	.project-title {
 		margin: 5rem 0 0 0;
 	}
+	.apps {
+		max-width: 50rem;
+		margin-top: 4rem;
+	}
 	.projects-wrapper {
 		display: grid;
 		margin-top: 1rem;
-		grid-template-columns: 1fr 1fr 1fr;
-		gap: 2rem;
+		margin-left: 1rem;
+		grid-template-columns: repeat(3,1fr);
+		grid-template-rows: 1fr;
+		gap: 1rem;
 	}
-	@media (max-width: 480px) {
-		.projects-wrapper {
-			grid-template-columns: 1fr;
-			gap: 1rem;
+	@media (max-width: 900px){
+		.projects-wrapper{
+			grid-template-columns: repeat(2,1fr);
 		}
-		.apps {
-			width: 100%;
+	}
+	@media (max-width: 600px){
+		.projects-wrapper{
+			grid-template-columns: repeat(1,1fr);
+		}
+		.apps{
+			width:100%;
 		}
 	}
 </style>
