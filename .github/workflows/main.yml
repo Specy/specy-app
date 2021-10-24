@@ -32,5 +32,5 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSH_KEY }}
       with:
-        source: "./client/build"
-        target: "~/web/index/client/build"
+        source: "."
+        target: "~/web/index"
