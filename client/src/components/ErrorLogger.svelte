@@ -2,18 +2,21 @@
     import {toast} from "./toast"
     import {onDestroy} from "svelte"
     import FaTimes from "svelte-icons/fa/FaTimes.svelte"
-    let title = ""
-    let message = ""
+    let title = "Test"
+    let message = "Test"
     let toastVisible = false
     let timeout = setTimeout(() =>{},100)
+    let toastDuration = 0
     let unsubscribe = toast.subscribe(data =>{
         if(data.title === "") return
         title = data?.title
         message = data?.message
         toastVisible = true
         clearTimeout(timeout)
+        toastDuration = data?.duration
         timeout = setTimeout(()=>{
             toastVisible = false
+            toastDuration = 0
         }, data?.duration)
     })
     onDestroy(unsubscribe)
@@ -26,12 +29,15 @@
             <div >
                 {title}
             </div>
-            <div class="close-icon" on:click={() => toastVisible = false}>
+            <div class="close-icon" on:click={() => {toastVisible = false; toastDuration = 0}}>
                 <FaTimes />
             </div>
         </div>
         <div class="toast-text">
             {message}
+        </div>
+        <div class="toast-progress">
+            <div class={toastVisible ? "toast-progress-bar" : ""} style={`transition: all ${toastDuration}ms linear`}></div>
         </div>
     </div>
 </div>
@@ -43,8 +49,8 @@
         position: fixed;
         right:1rem;
         top: 1rem;
-        padding: 1rem;
-        height: 10rem;
+        overflow: hidden;
+        max-height: 10rem;
         width: 20rem;
 		background-color: #f6f6f6c4;
     	backdrop-filter: blur(4px);
@@ -55,30 +61,48 @@
         transition: transform 0.3s ease-out;
         flex-direction: column;
     }
+    .toastVisible{
+        transform: translateY(0);
+    }
+    .toast-progress{
+        width: 100%;
+        height: 0.2rem;
+    }
+    .toast-progress div{
+        width: 100%;
+        height: 0.2rem;
+        background-color: $accent;
+    }
+    .toast-progress-bar{
+        width: 0% !important;
+    }
     .close-icon{
         color: $textDark;
-        width:1.5rem;
-        height: 1.5rem;
+        width:1.2rem;
+        padding-top: 0.2rem;
+        height: 1.2rem;
         cursor: pointer;
     }
     .close-icon:hover{
         color: $accent;
     }
-    .toastVisible{
-        transform: translateY(0);
-    }
+
     .toast-title{
         width:100%;
         display: flex;
+        padding: 0.8rem;
+        padding-top: 0.4rem;
         justify-content: space-between;
-        align-items: center;
         flex-direction: row;
-        font-size:1.5rem;
+        font-size:1.1rem;
+        align-items: flex-start;
         padding-bottom: 0.2rem;
         margin-bottom: 0.2rem;
         border-bottom: solid 1px $accent;
     }
     .toast-text{
+        padding: 0.7rem;
+        font-size: 0.9rem;
         display: flex;
         margin-top: auto;
     }

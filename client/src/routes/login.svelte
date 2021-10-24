@@ -32,7 +32,7 @@
 				<div class="input-wrapper">
 					<Input 
 						bind:value={email} 
-						title='Email' 
+						title='E-mail' 
 						hideStatus = {true}
 					/>
 				</div>

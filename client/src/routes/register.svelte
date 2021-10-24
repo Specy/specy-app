@@ -42,7 +42,7 @@
 				<div>
 					<Input 
 						bind:value={email} 
-						title="Email" 
+						title="E-mail" 
 						status={EmailValidator.validate(email) ? "correct" : "wrong"}
 					/>
 				</div>

@@ -70,7 +70,7 @@ import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
         display: flex;
 		flex: 1;
         border: none;
-        border-right: solid 2px gray;
+        border-right: solid 1px gray;
         background-color: transparent;
 		padding: 0.6rem 1rem ;
 	}

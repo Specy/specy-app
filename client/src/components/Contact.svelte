@@ -4,14 +4,18 @@
 		<div class="text">
 			If you have any questions, bug reports, suggestions, work proposal,
 			anything, you can contact me at:
-			<div class="contact-info">
-				<span>Email: </span>&nbsp;&nbsp;&nbsp;
-				<div>Specy.dev@gmail.com</div>
-			</div>
-			<div class="contact-info">
-				<span>Discord: </span>
-				<div>Specy#7347</div>
-			</div>
+			<table>
+				<tr class="contact-info">
+					<td>Email: </td>
+					<td style="width: 1rem;"></td>
+					<td>Specy.dev@gmail.com</td>
+				</tr>
+				<tr class="contact-info">
+					<td>Discord: </td>
+					<td style="width: 1rem;"></td>
+					<td>Specy#7347</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </div>
@@ -43,11 +47,10 @@
 	.contact-info {
 		margin-top: 0.5rem;
 
-		> span {
+		> :nth-child(1) {
 			color: $accent;
 		}
-		> div {
-			display: inline;
+		> :last-child{
 			user-select: all;
 		}
 	}

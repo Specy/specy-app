@@ -102,7 +102,10 @@
         cursor: pointer;
 	}
 	.show-password {
-		color: $textDark;
+		color: gray;
+	}
+	.show-password:hover {
+		color: $accent;
 	}
 	.correct {
 		color: rgb(16, 185, 129);
@@ -114,7 +117,7 @@
 		display: flex;
 		flex: 1;
 		border: none;
-		border-right: solid 2px gray;
+		border-right: solid 1px gray;
 		background-color: transparent;
 		padding: 0.6rem 1rem;
 	}

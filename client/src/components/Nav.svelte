@@ -116,6 +116,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		margin-right: 3rem;
 		> a {
 			margin-left: 1.5rem;
 			transition: all 0.2s ease-in-out;

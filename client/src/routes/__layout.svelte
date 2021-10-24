@@ -5,6 +5,7 @@
 	import PageTransition from '../components/PageTransition.svelte';
 	import ErrorLogger from '../components/ErrorLogger.svelte';
 	import Background from '../components/Background.svelte';
+	import GlobalStyle from '../components/GlobalStyle.svelte';
 	import { page } from '$app/stores';
 </script>
 
@@ -17,3 +18,4 @@
 	</PageTransition>
 </ErrorLogger>
 <Footer />
+<GlobalStyle />
