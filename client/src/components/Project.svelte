@@ -30,7 +30,7 @@
 <style lang="scss">
 	@import "../variables.scss";
 	.project {
-		background-color: #f6f6f6c4;
+		background-color: rgba(246, 246, 246, 0.8);;
     	backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgb(69 69 89 / 25%);
 		display: flex;

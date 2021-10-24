@@ -24,7 +24,7 @@
     @import '../variables.scss';
 	.floating-middle{
 		width: 20rem;
-        min-height: 20rem;
+        height: 20rem;
         display: flex;
         justify-content: center;
         align-items: center;

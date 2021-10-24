@@ -81,6 +81,7 @@
 	}
 	.form-buttons-wrapper {
 		display: flex;
+		margin-top: 2rem;
 		flex: 1;
 		justify-content: flex-end;
 		flex-direction: column;
@@ -101,8 +102,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 30rem;
-		min-height: 20rem;
-		background-color: #f6f6f6c4;
+		background-color: rgba(246, 246, 246, 0.8);
     	backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;

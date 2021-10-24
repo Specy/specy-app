@@ -52,7 +52,7 @@
         overflow: hidden;
         max-height: 10rem;
         width: 20rem;
-		background-color: #f6f6f6c4;
+		background-color: rgba(246, 246, 246, 0.8);;
     	backdrop-filter: blur(4px);
         border-radius: 0.5rem;
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
