@@ -21,7 +21,10 @@ jobs:
       run: npm install yarn --global
 
     - name: Build client
-      run: cd client
+      run: |
+            ls
+            cd ./client
+            ls
     - name: Install client packages
       run: |
             yarn install
