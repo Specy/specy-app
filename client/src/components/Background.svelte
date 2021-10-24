@@ -40,6 +40,7 @@
 	}
 	@media (orientation: portrait) {
 		.background {
+			
 			> .background-image {
 				background-image: url('/images/circle-scatter-haikei2.svg');
 				transition: all 0.3s;

@@ -3,25 +3,28 @@
 	import PasswordInput from '../components/PasswordInput.svelte';
 	import * as EmailValidator from 'email-validator';
 	import checkStrenght from '../lib/checkPassword';
+	import {toast} from "../components/toast"
 	let email = '';
 	let password = '';
 	let username = '';
 	let verifyPassword = '';
 	async function register() {
-		if(!EmailValidator.validate(email)) return alert('Invalid email');
-		if(checkStrenght(password).id < 2 ) return alert('Password must be at least 8 characters long, have An uppercase letter and one number');
-		if (password !== verifyPassword) return alert('Passwords do not match')
-		if(username.length > 3) return alert('Username must be at least 4 characters long');
+		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
+		if(username.length < 4) return toast.set({title:"Error", message:"Username must be at least 4 characters", duration:3000});
+		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
+		if (password !== verifyPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
+
 		let body = {
 			email: email,
 			password: password,
-			username: username,
-			verifyPassword: verifyPassword
-		};
+			verifyPassword: verifyPassword,
+			username: username
+		}	
+		return toast.set({title:"Warning", message:"Feature coming soon", duration:3000});
 		let response = await fetch('someApi', {
 			method: 'POST',
 			body: JSON.stringify(body)
-		});
+		})
 		console.log(response);
 	}
 </script>
@@ -83,6 +86,7 @@
 </div>
 
 <style lang="scss">
+	 @import '../variables.scss';
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -121,7 +125,7 @@
 	}
 	.note{
 		font-size: 0.9rem;
-		color: #999;
+		color: $hint;
 		text-align: left;
 		width: 100%;
 	}

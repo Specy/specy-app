@@ -72,6 +72,7 @@
 	@media (max-width: 600px){
 		.projects-wrapper{
 			grid-template-columns: repeat(1,1fr);
+			margin-left: 0rem;
 		}
 		.apps{
 			width:100%;

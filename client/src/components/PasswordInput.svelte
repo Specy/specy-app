@@ -83,7 +83,7 @@
 		display: flex;
 		align-items: center;
 		border-radius: 0.4rem;
-		background-color: #e7e7e7;
+		background-color: rgba(214, 214, 214, 0.5);
 		padding: 0.2rem;
 		margin-top: 0.2rem;
 	}

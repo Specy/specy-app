@@ -75,4 +75,10 @@
 			}
 		}
 	}
+	@media (max-width: 650px) {
+		.logo {
+			width:2.5rem;
+			height: 2.5rem;
+		}
+	}
 </style>

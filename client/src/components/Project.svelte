@@ -4,7 +4,7 @@
 	export let data: ProjectData
 </script>
 
-<div class="project  box-shadow">
+<div class="project">
 	<div class="row">
 		<img src={data.image} alt={data.title} />
 		<div class="app-title">
@@ -32,6 +32,7 @@
 	.project {
 		background-color: #f6f6f6c4;
     	backdrop-filter: blur(4px);
+		box-shadow: 1px 1px 5px rgb(69 69 89 / 25%);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;

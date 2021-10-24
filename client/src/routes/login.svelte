@@ -1,9 +1,15 @@
 <script>
 	import Input from '../components/Input.svelte'
 	import PasswordInput from '../components/PasswordInput.svelte';
+	import {toast} from "../components/toast"
 	let email = ''
 	let password = ''
 	async function login(){
+		toast.set({
+			message: "Feature coming soon",
+			duration: 3000,
+			title: "Warning"
+		})
 		let body = {
 				email: email,
 				password: password
@@ -30,13 +36,16 @@
 						hideStatus = {true}
 					/>
 				</div>
-				<div class="input-wrapper">
+				<div class="input-wrapper" style="margin-bottom: 0;">
 					<PasswordInput 
 						bind:value={password} 
 						title='Password'
 						hideStatus = {true}
 					/>
 				</div>
+				<a class="forgot-password" href="/recoverPassword">
+					Forgot password?	
+				</a>
 				<div class="form-buttons-wrapper">
 					<div class="note">
 						* You will use those credentials in all apps
@@ -46,11 +55,11 @@
 
 			</form>
 		</div>
-
 	</div>
 </div>
 
 <style lang="scss">
+	 @import '../variables.scss';
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -105,11 +114,19 @@
 		flex-direction: column;
 		flex: 1;
 	}
-	.note{
+	.note,.forgot-password{
 		font-size: 0.9rem;
-		color: #999;
+		color: $hint;
 		text-align: left;
 		width: 100%;
+	}
+	.forgot-password{
+		text-align: right;
+		color: $textDark;
+		transition: all 0.2s
+	}
+	.forgot-password:hover{
+		color: $accent;
 	}
 	@media (max-width: 480px) {
 		.floating-middle {
