@@ -4,7 +4,7 @@ let data = [
         "title": "Sky Music Nightly",
         "description": "Website to compose and practice music for sky children of the light",
         "image": "/images/skyMusicNightly.png",
-        "url": "https://specy.github.io/skyMusic/#/",
+        "url": "https://sky-music.specy.app",
         "github": "c",
         "color": "rgb(211, 189, 143)"
     },
@@ -12,7 +12,7 @@ let data = [
         "title": "Genshin music Nightly",
         "description": "A website to compose and practice music for genshin",
         "image": "/images/genshinMusicNightly.png",
-        "url": "https://specy.github.io/genshinMusic/#/",
+        "url": "https://genshin-music.specy.app",
         "github": "",
         "color": "rgb(85, 143, 144)"
     },
