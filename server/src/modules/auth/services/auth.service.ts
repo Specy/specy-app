@@ -1,5 +1,5 @@
 import { User } from '.prisma/client';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/modules/user/services/user.service';
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
   async validateUser(data: UserLoginDto) {
-    const user = await this.userService.findUnique(data);
+    const user = await this.userService.findUnique({ email: data.email });
     if (!user) throw new BadRequestException('Invalid credentials');
     const isPasswordMatch = await this.passwordService.validatePassword(
       data.password,
@@ -41,12 +41,20 @@ export class AuthService {
   }
 
   async generateTokens(data: JwtPayloadDao) {
-    const accessToken = this.jwtService.sign(data.id, {
-      expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_IN'),
-    });
-    const refreshToken = this.jwtService.sign(accessToken, {
-      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'),
-    });
+    Logger.debug(this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_IN'));
+    Logger.debug(this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'));
+    const accessToken = this.jwtService.sign(
+      { id: data.id },
+      {
+        expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_IN'),
+      },
+    );
+    const refreshToken = this.jwtService.sign(
+      { id: data.id },
+      {
+        expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+      },
+    );
     return {
       accessToken,
       refreshToken,
