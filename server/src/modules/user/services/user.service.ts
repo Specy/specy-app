@@ -13,4 +13,7 @@ export class UserService {
   async findUnique(data: Prisma.UserWhereUniqueInput) {
     return this.prismaService.user.findUnique({ where: data });
   }
+  async remove(data: Prisma.UserWhereUniqueInput){
+
+  }
 }
