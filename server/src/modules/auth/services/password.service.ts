@@ -3,7 +3,6 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PasswordService {
-  constructor() {}
   /**
    * Checks if the password is valid using bcrypt.
    * @param password The raw text password
