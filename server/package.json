@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "specy-auth",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "specy",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -30,7 +30,10 @@
     "@nestjs/swagger": "^5.1.4",
     "@prisma/client": "^3.3.0",
     "bcrypt": "^5.0.1",
+    "email-validator": "^2.0.4",
+    "nanoid": "^3.1.30",
     "nestjs-prisma": "^0.14.2",
+    "nodemailer": "^6.7.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

@@ -1,31 +1,54 @@
 <script>
-	import Input from '../components/Input.svelte';
-	import PasswordInput from '../components/PasswordInput.svelte';
-	import * as EmailValidator from 'email-validator';
-	import checkStrenght from '../lib/checkPassword';
+	import Input from '../components/Input.svelte'
+	import PasswordInput from '../components/PasswordInput.svelte'
+	import * as EmailValidator from 'email-validator'
+	import checkStrenght from '../lib/checkPassword'
 	import {toast} from "../components/toast"
-	let email = '';
-	let password = '';
-	let username = '';
-	let verifyPassword = '';
+	let email = ''
+	let password = ''
+	let username = ''
+	let confirmPassword = ''
+	let verificationCode = ''
+	let step = 1
 	async function register() {
-		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
-		if(username.length < 4) return toast.set({title:"Error", message:"Username must be at least 4 characters", duration:3000});
-		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
-		if (password !== verifyPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
 
 		let body = {
 			email: email,
 			password: password,
-			verifyPassword: verifyPassword,
-			username: username
+			confirmPassword: confirmPassword,
+			username: username,
+			token: parseInt(verificationCode)
 		}	
-		return toast.set({title:"Warning", message:"Feature coming soon", duration:3000});
-		let response = await fetch('someApi', {
+		let response = await fetch('http://localhost:3001/auth/register', {
 			method: 'POST',
-			body: JSON.stringify(body)
-		})
-		console.log(response);
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(data => data.json())
+		console.log(response)
+		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
+	}
+	async function sendVerificationCode(){
+		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
+		if(username.length < 4) return toast.set({title:"Error", message:"Username must be at least 4 characters", duration:3000});
+		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
+		if (password !== confirmPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
+		let obj = {
+			email:email
+		}
+		let response = await fetch("http://localhost:3001/auth/verify",{
+			method: 'POST',
+			body: JSON.stringify(obj),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(data => data.json())
+		console.log(response)
+		if(response.status === 'success'){
+			return 	step = 2
+		}	
+		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
 	}
 </script>
 
@@ -33,10 +56,11 @@
 	<div class="center-wrapper">
 		<div class="big-title" style="margin:  2rem 0;">Register</div>
 		<div class="floating-middle">
+			{#if step === 1}
 			<form
 				on:submit={(e) => {
 					e.preventDefault();
-					register();
+					sendVerificationCode();
 				}}
 			>
 				<div>
@@ -61,7 +85,7 @@
 				</div>
 				<div>
 					<PasswordInput 
-						bind:value={verifyPassword} 
+						bind:value={confirmPassword} 
 						title="Confirm password" 
 						passwordToCheck={password}
 					/>
@@ -81,6 +105,31 @@
 					/>
 				</div>
 			</form>
+			{/if}
+			{#if step === 2}
+				<form
+					on:submit={(e) => {
+						e.preventDefault();
+						register();
+					}}
+				>
+					<div>
+						A verification code was sent to the email "{email}" please paste it here.
+					</div>
+					<Input 
+						bind:value={verificationCode} 
+						title="Verification code" 
+					/>
+					<div class="form-buttons-wrapper">
+						<input
+							type="submit"
+							class="form-btn"
+							style="background-color: rgb(85, 143, 144)"
+							value="Register"
+						/>
+					</div>
+				</form>
+			{/if}
 		</div>
 	</div>
 </div>

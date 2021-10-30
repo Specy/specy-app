@@ -11,8 +11,13 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String    @id 
   email    String @unique
   username String
   password String
+}
+
+model EmailVerification {
+  email   String @unique
+  token   Int  
 }

@@ -23,6 +23,18 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  @Post('verify')
+  @ApiOperation({
+    summary: 'Send verification code and save into db',
+  })
+  async verifyMail(@Body() data: UserRegisterDto) {
+    let result = await this.authService.verifyEmail(data)
+    return {
+      message: 'Verification email sent',
+      status: 'success'
+    }
+  }
+
   @Post('register')
   @ApiOperation({
     summary: 'Create a new account',

@@ -5,20 +5,18 @@
 	let email = ''
 	let password = ''
 	async function login(){
-		toast.set({
-			message: "Feature coming soon",
-			duration: 3000,
-			title: "Warning"
-		})
 		let body = {
 				email: email,
 				password: password
 			}
-		let response = await fetch('someApi',{
+		let response = await fetch('http://localhost:3001/auth/login',{
 			method: 'POST',
-			body: JSON.stringify(body)
-		})
-		console.log(response)
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(data => data.json())
+		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
 	}
 </script>
 

@@ -1,3 +1,3 @@
 export class JwtPayloadDao {
-  id: number;
+  id: string;
 }

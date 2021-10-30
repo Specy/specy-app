@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { checkStrenght,passwordStrength } from 'src/lib/passwordStrength';
 
 @Injectable()
 export class PasswordService {
@@ -20,5 +21,8 @@ export class PasswordService {
    */
   async hashPassword(password: string, saltOrRounds?: number | string) {
     return bcrypt.hash(password, saltOrRounds ?? 10);
+  }
+  getStrength(password: string):passwordStrength {
+    return checkStrenght(password);
   }
 }
