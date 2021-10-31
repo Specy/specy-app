@@ -2,10 +2,10 @@ import { User } from '.prisma/client';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/modules/account/services/user.service';
+import { UserService } from 'src/modules/user/user.service';
 import { JwtPayloadDao } from '../dtos/jwt-payload.dao';
 import { UserLoginDto } from '../dtos/user-login.dto';
-import { PasswordService } from 'src/injectables/password.service';
+import { PasswordService } from 'src/modules/password/services/password.service';
 
 @Injectable()
 export class AuthService {

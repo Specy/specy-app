@@ -1,13 +1,13 @@
  
 import { Module } from '@nestjs/common';
-import { UserService } from './services/user.service';
 import { AccountController } from './controllers/account.controller';
-import { UserEmailerService } from './services/user-emailer.service';
-import { PasswordService } from 'src/injectables/password.service';
+import { EmailModule } from '../emailer/email.module';
+import { UserModule } from '../user/user.module';
+import { PasswordModule } from '../password/password.module';
 import { RegisterService } from './services/register.service';
 @Module({
+  imports: [EmailModule,UserModule,PasswordModule],
   controllers:[AccountController],
-  providers: [UserService,UserEmailerService,PasswordService,RegisterService],
-  exports: [UserService,UserEmailerService],
+  providers: [RegisterService],
 })
 export class AccountModule {}

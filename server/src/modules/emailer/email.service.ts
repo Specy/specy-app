@@ -1,10 +1,12 @@
 const nodemailer = require("nodemailer");
 import { Injectable } from '@nestjs/common';
-import {EmailVerificationData,PasswordResetData} from 'src/types/user.types'
+import { EmailVerificationDto } from './dtos/email-verification.dto';
+import { PasswordResetDto } from './dtos/password-reset.dto';
 const { env } = process
+
 @Injectable()
-export class UserEmailerService {
-    private transporter;
+export class EmailService {
+    private transporter;    
     constructor() {
         this.transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -14,7 +16,7 @@ export class UserEmailerService {
             }
         })
     }
-    async sendVerificationCode(data: EmailVerificationData) {
+    async sendEmailVerificationCode(data: EmailVerificationDto) {
         return this.transporter.sendMail({
             from: env.EMAIL,
             to: data.email,
@@ -32,7 +34,7 @@ export class UserEmailerService {
             `
         })
     }
-    async sendPasswordResetCode(data: PasswordResetData) {
+    async sendPasswordResetCode(data: PasswordResetDto) {
         return this.transporter.sendMail({
             from: env.EMAIL,
             to: data.email,

@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { UserService } from 'src/modules/account/services/user.service';
-import { UserEmailerService } from 'src/modules/account/services/user-emailer.service'
+import { UserService } from 'src/modules/user/user.service';
 import { UserRegisterDto } from 'src/modules/account/dtos/user-register.dto';
 import { EmailVerificationDto } from 'src/modules/account/dtos/email-verification.dto';
-import { PasswordService } from 'src/injectables/password.service';
+import { EmailService } from 'src/modules/emailer/email.service';
+import { PasswordService } from 'src/modules/password/services/password.service';
 import { customAlphabet } from 'nanoid';
 import * as EmailValidator from 'email-validator';
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -18,18 +18,18 @@ export class RegisterService {
   constructor(
     private readonly passwordService: PasswordService,
     private readonly userService: UserService,
-    private readonly userEmailerService: UserEmailerService,
+    private readonly EmailService: EmailService,
   ) {}
 
   async verifyEmail(data: EmailVerificationDto) {
     let verificationData = {
       email: data.email,
-      token: Math.floor(Math.random() * 100000)
+      token: Math.floor(Math.random() * 900000 + 100000)
     } 
     if(await this.userService.existsMail(data.email)) throw new BadRequestException('Email already exists')
     if(!EmailValidator.validate(data.email)) throw new BadRequestException('Invalid email')
     await this.userService.verifyEmail(verificationData)
-    await this.userEmailerService.sendVerificationCode(verificationData)
+    await this.EmailService.sendEmailVerificationCode(verificationData)
     
   }
   async register(data: UserRegisterDto) {
