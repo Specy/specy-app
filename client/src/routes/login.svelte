@@ -16,7 +16,9 @@
 				'Content-Type': 'application/json'
 			}
 		}).then(data => data.json())
-		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
+		console.log(response)
+		if(response.statusCode === 401) return toast.set({title:"Error", message:"Wrong credentials", duration:3000});
+		return toast.set({title:"Success", message:"Successfully logged in", duration:3000});
 	}
 </script>
 

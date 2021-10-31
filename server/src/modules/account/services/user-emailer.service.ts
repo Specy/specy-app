@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 import { Injectable } from '@nestjs/common';
-import {EmailVerificationData,PasswordResetData} from '../../../types/user.types'
+import {EmailVerificationData,PasswordResetData} from 'src/types/user.types'
 const { env } = process
 @Injectable()
 export class UserEmailerService {

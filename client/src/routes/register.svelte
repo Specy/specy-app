@@ -19,7 +19,7 @@
 			username: username,
 			token: parseInt(verificationCode)
 		}	
-		let response = await fetch('http://localhost:3001/auth/register', {
+		let response = await fetch('http://localhost:3001/account/register', {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {
@@ -28,6 +28,7 @@
 		}).then(data => data.json())
 		console.log(response)
 		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
+		return toast.set({title:"Success", message:response.message, duration:3000});
 	}
 	async function sendVerificationCode(){
 		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
@@ -37,7 +38,7 @@
 		let obj = {
 			email:email
 		}
-		let response = await fetch("http://localhost:3001/auth/verify",{
+		let response = await fetch("http://localhost:3001/account/verify",{
 			method: 'POST',
 			body: JSON.stringify(obj),
 			headers: {
@@ -49,6 +50,7 @@
 			return 	step = 2
 		}	
 		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
+
 	}
 </script>
 
