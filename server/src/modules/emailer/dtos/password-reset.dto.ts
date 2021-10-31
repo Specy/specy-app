@@ -1,5 +1,5 @@
 
 export interface PasswordResetDto{
-    email: string;
-    token: string;
+    email: string
+    token: string
 }

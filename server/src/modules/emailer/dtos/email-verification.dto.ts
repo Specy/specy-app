@@ -1,4 +1,4 @@
 export interface EmailVerificationDto{
-    email: string;
-    token: number;
+    email: string
+    token: number
 }
