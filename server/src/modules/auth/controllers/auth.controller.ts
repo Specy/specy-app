@@ -1,5 +1,6 @@
 import { User as UserEntity } from '.prisma/client'
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards , Logger} from '@nestjs/common'
+import { SuccessfulResponse } from 'src/shared/Responses'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { User } from '../decorators/user.decorator'
 import { UserLoginDto } from '../dtos/user-login.dto'
@@ -19,7 +20,8 @@ export class AuthController {
 			'Authenticates using email and password. Tokens Usable within all apps',
 	})
 	async login(@Body() data: UserLoginDto, @User() user: UserEntity) {
-		return this.authService.login(user)
+		let result = this.authService.login(user)
+		return new SuccessfulResponse("Successfully logged in",result)
 	}
 
 	@Get('status')
@@ -29,10 +31,10 @@ export class AuthController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	status(@User() user: UserEntity) {
-		return {
+		return new SuccessfulResponse("User validated",{
 			id: user.id,
-			username: user.username,
-		}
+			username: user.username
+		})
 	}
 
 	@Post('refresh')
@@ -41,7 +43,8 @@ export class AuthController {
 	@ApiOperation({
 		summary: 'Create new tokens using refresh token',
 	})
-	refresh(@User() user: UserEntity) {
-		return this.authService.login(user)
+	async refresh(@User() user: UserEntity) {
+		let result = await this.authService.login(user)
+		return new SuccessfulResponse("Refreshed tokens",result)
 	}
 }

@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { SuccessfulResponse } from "src/shared/Responses"
 import { UserRegisterDto } from 'src/modules/account/dtos/user-register.dto'
 import { EmailVerificationDto } from 'src/modules/account/dtos/email-verification.dto'
 import { RegisterService } from 'src/modules/account/services/register.service'
@@ -14,11 +15,8 @@ export class AccountController {
 		summary: 'Send verification code and save into db',
 	})
 	async verifyMail(@Body() data: EmailVerificationDto) {
-		let result = await this.registerService.verifyEmail(data)
-		return {
-			message: 'Verification email sent',
-			status: 'success'
-		}
+		await this.registerService.verifyEmail(data)
+		return new SuccessfulResponse("Email successfully sent")
 	}
 
 	@Post('register')
@@ -26,7 +24,8 @@ export class AccountController {
 		summary: 'Create a new account',
 	})
 	async register(@Body() data: UserRegisterDto) {
-		return this.registerService.registerUser(data)
+		let response = await this.registerService.registerUser(data)
+		return  new SuccessfulResponse("User registered",response)
 	}
 
 }

@@ -6,7 +6,7 @@ const { env } = process
 
 @Injectable()
 export class EmailService {
-    private transporter    
+    private transporter
     constructor() {
         this.transporter = nodemailer.createTransport({
             service: 'gmail',

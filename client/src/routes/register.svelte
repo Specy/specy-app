@@ -4,14 +4,15 @@
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
 	import {toast} from "../components/toast"
+
 	let email = ''
 	let password = ''
 	let username = ''
 	let confirmPassword = ''
 	let verificationCode = ''
 	let step = 1
+	let isFetching = false
 	async function register() {
-
 		let body = {
 			email: email,
 			password: password,
@@ -19,16 +20,22 @@
 			username: username,
 			token: parseInt(verificationCode)
 		}	
+
+		isFetching = true
 		let response = await fetch('http://localhost:3001/account/register', {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json'
 			}
-		}).then(data => data.json())
-		console.log(response)
-		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
-		return toast.set({title:"Success", message:response.message, duration:3000});
+		})
+		let data = await response.json()
+		isFetching = false
+		if(response.ok){
+			toast.set({title:"Success",message:data.message,duration: 3000})
+			return step = 3
+		}
+		toast.set({title:"Error",message:data.message,duration: 3000})
 	}
 	async function sendVerificationCode(){
 		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
@@ -38,19 +45,19 @@
 		let obj = {
 			email:email
 		}
+		isFetching = true
 		let response = await fetch("http://localhost:3001/account/verify",{
 			method: 'POST',
 			body: JSON.stringify(obj),
 			headers: {
 				'Content-Type': 'application/json'
 			}
-		}).then(data => data.json())
-		console.log(response)
-		if(response.status === 'success'){
-			return 	step = 2
-		}	
-		if(response.error) return toast.set({title:"Error", message:response.message, duration:3000});
-
+		})
+		let data = await response.json()
+		isFetching = false
+		if(response.ok)return step = 2
+		
+		toast.set({title:"Error",message:data.message,duration: 3000})
 	}
 </script>
 
@@ -101,9 +108,10 @@
 					</div>
 					<input
 						type="submit"
+						disabled={isFetching}
 						class="form-btn"
 						style="background-color: rgb(85, 143, 144)"
-						value="Register"
+						value={!isFetching ? "Register" : "Loading..."}
 					/>
 				</div>
 			</form>
@@ -125,12 +133,21 @@
 					<div class="form-buttons-wrapper">
 						<input
 							type="submit"
+							disabled={isFetching}
 							class="form-btn"
 							style="background-color: rgb(85, 143, 144)"
-							value="Register"
+							value={!isFetching? "Register" : "Loading..."}
 						/>
 					</div>
 				</form>
+			{/if}
+			{#if step === 3}
+				<div>
+					You successfully registered! You can now proceed to login.
+					<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
+						Go to login
+					</a>
+				</div>
 			{/if}
 		</div>
 	</div>

@@ -1,7 +1,7 @@
-import { Prisma } from '.prisma/client';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'nestjs-prisma';
-import { IdGeneratorService } from 'src/modules/commons/services/id-generator.service';
+import { Prisma } from '.prisma/client'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { PrismaService } from 'nestjs-prisma'
+import { IdGeneratorService } from 'src/modules/commons/services/id-generator.service'
 @Injectable()
 export class UserService {
 	constructor(

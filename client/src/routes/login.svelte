@@ -2,6 +2,7 @@
 	import Input from '../components/Input.svelte'
 	import PasswordInput from '../components/PasswordInput.svelte';
 	import {toast} from "../components/toast"
+	import { goto } from '$app/navigation';
 	let email = ''
 	let password = ''
 	async function login(){
@@ -15,10 +16,13 @@
 			headers: {
 				'Content-Type': 'application/json'
 			}
-		}).then(data => data.json())
-		console.log(response)
-		if(response.statusCode === 401) return toast.set({title:"Error", message:"Wrong credentials", duration:3000});
-		return toast.set({title:"Success", message:"Successfully logged in", duration:3000});
+		})
+		let data = await response.json()
+		if(response.ok){
+			toast.set({title:"Success", message:data.message, duration:3000})
+			return goto('/profile')
+		}
+		toast.set({title:"Error", message:"Wrong credentials", duration:3000})
 	}
 </script>
 

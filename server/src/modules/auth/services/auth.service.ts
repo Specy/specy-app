@@ -17,7 +17,9 @@ export class AuthService {
 	) { }
 
 	async validateUser(data: UserLoginDto) {
+		let start = new Date().getTime()
 		const user = await this.userService.findUnique({ email: data.email })
+		start = new Date().getTime()
 		if (!user) throw new BadRequestException('Invalid credentials')
 		const isPasswordMatch = await this.passwordService.validatePassword(
 			data.password,
@@ -31,8 +33,6 @@ export class AuthService {
 		return this.generateTokens(data)
 	}
 	async generateTokens(data: JwtPayloadDao) {
-		Logger.debug(this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_IN'))
-		Logger.debug(this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'))
 		const accessToken = this.jwtService.sign(
 			{ id: data.id },
 			{
