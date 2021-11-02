@@ -20,8 +20,5 @@ export class UserRegisterDto {
 	})
 	confirmPassword: string
 
-	@IsString({
-		message: "Invalid token"
-	})
-	token: string
+
 }

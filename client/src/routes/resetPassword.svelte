@@ -12,7 +12,7 @@
 	async function sendEmail() {
 		if (!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
 		isFetching = true
-		let response = await fetch('http://localhost:3001/account/sendCode', {
+		let response = await fetch('http://localhost:3001/account/token/send', {
 			method: 'POST',
 			body: JSON.stringify({email: email}),
 			headers: {
@@ -34,11 +34,10 @@
         toast.set({title:"Warning", message:"Feature coming soon", duration:3000});
         let body = {
 			email: email,
-			token: verificationCode,
 			password: newPassword
 		}
 		isFetching = true
-		let response = await fetch('http://localhost:3001/account/changePassword', {
+		let response = await fetch(`http://localhost:3001/account/recover/${verificationCode}`, {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {

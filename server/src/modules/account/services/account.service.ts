@@ -17,7 +17,7 @@ export class AccountService {
 		private readonly tokenService: TokenService
 	) { }
 
-	async changePassword(data: ChangePasswordDto) {
+	async changePassword(data: ChangePasswordDto & {token:string}) {
 		const isVerified = await this.tokenService.verifyToken(data)
 		const hashedPassword = await this.passwordService.hashPassword(data.password)
 		if (!isVerified) throw new UnauthorizedException("Token is wrong")
@@ -25,7 +25,7 @@ export class AccountService {
 		return true
 	}
 
-	async registerUser(data: UserRegisterDto) {
+	async createUser(data: UserRegisterDto & {token:string}) {
 		let exists = await this.userExists({ email: data.email })
 		if (exists) throw new BadRequestException('Email already exists')
 		const hashedPassword = await this.passwordService.hashPassword(data.password)

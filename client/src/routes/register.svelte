@@ -17,12 +17,11 @@
 			email: email,
 			password: password,
 			confirmPassword: confirmPassword,
-			username: username,
-			token: verificationCode
+			username: username
 		}	
 
 		isFetching = true
-		let response = await fetch('http://localhost:3001/account/register', {
+		let response = await fetch(`http://localhost:3001/account/create/${verificationCode}`, {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {
@@ -43,7 +42,7 @@
 		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
 		if (password !== confirmPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
 		isFetching = true
-		let response = await fetch("http://localhost:3001/account/sendCode",{
+		let response = await fetch("http://localhost:3001/account/activate/send",{
 			method: 'POST',
 			body: JSON.stringify({email:email}),
 			headers: {
