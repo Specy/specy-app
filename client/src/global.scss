@@ -28,6 +28,10 @@ a{
 	flex-direction: column;
 	flex: 1;
 }
+input:disabled{
+	cursor: not-allowed !important;
+	filter: saturate(0.6)!important;
+}
 #svelte {
 	min-height: 100vh;
 	display: flex;

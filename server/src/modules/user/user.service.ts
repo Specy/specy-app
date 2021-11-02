@@ -20,7 +20,7 @@ export class UserService {
 	async existsMail(email: string) {
 		return Boolean(await this.findUnique({ email: email }))
 	}
-	async remove(data: Prisma.UserWhereUniqueInput) {
+	async deleteUser(data: Prisma.UserWhereUniqueInput) {
 		return this.prismaService.user.delete({ where: data })
 	}
 	async changePassword(data: ChangePasswordDto) {
@@ -37,6 +37,9 @@ export class UserService {
 		}
 		await this.prismaService.verificationToken.create({ data: { email: email, token: token } })
 		return token
+	}
+	async deleteVerificationCodes(email:string){
+		return this.prismaService.verificationToken.delete({ where: { email: email } })
 	}
 	async getVerificationToken(email: string) {
 		return this.prismaService.verificationToken.findUnique({ where: { email: email } })

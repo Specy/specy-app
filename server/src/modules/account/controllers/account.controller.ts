@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, BadRequestException, UnauthorizedException, Param } from '@nestjs/common'
+import { Body, Controller, Get, Post, BadRequestException, UnauthorizedException, Param, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SuccessfulResponse } from "src/shared/Responses"
 import { UserRegisterDto } from 'src/modules/account/dtos/user-register.dto'
@@ -7,17 +7,13 @@ import { ChangePasswordDto } from 'src/modules/account/dtos/change-password.dto'
 import { AccountService } from '../services/account.service'
 import { TokenVerificationDto } from '../dtos/verify-code.dto'
 import { TokenService } from '../services/token.service'
-
+import { TokenGuard } from '../guards/token.guard'
 
 /*#TODO 
-	- Delete token everytime its used (ex. changing password)
 	- Add try catch to client
 	- Make sure token is valid in auth
-	- Consider using guard for routes that need a token
-	- Consider changing alphabet of available letters for token (0,O,L,l,I)
 	- Change disabled buttons to have the block icon and darker color, also no hover
 	- There was something else but i forgot, maybe try to remember
-	- See why css isnt shown in emails
 */
 @Controller('account')
 @ApiTags('Account')
@@ -38,20 +34,22 @@ export class AccountController {
 		return new SuccessfulResponse("Email successfully sent")
 	}
 	@Post('create/:token')
+	@UseGuards(TokenGuard)
 	@ApiOperation({
 		summary: 'Create a new account',
 	})
 	async create(@Body() data: UserRegisterDto,@Param("token") token : string) {
-		let response = await this.accountService.createUser({...data,token:token})
+		let response = await this.accountService.createUser(data)
 		return new SuccessfulResponse("User registered", response)
 	}
 
 	@Post('recover/:token')
+	@UseGuards(TokenGuard)
 	@ApiOperation({
 		summary: 'Change password',
 	})
 	async recoverAccount(@Body() data: ChangePasswordDto,@Param("token") token : string) {
-		let respone = await this.accountService.changePassword({...data,token:token})
+		let respone = await this.accountService.changePassword(data)
 		return new SuccessfulResponse("Password changed")
 	}
 

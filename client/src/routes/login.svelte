@@ -1,72 +1,74 @@
 <script>
 	import Input from '../components/Input.svelte'
-	import PasswordInput from '../components/PasswordInput.svelte';
-	import {toast} from "../components/toast"
-	import { goto } from '$app/navigation';
+	import PasswordInput from '../components/PasswordInput.svelte'
+	import { toast } from '../components/toast'
+	import { goto } from '$app/navigation'
 	let email = ''
 	let password = ''
 	let isFetching = false
-	async function login(){
+	async function login() {
 		let body = {
-				email: email,
-				password: password
-			}
+			email: email,
+			password: password
+		}
 		isFetching = true
-		let response = await fetch('http://localhost:3001/auth/login',{
-			method: 'POST',
-			body: JSON.stringify(body),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		isFetching = false
-		let data = await response.json()
-		if(response.ok){
-			toast.set({title:"Success", message:data.message, duration:3000})
+		let data, response
+		try {
+			response = await fetch('http://localhost:3001/auth/login', {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			isFetching = false
+			data = await response.json()
+		} catch (e) {
+			isFetching = false
+			console.error(e)
+			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
+		}
+		if (response.ok) {
+			toast.set({ title: 'Success', message: data.message, duration: 3000 })
 			return goto('/profile')
 		}
-		toast.set({title:"Error", message:"Wrong credentials", duration:3000})
+		toast.set({ title: 'Error', message: 'Wrong credentials', duration: 3000 })
 	}
 </script>
 
 <div class="page">
 	<div class="center-wrapper">
-		<div class="big-title" style="margin:  2rem 0;">
-			Login
-		</div>
+		<div class="big-title" style="margin:  2rem 0;">Login</div>
 		<div class="floating-middle">
-			<form on:submit={(e) =>{e.preventDefault(); login()}}>
+			<form
+				on:submit={(e) => {
+					e.preventDefault()
+					login()
+				}}
+			>
 				<div class="input-wrapper">
-					<Input 
-						bind:value={email} 
-						title='E-mail' 
-						hideStatus = {true}
-					/>
+					<Input bind:value={email} title="E-mail" hideStatus={true} />
 				</div>
 				<div class="input-wrapper" style="margin-bottom: 0;">
-					<PasswordInput 
-						bind:value={password} 
-						title='Password'
-						hideStatus = {true}
+					<PasswordInput bind:value={password} title="Password" hideStatus={true} />
+				</div>
+				<a class="forgot-password" href="/resetPassword"> Forgot password? </a>
+				<div class="form-buttons-wrapper">
+					<div class="note">* You will use those credentials in all apps</div>
+					<input
+						type="submit"
+						class="form-btn"
+						style="background-color: rgb(219, 0, 97)"
+						value="Login"
 					/>
 				</div>
-				<a class="forgot-password" href="/resetPassword">
-					Forgot password?	
-				</a>
-				<div class="form-buttons-wrapper">
-					<div class="note">
-						* You will use those credentials in all apps
-					</div>
-					<input type="submit" class="form-btn" style="background-color: rgb(219, 0, 97)" value="Login"> 
-				</div>
-
 			</form>
 		</div>
 	</div>
 </div>
 
 <style lang="scss">
-	 @import '../variables.scss';
+	@import '../variables.scss';
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -84,7 +86,7 @@
 		cursor: pointer;
 	}
 	.form-btn:hover {
-		filter:brightness(1.2);
+		filter: brightness(1.2);
 	}
 	.form-buttons-wrapper {
 		display: flex;
@@ -94,11 +96,11 @@
 		flex-direction: column;
 		align-items: center;
 	}
-	form{
+	form {
 		display: flex;
 		flex-direction: column;
-		flex:1;
-		> .input-wrapper{
+		flex: 1;
+		> .input-wrapper {
 			margin-bottom: 1rem;
 		}
 	}
@@ -110,7 +112,7 @@
 		flex-direction: column;
 		width: 30rem;
 		background-color: rgba(246, 246, 246, 0.8);
-    	backdrop-filter: blur(4px);
+		backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;
 		border-radius: 0.5rem;
@@ -121,23 +123,24 @@
 		flex-direction: column;
 		flex: 1;
 	}
-	.note,.forgot-password{
+	.note,
+	.forgot-password {
 		font-size: 0.9rem;
 		color: $hint;
 		text-align: left;
 		width: 100%;
 	}
-	.forgot-password{
+	.forgot-password {
 		text-align: right;
 		color: $textDark;
-		transition: all 0.2s
+		transition: all 0.2s;
 	}
-	.forgot-password:hover{
+	.forgot-password:hover {
 		color: $accent;
 	}
 	@media (max-width: 480px) {
 		.floating-middle {
-			width:95vw;
+			width: 95vw;
 		}
 	}
 </style>

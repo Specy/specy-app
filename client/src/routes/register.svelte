@@ -3,7 +3,7 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
-	import {toast} from "../components/toast"
+	import { toast } from '../components/toast'
 
 	let email = ''
 	let password = ''
@@ -18,42 +18,72 @@
 			password: password,
 			confirmPassword: confirmPassword,
 			username: username
-		}	
+		}
 
 		isFetching = true
-		let response = await fetch(`http://localhost:3001/account/create/${verificationCode}`, {
-			method: 'POST',
-			body: JSON.stringify(body),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		isFetching = false
-		let data = await response.json()
-		if(response.ok){
-			toast.set({title:"Success",message:data.message,duration: 3000})
-			return step = 3
+		let data, response
+		try {
+			response = await fetch(`http://localhost:3001/account/create/${verificationCode}`, {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			isFetching = false
+			data = await response.json()
+		} catch (e) {
+			isFetching = false
+			console.error(e)
+			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
 		}
-		toast.set({title:"Error",message:data.message,duration: 3000})
+
+		if (response.ok) {
+			toast.set({ title: 'Success', message: data.message, duration: 3000 })
+			return (step = 3)
+		}
+		toast.set({ title: 'Error', message: data.message, duration: 3000 })
 	}
-	async function sendVerificationCode(){
-		if(!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
-		if(username.length < 4) return toast.set({title:"Error", message:"Username must be at least 4 characters", duration:3000});
-		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
-		if (password !== confirmPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
+	async function sendVerificationCode() {
+		if (!EmailValidator.validate(email))
+			return toast.set({ title: 'Error', message: 'Invalid email', duration: 3000 })
+		if (username.length < 4)
+			return toast.set({
+				title: 'Error',
+				message: 'Username must be at least 4 characters',
+				duration: 3000
+			})
+		if (checkStrenght(password).id < 1)
+			return toast.set({
+				title: 'Error',
+				message:
+					'Password must be at least 8 characters long, have An uppercase letter and one number',
+				duration: 4000
+			})
+		if (password !== confirmPassword)
+			return toast.set({ title: 'Error', message: "Passwords don't match", duration: 3000 })
+
+			
 		isFetching = true
-		let response = await fetch("http://localhost:3001/account/activate/send",{
-			method: 'POST',
-			body: JSON.stringify({email:email}),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		isFetching = false
-		let data = await response.json()
-		if(response.ok)return step = 2
-		
-		toast.set({title:"Error",message:data.message,duration: 3000})
+		let response, data
+		try {
+			response = await fetch('http://localhost:3001/account/activate/send', {
+				method: 'POST',
+				body: JSON.stringify({ email: email }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			isFetching = false
+			data = await response.json()
+		} catch (e) {
+			isFetching = false
+			console.error(e)
+			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
+		}
+		if (response.ok) return (step = 2)
+
+		toast.set({ title: 'Error', message: data.message, duration: 3000 })
 	}
 </script>
 
@@ -62,77 +92,69 @@
 		<div class="big-title" style="margin:  2rem 0;">Register</div>
 		<div class="floating-middle">
 			{#if step === 1}
-			<form
-				on:submit={(e) => {
-					e.preventDefault();
-					sendVerificationCode();
-				}}
-			>
-				<div>
-					<Input 
-						bind:value={email} 
-						title="E-mail" 
-						status={EmailValidator.validate(email) ? "correct" : "wrong"}
-					/>
-				</div>
-				<div>
-					<Input 
-						bind:value={username} 
-						title="Username"  
-						status={username.length > 3 ? "correct" : "wrong"}
-					/>
-				</div>
-				<div style="margin-bottom: 0;">
-					<PasswordInput 
-						bind:value={password} 
-						title="Password" 
-					/>
-				</div>
-				<div>
-					<PasswordInput 
-						bind:value={confirmPassword} 
-						title="Confirm password" 
-						passwordToCheck={password}
-					/>
-				</div>
-				<div class="note">
-					Passwords must be at least 8 characters long, have an uppercase letter and one number
-				</div>
-				<div class="form-buttons-wrapper">
-					<div class="note">
-						* You will use those credentials to login in all apps
+				<form
+					on:submit={(e) => {
+						e.preventDefault()
+						sendVerificationCode()
+					}}
+				>
+					<div>
+						<Input
+							bind:value={email}
+							title="E-mail"
+							status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
+						/>
 					</div>
-					<input
-						type="submit"
-						disabled={isFetching}
-						class="form-btn"
-						style="background-color: rgb(85, 143, 144)"
-						value={!isFetching ? "Register" : "Loading..."}
-					/>
-				</div>
-			</form>
+					<div>
+						<Input
+							bind:value={username}
+							title="Username"
+							status={username.length > 3 ? 'correct' : 'wrong'}
+						/>
+					</div>
+					<div style="margin-bottom: 0;">
+						<PasswordInput bind:value={password} title="Password" />
+					</div>
+					<div>
+						<PasswordInput
+							bind:value={confirmPassword}
+							title="Confirm password"
+							passwordToCheck={password}
+						/>
+					</div>
+					<div class="note">
+						Passwords must be at least 8 characters long, have an uppercase letter and one number
+					</div>
+					<div class="form-buttons-wrapper">
+						<div class="note">* You will use those credentials to login in all apps</div>
+						<input
+							type="submit"
+							disabled={isFetching}
+							class="form-btn"
+							style="background-color: rgb(85, 143, 144)"
+							value={!isFetching ? 'Register' : 'Loading...'}
+						/>
+					</div>
+				</form>
 			{/if}
 			{#if step === 2}
 				<form
 					on:submit={(e) => {
-						e.preventDefault();
-						register();
+						e.preventDefault()
+						register()
 					}}
 				>
 					<div>
 						A verification code was sent to the email "{email}" please paste it here.
 					</div>
-					<Input 
-						bind:value={verificationCode} 
-						title="Verification code" 
-					/>
+					<Input bind:value={verificationCode} title="Verification code" />
 					<div class="form-buttons-wrapper">
 						<input
 							type="submit"
 							disabled={isFetching}
 							class="form-btn"
 							style="background-color: rgb(85, 143, 144)"
-							value={!isFetching? "Register" : "Loading..."}
+							value={!isFetching ? 'Register' : 'Loading...'}
 						/>
 					</div>
 				</form>
@@ -150,7 +172,7 @@
 </div>
 
 <style lang="scss">
-	 @import '../variables.scss';
+	@import '../variables.scss';
 	.form-btn {
 		width: 100%;
 		padding: 0.5rem;
@@ -168,7 +190,7 @@
 		cursor: pointer;
 	}
 	.form-btn:hover {
-		filter:brightness(1.2);
+		filter: brightness(1.2);
 	}
 	form {
 		display: flex;
@@ -187,7 +209,7 @@
 		margin: 0;
 		margin-top: 1rem;
 	}
-	.note{
+	.note {
 		font-size: 0.9rem;
 		color: $hint;
 		text-align: left;
@@ -200,9 +222,9 @@
 		display: flex;
 		flex-direction: column;
 		width: 30rem;
-		
-		background-color: rgba(246, 246, 246, 0.8);;
-    	backdrop-filter: blur(4px);
+
+		background-color: rgba(246, 246, 246, 0.8);
+		backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;
 		border-radius: 0.5rem;

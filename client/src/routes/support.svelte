@@ -36,13 +36,12 @@
 		align-items: center;
 		flex-direction: column;
 		flex: 1;
-
 	}
 	.floating-middle {
 		display: flex;
 		flex-direction: column;
 		width: 35rem;
-		
+
 		background-color: #fbfbfb;
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;

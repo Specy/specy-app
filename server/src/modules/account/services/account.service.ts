@@ -17,20 +17,17 @@ export class AccountService {
 		private readonly tokenService: TokenService
 	) { }
 
-	async changePassword(data: ChangePasswordDto & {token:string}) {
-		const isVerified = await this.tokenService.verifyToken(data)
+	async changePassword(data: ChangePasswordDto) {
 		const hashedPassword = await this.passwordService.hashPassword(data.password)
-		if (!isVerified) throw new UnauthorizedException("Token is wrong")
 		await this.userService.changePassword({email:data.email,password:hashedPassword})
+		await this.userService.deleteVerificationCodes(data.email)
 		return true
 	}
 
-	async createUser(data: UserRegisterDto & {token:string}) {
+	async createUser(data: UserRegisterDto) {
 		let exists = await this.userExists({ email: data.email })
 		if (exists) throw new BadRequestException('Email already exists')
 		const hashedPassword = await this.passwordService.hashPassword(data.password)
-		const isVerified = await this.tokenService.verifyToken(data)
-		if (!isVerified) throw new UnauthorizedException("Token is wrong")
 		if (data.password !== data.confirmPassword) throw new BadRequestException('Passwords do not match')
 		const user = await this.userService.create({
 			id: this.idGeneratorService.randomStringId(10),
@@ -38,6 +35,7 @@ export class AccountService {
 			username: data.username,
 			email: data.email,
 		})
+		await this.userService.deleteVerificationCodes(data.email)
 		delete user.password
 		return user
 	}

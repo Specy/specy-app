@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Project from "../components/Project.svelte"
-	import type { ProjectData } from "../types/Types"
-	import { data } from "../types/Projects"
+	import Project from '../components/Project.svelte'
+	import type { ProjectData } from '../types/Types'
+	import { data } from '../types/Projects'
 	const projects: ProjectData[] = data
 </script>
 
@@ -21,7 +21,7 @@
 </main>
 
 <style lang="scss">
-	@import "../variables.scss";
+	@import '../variables.scss';
 	.main {
 		display: flex;
 		flex-direction: column;
@@ -60,22 +60,22 @@
 		display: grid;
 		margin-top: 1rem;
 		margin-left: 1rem;
-		grid-template-columns: repeat(3,1fr);
+		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: 1fr;
 		gap: 1rem;
 	}
-	@media (max-width: 900px){
-		.projects-wrapper{
-			grid-template-columns: repeat(2,1fr);
+	@media (max-width: 900px) {
+		.projects-wrapper {
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
-	@media (max-width: 600px){
-		.projects-wrapper{
-			grid-template-columns: repeat(1,1fr);
+	@media (max-width: 600px) {
+		.projects-wrapper {
+			grid-template-columns: repeat(1, 1fr);
 			margin-left: 0rem;
 		}
-		.apps{
-			width:100%;
+		.apps {
+			width: 100%;
 		}
 	}
 </style>
