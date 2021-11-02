@@ -18,7 +18,7 @@
 			password: password,
 			confirmPassword: confirmPassword,
 			username: username,
-			token: parseInt(verificationCode)
+			token: verificationCode
 		}	
 
 		isFetching = true
@@ -29,8 +29,8 @@
 				'Content-Type': 'application/json'
 			}
 		})
-		let data = await response.json()
 		isFetching = false
+		let data = await response.json()
 		if(response.ok){
 			toast.set({title:"Success",message:data.message,duration: 3000})
 			return step = 3
@@ -42,19 +42,16 @@
 		if(username.length < 4) return toast.set({title:"Error", message:"Username must be at least 4 characters", duration:3000});
 		if(checkStrenght(password).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
 		if (password !== confirmPassword) return toast.set({title:"Error", message:"Passwords don't match", duration:3000});
-		let obj = {
-			email:email
-		}
 		isFetching = true
-		let response = await fetch("http://localhost:3001/account/verify",{
+		let response = await fetch("http://localhost:3001/account/sendCode",{
 			method: 'POST',
-			body: JSON.stringify(obj),
+			body: JSON.stringify({email:email}),
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		})
-		let data = await response.json()
 		isFetching = false
+		let data = await response.json()
 		if(response.ok)return step = 2
 		
 		toast.set({title:"Error",message:data.message,duration: 3000})

@@ -1,5 +1,5 @@
 import { User } from '.prisma/client'
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { UserService } from 'src/modules/user/user.service'
@@ -20,7 +20,7 @@ export class AuthService {
 		let start = new Date().getTime()
 		const user = await this.userService.findUnique({ email: data.email })
 		start = new Date().getTime()
-		if (!user) throw new BadRequestException('Invalid credentials')
+		if (!user) throw new UnauthorizedException('Invalid credentials')
 		const isPasswordMatch = await this.passwordService.validatePassword(
 			data.password,
 			user.password,

@@ -7,29 +7,51 @@
 	let email = ''
 	let verificationCode = ''
     let newPassword = ''
-	let step = 1;
+	let step = 1
+	let isFetching = false
 	async function sendEmail() {
 		if (!EmailValidator.validate(email)) return toast.set({title:"Error", message:"Invalid email", duration:3000});
-		let body = {
-			email: email
-		}
-		let response = await fetch('someApi', {
+		isFetching = true
+		let response = await fetch('http://localhost:3001/account/sendCode', {
 			method: 'POST',
-			body: JSON.stringify(body)
+			body: JSON.stringify({email: email}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		})
-		step = 2
-		newPassword = ''
+		isFetching = false
+		let data = await response.json()
+		if(response.ok){
+			step = 2
+			newPassword = ''
+
+			return toast.set({title:"Success", message:"Verification code sent", duration:3000})	
+		}
+		return toast.set({title:"Error", message:data.message, duration:3000})
 	}
 	async function resetPassword() {
         if(checkStrenght(newPassword).id < 1 ) return toast.set({title:"Error", message:"Password must be at least 8 characters long, have An uppercase letter and one number", duration:4000});
         toast.set({title:"Warning", message:"Feature coming soon", duration:3000});
         let body = {
-			email: email
+			email: email,
+			token: verificationCode,
+			password: newPassword
 		}
-		let response = await fetch('someApi', {
+		isFetching = true
+		let response = await fetch('http://localhost:3001/account/changePassword', {
 			method: 'POST',
-			body: JSON.stringify(body)
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		})
+		let data = await response.json()
+		isFetching = false
+		if(response.ok){
+			step = 3
+			return toast.set({title:"Success", message:"Password successfully reset", duration:4000});
+		}
+		return toast.set({title:"Error", message:data.message, duration:4000});
     }
 </script>
 
@@ -57,7 +79,7 @@
 							type="submit"
 							class="form-btn"
 							style="background-color: rgb(85, 143, 144)"
-							value="Send reset code"
+							value={isFetching ? 'Loading...' : 'Send code'}
 						/>
 					</div>
 				</form>
@@ -87,11 +109,19 @@
                             type="submit"
                             class="form-btn"
                             style="background-color: rgb(85, 143, 144)"
-                            value="Reset password"
+                            value={isFetching ? 'Loading...' : 'Reset password'}
                         />
                     </div>
                 </form>
             {/if}
+			{#if step === 3}
+				<div>
+					Password changed successfully. You can now login
+					<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
+						Go to login
+					</a>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>

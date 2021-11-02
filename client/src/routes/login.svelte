@@ -5,11 +5,13 @@
 	import { goto } from '$app/navigation';
 	let email = ''
 	let password = ''
+	let isFetching = false
 	async function login(){
 		let body = {
 				email: email,
 				password: password
 			}
+		isFetching = true
 		let response = await fetch('http://localhost:3001/auth/login',{
 			method: 'POST',
 			body: JSON.stringify(body),
@@ -17,6 +19,7 @@
 				'Content-Type': 'application/json'
 			}
 		})
+		isFetching = false
 		let data = await response.json()
 		if(response.ok){
 			toast.set({title:"Success", message:data.message, duration:3000})
@@ -47,7 +50,7 @@
 						hideStatus = {true}
 					/>
 				</div>
-				<a class="forgot-password" href="/recoverPassword">
+				<a class="forgot-password" href="/resetPassword">
 					Forgot password?	
 				</a>
 				<div class="form-buttons-wrapper">

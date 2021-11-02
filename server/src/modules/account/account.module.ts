@@ -4,10 +4,11 @@ import { AccountController } from './controllers/account.controller'
 import { EmailModule } from '../email/email.module'
 import { UserModule } from '../user/user.module'
 import { CommonsModule } from '../commons/commons.module'
-import { RegisterService } from './services/register.service'
+import { AccountService } from './services/account.service'
+import { TokenService } from './services/token.service'
 @Module({
 	imports: [EmailModule, UserModule, CommonsModule],
 	controllers: [AccountController],
-	providers: [RegisterService],
+	providers: [AccountService,TokenService],
 })
 export class AccountModule { }

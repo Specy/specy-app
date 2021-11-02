@@ -1,6 +1,7 @@
-import { IsEmail } from 'class-validator'
+import { IsEmail, IsString } from 'class-validator'
 export class EmailVerificationDto{
     @IsEmail()
     email: string
-    token: number
+    @IsString()
+    token: string
 }

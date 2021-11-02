@@ -1,4 +1,4 @@
-import { IsEmail, MinLength, IsInt, Matches } from 'class-validator'
+import { IsEmail, MinLength, IsInt, Matches, IsString } from 'class-validator'
 export class UserRegisterDto {
 	@IsEmail({}, {
 		message: "Invalid email"
@@ -20,8 +20,8 @@ export class UserRegisterDto {
 	})
 	confirmPassword: string
 
-	@IsInt({
+	@IsString({
 		message: "Invalid token"
 	})
-	token: number
+	token: string
 }
