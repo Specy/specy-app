@@ -21,7 +21,7 @@ export class AuthController {
 	})
 	async login(@Body() data: UserLoginDto, @User() user: UserEntity) {
 		let result = await this.authService.login(user)
-		return new SuccessfulResponse("Successfully logged in",result)
+		return result
 	}
 
 	@Get('status')
@@ -45,6 +45,6 @@ export class AuthController {
 	})
 	async refresh(@User() user: UserEntity) {
 		let result = await this.authService.login(user)
-		return new SuccessfulResponse("Refreshed tokens",result)
+		return result
 	}
 }

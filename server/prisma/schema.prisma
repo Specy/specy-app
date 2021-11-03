@@ -15,6 +15,7 @@ model User {
   email    String  @unique
   username String
   password String
+  picture  String @default("")
 }
 
 model VerificationToken {

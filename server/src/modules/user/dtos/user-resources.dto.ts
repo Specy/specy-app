@@ -1,4 +1,8 @@
+import { IsOptional } from "class-validator";
 export class UserResourcesDto {
-	username?: string;
-    picture?: string;
+    @IsOptional()
+	username: string;
+
+    @IsOptional()
+    picture: string;
 }
