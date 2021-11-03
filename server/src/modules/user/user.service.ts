@@ -23,6 +23,9 @@ export class UserService {
 	async deleteUser(data: Prisma.UserWhereUniqueInput) {
 		return this.prismaService.user.delete({ where: data })
 	}
+	async updateUser( where: Prisma.UserWhereUniqueInput,data: Prisma.UserUpdateInput) {
+		return this.prismaService.user.update({where, data})
+	}
 	async changePassword(data: ChangePasswordDto) {
 		return this.prismaService.user.update({
 			where: { email: data.email },

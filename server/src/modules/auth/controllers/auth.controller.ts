@@ -20,7 +20,7 @@ export class AuthController {
 			'Authenticates using email and password. Tokens Usable within all apps',
 	})
 	async login(@Body() data: UserLoginDto, @User() user: UserEntity) {
-		let result = this.authService.login(user)
+		let result = await this.authService.login(user)
 		return new SuccessfulResponse("Successfully logged in",result)
 	}
 

@@ -10,10 +10,7 @@ import { TokenService } from '../services/token.service'
 import { TokenGuard } from '../guards/token.guard'
 
 /*#TODO 
-	- Add try catch to client
 	- Make sure token is valid in auth
-	- Change disabled buttons to have the block icon and darker color, also no hover
-	- There was something else but i forgot, maybe try to remember
 */
 @Controller('account')
 @ApiTags('Account')
