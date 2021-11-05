@@ -16,6 +16,14 @@ model User {
   username String
   password String
   picture  String @default("")
+  tokens   SessionToken[]
+}
+
+model SessionToken{
+  sessionId String @id
+  user      User @relation(fields: [userId],references:[id])
+  userId    String
+  expiry  Int
 }
 
 model VerificationToken {

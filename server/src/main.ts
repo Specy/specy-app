@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ValidationPipe } from '@nestjs/common'
+import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 	app.enableCors()
-	app.useGlobalPipes(new ValidationPipe({whitelist: true}))
+	app.useGlobalPipes(new ValidationPipe())
+	app.use(cookieParser())
 	const config = new DocumentBuilder()
 		.setTitle('Specy.app Auth API')
 		.setDescription(

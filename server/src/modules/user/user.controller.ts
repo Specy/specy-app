@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, UseGuards , Logger, Param, Patch, UnauthorizedException} from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards , Logger, Param, Patch, UsePipes, ValidationPipe} from '@nestjs/common'
 import { SuccessfulResponse } from 'src/shared/Responses'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { JwtEditGuard } from './guards/jwt-edit.guard'
+import { EditGuard } from './guards/edit.guard'
 import { UserService } from './user.service'
 import { UserResourcesDto } from './dtos/user-resources.dto'
 @Controller('users')
@@ -14,7 +14,8 @@ export class UserController {
 		summary: 'Update user resources',
 	})
 	@ApiBearerAuth()
-	@UseGuards(JwtEditGuard)
+	@UsePipes(new ValidationPipe({ transform: true, whitelist: true}))
+	@UseGuards(EditGuard)
 	async updateUser(@Body() data:UserResourcesDto, @Param('id') id:string) {
         await this.userService.updateUser({id},data)
         return new SuccessfulResponse("Resource successfully edited")
