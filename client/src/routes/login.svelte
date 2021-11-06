@@ -3,6 +3,7 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
 	import { goto } from '$app/navigation'
+	import { apiFetcher } from '../lib/apiFetcher'
 	let email = ''
 	let password = ''
 	let isFetching = false
@@ -12,27 +13,17 @@
 			password: password
 		}
 		isFetching = true
-		let data, response
-		try {
-			response = await fetch('http://localhost:3001/auth/login', {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
+		let result = await apiFetcher.fetch('/auth/login',"POST",body)
+		isFetching = false
+		console.log(result)
+		
+		if(result.ok){
+			return toast.set({ title: 'Success', message: 'User logged in', duration: 3000 })
+			//return goto('/profile')
 		}
-		if (response.ok) {
-			toast.set({ title: 'Success', message: data.message, duration: 3000 })
-			return goto('/profile')
-		}
+
 		toast.set({ title: 'Error', message: 'Wrong credentials', duration: 3000 })
+
 	}
 </script>
 

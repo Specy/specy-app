@@ -17,7 +17,12 @@ model User {
   password String
   picture  String @default("")
 }
-
+model WhitelistedSession{
+  id    Int @default(autoincrement())
+  userId String
+  token String  @unique
+  expiry Int
+}
 model VerificationToken {
   email    String  @unique
   token    String  
