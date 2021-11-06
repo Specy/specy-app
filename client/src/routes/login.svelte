@@ -3,7 +3,6 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
 	import { goto } from '$app/navigation'
-	import { apiFetcher } from '../components/apiFetcher'
 	let email = ''
 	let password = ''
 	let isFetching = false

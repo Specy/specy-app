@@ -7,7 +7,6 @@
 	import Background from '../components/Background.svelte'
 	import GlobalStyle from '../components/GlobalStyle.svelte'
 	import { page } from '$app/stores'
-	import { apiFetcher } from '../components/apiFetcher'
 </script>
 
 <NavBar />

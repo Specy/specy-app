@@ -1,12 +1,12 @@
 import { User as UserEntity } from '.prisma/client'
-import { Body, Controller, Get, Post, UseGuards , Res } from '@nestjs/common'
-import { Response } from 'express'
+import { Body, Controller, Get, Post, UseGuards , Logger} from '@nestjs/common'
 import { SuccessfulResponse } from 'src/shared/Responses'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { User } from '../decorators/user.decorator'
 import { UserLoginDto } from '../dtos/user-login.dto'
+import { JwtAuthGuard } from '../guards/jwt.guard'
+import { LocalAuthGuard } from '../guards/local.guard'
 import { AuthService } from '../services/auth.service'
-import { CookieGuard } from '../guards/cookie.guard'
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -14,14 +14,13 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) { }
 
 	@Post('login')
+	@UseGuards(LocalAuthGuard)
 	@ApiOperation({
-		summary:'Authenticates using email and password. Tokens Usable within all apps',
+		summary:
+			'Authenticates using email and password. Tokens Usable within all apps',
 	})
-	async login(@Body() data: UserLoginDto, @Res({passthrough:true}) res: Response) {
-		let result = await this.authService.login(data)
-		res.cookie("session_id",result.session,{
-			expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30)
-		})
+	async login(@Body() data: UserLoginDto, @User() user: UserEntity) {
+		let result = await this.authService.login(user)
 		return result
 	}
 
@@ -30,18 +29,22 @@ export class AuthController {
 		summary: 'Validate authenticated user',
 	})
 	@ApiBearerAuth()
-	@UseGuards(CookieGuard)
-	status() {
-		return new SuccessfulResponse("User validated")
+	@UseGuards(JwtAuthGuard)
+	status(@User() user: UserEntity) {
+		return new SuccessfulResponse("User validated",{
+			id: user.id,
+			username: user.username
+		})
 	}
 
 	@Post('refresh')
-	@UseGuards(CookieGuard)
+	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
 	@ApiOperation({
 		summary: 'Create new tokens using refresh token',
 	})
-	async refresh() {
-		return "test"
+	async refresh(@User() user: UserEntity) {
+		let result = await this.authService.login(user)
+		return result
 	}
 }

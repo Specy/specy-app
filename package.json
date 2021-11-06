@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@types/express-session": "^1.17.4",
-    "connect-pg-simple": "^7.0.0",
-    "express-session": "^1.17.2"
-  }
-}

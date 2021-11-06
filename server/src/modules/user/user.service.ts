@@ -29,24 +29,6 @@ export class UserService {
 	async get(id: string, data: Prisma.UserSelect){
 		return this.prismaService.user.findUnique({where:{id},select:{...data}})
 	}
-	async createSession(user: Prisma.UserWhereUniqueInput){
-		let id =  this.idGeneratorService.randomStringId(30)
-		await this.prismaService.user.update({
-			data:{
-				tokens:{
-					create:{
-						expiry: new Date().getTime() + 1000 * 60 * 24 * 30,
-						sessionId: id
-					}
-				}
-			},
-			where: user
-		})
-		return id
-	}
-	async getSession(session: string){
-		return this.prismaService.sessionToken.findUnique({where:{sessionId: session},select: {user:true}})
-	}
 	async changePassword(data: ChangePasswordDto) {
 		return this.prismaService.user.update({
 			where: { email: data.email },
