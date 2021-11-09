@@ -32,7 +32,7 @@ export class AuthController {
 			token: result.refreshToken
 		}
 		await this.userService.whitelistToken(newToken)
-		await this.setToken(res,result.refreshToken)
+		this.setToken(res,result.refreshToken)
 		return result
 	}
 
@@ -57,7 +57,8 @@ export class AuthController {
 	})
 	async refresh(@User() user: UserEntity, @Res({passthrough:true}) res:Response, @Req() req: Request) {
 		let result = await this.authService.login(user)
-		let oldToken = req.cookies[process.env.JWT_NAME]
+		console.log(req.cookies)
+		let oldToken = this.getToken(req)
 		let newToken = {
 			expiry: new Date().getTime() + 1000 * 60 * 60 * 24 * 30,
 			userId: user.id,
@@ -68,10 +69,36 @@ export class AuthController {
 		return result.accessToken
 	}
 
-	async setToken(res:Response, token:string){
-		return res.cookie(process.env.JWT_NAME,token,{
-			httpOnly: false,
-			expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30)
+	@Post('logout')
+	@UseGuards(RefreshAuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: "Logs out user and deletes session"
+	})
+	async logout(@Res({passthrough:true}) res:Response, @Req() req: Request){
+		let token = this.getToken(req)
+		this.userService.deleteToken(token)
+		this.clearToken(res)
+	}
+
+	getToken(req: Request){
+		return req.cookies[process.env.JWT_NAME]
+	}
+
+	clearToken(res: Response){
+		res.clearCookie(process.env.JWT_NAME)
+	}
+
+	setToken(res:Response, token:string){
+		const refreshDate = new Date();
+		refreshDate.setDate(refreshDate.getDate() + 7);
+		res.cookie(process.env.JWT_NAME,token,{
+			expires: refreshDate,
+			...(process.env.NODE_ENV == 'production' && {
+				domain: '.specy.app',
+				httpOnly:true,
+				sameSite: 'strict'
+			  })
 		})
 	}
 }

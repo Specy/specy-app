@@ -50,7 +50,8 @@
 						type="submit"
 						class="form-btn"
 						style="background-color: rgb(219, 0, 97)"
-						value="Login"
+						disabled={isFetching}
+						value={isFetching ? "Loading..." : "Login"}
 					/>
 				</div>
 			</form>

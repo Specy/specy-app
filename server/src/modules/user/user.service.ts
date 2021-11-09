@@ -31,12 +31,16 @@ export class UserService {
 	async get(id: string, data: Prisma.UserSelect){
 		return this.prismaService.user.findUnique({where:{id},select:{...data}})
 	}
-	async whitelistToken(newToken:WhitelistDAO,oldToken?:string,){
+	async whitelistToken(newToken:WhitelistDAO,oldToken?:string){
+		if(!oldToken) return this.prismaService.whitelistedSession.create({data:newToken})
 		return this.prismaService.whitelistedSession.upsert({
 			where:{token: oldToken},
 			create: newToken,
 			update:{ token: newToken.token, expiry: newToken.expiry}
 		})
+	}
+	async deleteToken(token: string){
+		return this.prismaService.whitelistedSession.delete({where:{token: token}})
 	}
 	async changePassword(data: ChangePasswordDto) {
 		return this.prismaService.user.update({

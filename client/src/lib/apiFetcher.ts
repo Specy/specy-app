@@ -1,5 +1,16 @@
 const Url = 'http://localhost:3001'
 type Method = "POST" | "GET" | "PATCH" | "DELETE"
+type Options = {
+    method: Method
+    headers: {}
+    body?:string
+}
+type FetchResponse = Promise<{
+    res: Response | {},
+    ok: boolean,
+    json?: {}
+    error?: string
+}>
 class ApiFetcher{
     baseUrl: string
     accessToken: string
@@ -10,11 +21,12 @@ class ApiFetcher{
         this.accessToken = ""
         this.getAccessToken()
     }
-    async fetch(path: string, method: Method, body?: object){
+    async fetch(path: string, method: Method, body?: object): FetchResponse{
         let accessToken = await this.getAccessToken()
-        let options: any = {
+        let options: Options = {
             method,
             headers: {
+                "credentials": "include",
                 "Content-Type" : "application/json",
                 "Authorization": "Bearer "+accessToken
             }
