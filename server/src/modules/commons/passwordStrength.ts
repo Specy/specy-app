@@ -3,9 +3,9 @@ interface passwordStrength{
     status: string
 }
 function checkStrenght(value: string): passwordStrength {
-    let regExpWeak = /[a-z]/
-    let regExpMedium = /(?=.*\d)(?=.*[A-Z])/
-    let regExpStrong = /.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/
+    const regExpWeak = /[a-z]/
+    const regExpMedium = /(?=.*\d)(?=.*[A-Z])/
+    const regExpStrong = /.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/
     let strength = 0
         if(value.length <= 3 && (value.match(regExpWeak) || value.match(regExpMedium) || value.match(regExpStrong))) strength=0
         if(value.length >= 8 && ((value.match(regExpWeak) && value.match(regExpMedium)) || (value.match(regExpMedium) && value.match(regExpStrong)) || (value.match(regExpWeak) && value.match(regExpStrong)))) strength=1

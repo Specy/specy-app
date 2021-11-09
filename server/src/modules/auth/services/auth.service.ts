@@ -17,9 +17,7 @@ export class AuthService {
 	) { }
 
 	async validateUser(data: UserLoginDto) {
-		let start = new Date().getTime()
 		const user = await this.userService.findUnique({ email: data.email })
-		start = new Date().getTime()
 		if (!user) throw new UnauthorizedException('Invalid credentials')
 		const isPasswordMatch = await this.passwordService.validatePassword(
 			data.password,

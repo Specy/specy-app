@@ -17,7 +17,7 @@ export class TokenService {
 	) { }
 
 	async sendToken(data: EmailVerificationDto) {
-		let token = await this.userService.storeVerificationToken(data.email)
+		const token = await this.userService.storeVerificationToken(data.email)
 		await this.emailService.sendEmailVerificationCode({ email: data.email, token: token })
 		return true
 	}

@@ -25,14 +25,14 @@ export class AuthController {
 			'Authenticates using email and password. Tokens Usable within all apps',
 	})
 	async login(@Body() data: UserLoginDto, @User() user: UserEntity, @Res({passthrough:true}) res:Response) {
-		let result = await this.authService.login(user)
-		let newToken = {
+		const result = await this.authService.login(user)
+		const newToken = {
 			expiry: new Date().getTime() + 1000 * 60 * 60 * 24 * 30,
 			userId: user.id,
 			token: result.refreshToken
 		}
 		await this.userService.whitelistToken(newToken)
-		this.setToken(res,result.refreshToken)
+		this.setCookie(res,result.refreshToken)
 		return result
 	}
 
@@ -56,16 +56,15 @@ export class AuthController {
 		summary: 'Create new tokens using refresh token',
 	})
 	async refresh(@User() user: UserEntity, @Res({passthrough:true}) res:Response, @Req() req: Request) {
-		let result = await this.authService.login(user)
-		console.log(req.cookies)
-		let oldToken = this.getToken(req)
-		let newToken = {
+		const result = await this.authService.login(user)
+		const oldToken = this.getCookie(req)
+		const newToken = {
 			expiry: new Date().getTime() + 1000 * 60 * 60 * 24 * 30,
 			userId: user.id,
 			token: result.refreshToken
 		}
 		await this.userService.whitelistToken(newToken,oldToken)
-		this.setToken(res,result.refreshToken)
+		this.setCookie(res,result.refreshToken)
 		return result.accessToken
 	}
 
@@ -76,20 +75,20 @@ export class AuthController {
 		summary: "Logs out user and deletes session"
 	})
 	async logout(@Res({passthrough:true}) res:Response, @Req() req: Request){
-		let token = this.getToken(req)
+		const token = this.getCookie(req)
 		this.userService.deleteToken(token)
-		this.clearToken(res)
+		this.clearCookie(res)
 	}
 
-	getToken(req: Request){
+	getCookie(req: Request){
 		return req.cookies[process.env.JWT_NAME]
 	}
 
-	clearToken(res: Response){
+	clearCookie(res: Response){
 		res.clearCookie(process.env.JWT_NAME)
 	}
 
-	setToken(res:Response, token:string){
+	setCookie(res:Response, token:string){
 		const refreshDate = new Date();
 		refreshDate.setDate(refreshDate.getDate() + 7);
 		res.cookie(process.env.JWT_NAME,token,{

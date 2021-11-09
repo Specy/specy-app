@@ -36,7 +36,7 @@ export class AccountController {
 		summary: 'Create a new account',
 	})
 	async create(@Body() data: UserRegisterDto,@Param("token") token : string) {
-		let response = await this.accountService.createUser(data)
+		const response = await this.accountService.createUser(data)
 		return new SuccessfulResponse("User registered", response)
 	}
 
@@ -46,7 +46,7 @@ export class AccountController {
 		summary: 'Change password',
 	})
 	async recoverAccount(@Body() data: ChangePasswordDto,@Param("token") token : string) {
-		let respone = await this.accountService.changePassword(data)
+		const respone = await this.accountService.changePassword(data)
 		return new SuccessfulResponse("Password changed")
 	}
 
@@ -64,7 +64,7 @@ export class AccountController {
 		summary: 'Verifies if token and email are correct',
 	})
 	async verifyToken(@Body() data: TokenVerificationDto) {
-		let response = await this.tokenService.verifyToken(data)
+		const response = await this.tokenService.verifyToken(data)
 		if(!response) return new UnauthorizedException("Token is wrong")
 		return new SuccessfulResponse("Token verified")
 	}

@@ -25,7 +25,7 @@ export class UserController {
 		summary: 'Gets data regarding an user',
 	})
 	async getUser(@Param("id") id){
-		let data = await this.userService.get(id,{
+		const data = await this.userService.get(id,{
 			username:true,
 			picture:true,
 			id: true

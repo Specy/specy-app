@@ -25,7 +25,7 @@ export class AccountService {
 	}
 
 	async createUser(data: UserRegisterDto) {
-		let exists = await this.userExists({ email: data.email })
+		const exists = await this.userExists({ email: data.email })
 		if (exists) throw new BadRequestException('Email already exists')
 		const hashedPassword = await this.passwordService.hashPassword(data.password)
 		if (data.password !== data.confirmPassword) throw new BadRequestException('Passwords do not match')

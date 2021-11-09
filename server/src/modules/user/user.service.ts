@@ -49,7 +49,7 @@ export class UserService {
 		})
 	}
 	async storeVerificationToken(email: string) {
-		let token = this.idGeneratorService.randomStringId(8)
+		const token = this.idGeneratorService.randomStringId(8)
 		await this.prismaService.verificationToken.upsert({ 
 			update: { token: token },
 			where:{email:email},
