@@ -15,7 +15,7 @@
 			password: password
 		}
 		isFetching = true
-		const result = await axios.post('auth/cookie')
+		const result = await axios.post('auth/login', body)
 		isFetching = false
 		console.log(result)
 
