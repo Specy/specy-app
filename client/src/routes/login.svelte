@@ -3,27 +3,23 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
 	import { goto } from '$app/navigation'
-	import { apiFetcher } from '../lib/apiFetcher'
+	import { axios } from '$lib/axios'
+
 	let email = ''
 	let password = ''
 	let isFetching = false
+
 	async function login() {
-		let body = {
+		const body = {
 			email: email,
 			password: password
 		}
 		isFetching = true
-		let result = await apiFetcher.fetch('/auth/login',"POST",body)
+		const result = await axios.post('auth/login', body)
 		isFetching = false
 		console.log(result)
-		
-		if(result.ok){
-			return toast.set({ title: 'Success', message: 'User logged in', duration: 3000 })
-			//return goto('/profile')
-		}
 
 		toast.set({ title: 'Error', message: 'Wrong credentials', duration: 3000 })
-
 	}
 </script>
 
@@ -51,7 +47,7 @@
 						class="form-btn"
 						style="background-color: rgb(219, 0, 97)"
 						disabled={isFetching}
-						value={isFetching ? "Loading..." : "Login"}
+						value={isFetching ? 'Loading...' : 'Login'}
 					/>
 				</div>
 			</form>
