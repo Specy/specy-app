@@ -1,16 +1,21 @@
-<script>
+<script lang="ts">
 	import Input from '../components/Input.svelte'
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
 	import { goto } from '$app/navigation'
 	import { useMutation } from '$lib/apiFetch'
-
 	let email = ''
 	let password = ''
-	const [loginData,loginError,isLogging,executeLogin] = useMutation('/login',{},{
+	const [loginData,loginError,isLogging,executeLogin] = useMutation('/login',{method:"POST"},{
 		onError: () => { toast.set({title:"Error",message:"Credentials wrong", duration: 3000})},
 		onSuccess: () => {goto('/profile')}
 	})
+	$: {
+		console.log($loginData)
+		console.log($loginError)
+		console.log(executeLogin)
+		console.log($isLogging)
+	}
 </script>
 
 <div class="page">
