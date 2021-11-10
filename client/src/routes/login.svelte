@@ -3,24 +3,14 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
 	import { goto } from '$app/navigation'
-	import { axios } from '$lib/axios'
+	import { useMutation } from '$lib/apiFetch'
 
 	let email = ''
 	let password = ''
-	let isFetching = false
-
-	async function login() {
-		const body = {
-			email: email,
-			password: password
-		}
-		isFetching = true
-		const result = await axios.post('auth/login', body)
-		isFetching = false
-		console.log(result)
-
-		toast.set({ title: 'Error', message: 'Wrong credentials', duration: 3000 })
-	}
+	const [loginData,loginError,isLogging,executeLogin] = useMutation('/login',{},{
+		onError: () => { toast.set({title:"Error",message:"Credentials wrong", duration: 3000})},
+		onSuccess: () => {goto('/profile')}
+	})
 </script>
 
 <div class="page">
@@ -30,7 +20,7 @@
 			<form
 				on:submit={(e) => {
 					e.preventDefault()
-					login()
+					executeLogin()
 				}}
 			>
 				<div class="input-wrapper">
@@ -46,8 +36,8 @@
 						type="submit"
 						class="form-btn"
 						style="background-color: rgb(219, 0, 97)"
-						disabled={isFetching}
-						value={isFetching ? 'Loading...' : 'Login'}
+						disabled={$isLogging}
+						value={$isLogging ? 'Loading...' : 'Login'}
 					/>
 				</div>
 			</form>

@@ -1,12 +1,13 @@
 import Axios, { AxiosRequestConfig } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import storage from '../utils/storage'
-
-const API_URL = 'http://localhost:3001/' //ENV???
+import {get} from 'svelte/store'
+const API_URL = 'http://localhost:5000/' //ENV???
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
 	if (config.url == 'auth/login') return config
-	const token = storage.getToken()
+	const token = get(storage)
+	console.log("Token from storage",token)
 	if (token) {
 		config.headers.authorization = `Bearer ${token}`
 	}
@@ -25,12 +26,12 @@ axios.interceptors.request.use(authRequestInterceptor)
 axios.interceptors.response.use(
 	(res) => res.data,
 	(err) => {
-		storage.clearToken()
+		storage.set("")
 		return Promise.reject(err)
 	}
 )
 createAuthRefreshInterceptor(axios, async (err) => {
 	const response = await Axios.post(API_URL + 'auth/refresh', {}, { withCredentials: true })
-	storage.setToken(response.data.accessToken)
+	storage.set(response.data.accessToken)
 	return Promise.resolve()
 })
