@@ -1,24 +1,21 @@
 <script lang="ts">
-    import {toast} from "./toast"
+    import {Toast} from "./toast"
     import {onDestroy} from "svelte"
     import FaTimes from "svelte-icons/fa/FaTimes.svelte"
-    let title = "Test"
-    let message = "Test"
     let toastVisible = false
     let timeout = setTimeout(() =>{},100)
-    let toastDuration = 0
-    let unsubscribe = toast.subscribe(data =>{
-        if(data.title === "") return
-        title = data?.title
-        message = data?.message
+    const {title,duration,message, lastEdit} = Toast()
+    let unsubscribe = lastEdit.subscribe(data =>{
+        console.log(data)
         toastVisible = true
         clearTimeout(timeout)
-        toastDuration = data?.duration
         timeout = setTimeout(()=>{
             toastVisible = false
-            toastDuration = 0
-        }, data?.duration)
+        },$duration)
     })
+    $:{
+        console.log($message)
+    }
     onDestroy(unsubscribe)
 </script>
 
@@ -29,7 +26,7 @@
             <div >
                 {title}
             </div>
-            <div class="close-icon" on:click={() => {toastVisible = false; toastDuration = 0}}>
+            <div class="close-icon" on:click={() => {toastVisible = false; $duration = 0}}>
                 <FaTimes />
             </div>
         </div>
@@ -37,7 +34,7 @@
             {message}
         </div>
         <div class="toast-progress">
-            <div class={toastVisible ? "toast-progress-bar" : ""} style={`transition: all ${toastDuration}ms linear`}></div>
+            <div class={toastVisible ? "toast-progress-bar" : ""} style={`transition: all ${$duration}ms linear`}></div>
         </div>
     </div>
 </div>

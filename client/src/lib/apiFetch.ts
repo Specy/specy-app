@@ -1,14 +1,17 @@
 import { axios } from './axios'
 import { writable } from 'svelte/store'
+import type { Writable } from 'svelte/store'
 type Callbacks = {
-    onSuccess?: Function,
-    onError?: Function
+    onSuccess?: (res:object) => void,
+    onError?: (err: Error) => void,
 }
 type Config = {
     method: "POST" | "PATCH" | "DELETE"
     body?: {}
 }
-function useMutation(url: string, config: Config, callbacks: Callbacks = {}) {
+function useMutation(url: string, config: Config, callbacks: Callbacks = {}):
+    [Writable<null | object>,Writable<null | object>,Writable<boolean>,(body: unknown) => void]
+{
 
     const isLoading = writable(false)
     const data = writable(null)
@@ -17,23 +20,25 @@ function useMutation(url: string, config: Config, callbacks: Callbacks = {}) {
     const mutate = (body) => {
         isLoading.set(true)
         axios.post(url, body, config)
-            .then((res) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
-            .catch((err) => { error.set(err), callbacks.onError && callbacks.onError(err) })
+            .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
+            .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
             .finally(() => isLoading.set(false))
     }
     return [data, error, isLoading, mutate]
 }
 
 
-function useQuery(url: string, config: Config, callbacks: Callbacks = {}) {
+function useQuery(url: string, config: Config, callbacks: Callbacks = {}):
+    [Writable<null | object>,Writable<null | object>,Writable<boolean>,(body: unknown) => void]
+{
     const isLoading = writable(true)
     const data = writable(null)
     const error = writable(null)
 
     const query = () =>
         axios.get(url, config)
-            .then((res) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess() })
-            .catch((err) => { error.set(err), callbacks.onError && callbacks.onError() })
+            .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
+            .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
             .finally(() => isLoading.set(false))
     return [data, error, isLoading, query]
 }
