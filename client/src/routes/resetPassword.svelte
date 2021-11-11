@@ -4,75 +4,34 @@
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
 	import { toast } from '../components/toast'
+	import { useMutation,useQuery } from '$lib/apiFetch'
+import { goto } from '$app/navigation';
 	let email = ''
 	let verificationCode = ''
 	let newPassword = ''
 	let step = 1
-	let isFetching = false
-	async function sendEmail() {
-		if (!EmailValidator.validate(email))
-			return toast.set({ title: 'Error', message: 'Invalid email', duration: 3000 })
-		isFetching = true
-		let response, data
-		try {
-			response = await fetch('http://localhost:3001/account/token/send', {
-				method: 'POST',
-				body: JSON.stringify({ email: email }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) {
+	let isLoading = false
+	const [tokenData,tokenError,isLoadingToken,sendCode] = useMutation("/account/token/send",{method:"POST"},{
+		onSuccess: (res) => {
 			step = 2
-			newPassword = ''
-
-			return toast.set({ title: 'Success', message: 'Verification code sent', duration: 3000 })
+			toast.success("Verification code sent")
+		},
+		onError: (e) => {
+			console.log(e)
+			toast.error("There was an error sending the token")
 		}
-		return toast.set({ title: 'Error', message: data.message, duration: 3000 })
-	}
-	async function resetPassword() {
-		if (checkStrenght(newPassword).id < 1)
-			return toast.set({
-				title: 'Error',
-				message:
-					'Password must be at least 8 characters long, have An uppercase letter and one number',
-				duration: 4000
-			})
-		toast.set({ title: 'Warning', message: 'Feature coming soon', duration: 3000 })
-		let body = {
-			email: email,
-			password: newPassword
+	})
+	const [resetData,resetError,isLoadingReset,sendReset] = useMutation("/account/recover/",{method:"POST"},{
+		onSuccess: (res) => {
+			toast.success("Password succesfully reset")
+			goto('/login')
+		},
+		onError: (e) => {
+			console.log(e)
+			toast.error("There was an error sending the token")
 		}
-		let response, data
-		isFetching = true
-		try {
-			response = await fetch(`http://localhost:3001/account/recover/${verificationCode}`, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) {
-			step = 3
-			return toast.set({ title: 'Success', message: 'Password successfully reset', duration: 4000 })
-		}
-		return toast.set({ title: 'Error', message: data.message, duration: 4000 })
-	}
+	})
+	$: isLoading = $isLoadingToken || $isLoadingReset
 </script>
 
 <div class="page">
@@ -83,7 +42,10 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
-						sendEmail()
+						if (!EmailValidator.validate(email)) return toast.error("Invalid email")
+						sendCode({
+							email
+						})
 					}}
 				>
 					<div>
@@ -99,7 +61,7 @@
 							type="submit"
 							class="form-btn"
 							style="background-color: rgb(85, 143, 144)"
-							value={isFetching ? 'Loading...' : 'Send code'}
+							value={isLoading ? 'Loading...' : 'Send code'}
 						/>
 					</div>
 				</form>
@@ -107,7 +69,9 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
-						resetPassword()
+						sendReset({
+
+						})
 					}}
 				>
 					<div>
@@ -122,7 +86,7 @@
 							type="submit"
 							class="form-btn"
 							style="background-color: rgb(85, 143, 144)"
-							value={isFetching ? 'Loading...' : 'Reset password'}
+							value={isLoading ? 'Loading...' : 'Reset password'}
 						/>
 					</div>
 				</form>

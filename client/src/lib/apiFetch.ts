@@ -1,6 +1,7 @@
 import { axios } from './axios'
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
+const BASEURL = "http://localhost:5000"
 type Callbacks = {
     onSuccess?: (res:object) => void,
     onError?: (err: Error) => void,
@@ -19,7 +20,7 @@ function useMutation(url: string, config: Config, callbacks: Callbacks = {}):
 
     const mutate = (body) => {
         isLoading.set(true)
-        axios.post(url, body, config)
+        axios.post(BASEURL + url, body, config)
             .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
             .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
             .finally(() => isLoading.set(false))
@@ -36,7 +37,7 @@ function useQuery(url: string, config: Config, callbacks: Callbacks = {}):
     const error = writable(null)
 
     const query = () =>
-        axios.get(url, config)
+        axios.get(BASEURL + url, config)
             .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
             .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
             .finally(() => isLoading.set(false))

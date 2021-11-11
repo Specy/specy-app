@@ -3,7 +3,7 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
-	import { toast } from '../components/toast'
+	import { Toast } from '../components/toast'
 
 	let email = ''
 	let password = ''
@@ -12,79 +12,6 @@
 	let verificationCode = ''
 	let step = 1
 	let isFetching = false
-	async function register() {
-		let body = {
-			email: email,
-			password: password,
-			confirmPassword: confirmPassword,
-			username: username
-		}
-
-		isFetching = true
-		let data, response
-		try {
-			response = await fetch(`http://localhost:3001/account/create/${verificationCode}`, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-
-		if (response.ok) {
-			toast.set({ title: 'Success', message: data.message, duration: 3000 })
-			return (step = 3)
-		}
-		toast.set({ title: 'Error', message: data.message, duration: 3000 })
-	}
-	async function sendVerificationCode() {
-		if (!EmailValidator.validate(email))
-			return toast.set({ title: 'Error', message: 'Invalid email', duration: 3000 })
-		if (username.length < 4)
-			return toast.set({
-				title: 'Error',
-				message: 'Username must be at least 4 characters',
-				duration: 3000
-			})
-		if (checkStrenght(password).id < 1)
-			return toast.set({
-				title: 'Error',
-				message:
-					'Password must be at least 8 characters long, have An uppercase letter and one number',
-				duration: 4000
-			})
-		if (password !== confirmPassword)
-			return toast.set({ title: 'Error', message: "Passwords don't match", duration: 3000 })
-
-			
-		isFetching = true
-		let response, data
-		try {
-			response = await fetch('http://localhost:3001/account/activate/send', {
-				method: 'POST',
-				body: JSON.stringify({ email: email }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) return (step = 2)
-
-		toast.set({ title: 'Error', message: data.message, duration: 3000 })
-	}
 </script>
 
 <div class="page">
@@ -95,7 +22,6 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
-						sendVerificationCode()
 					}}
 				>
 					<div>
@@ -141,7 +67,6 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
-						register()
 					}}
 				>
 					<div>
