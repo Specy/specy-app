@@ -15,7 +15,6 @@ function userStore(){
         user.set(res)
     }
     fetchUser()
-    console.log("fetch status")
     return { user, fetchUser}
 }
 export const User = userStore()

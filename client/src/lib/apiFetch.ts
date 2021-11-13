@@ -33,7 +33,7 @@ function useMutation(url: string, config = DefaultMutationConfig):
 
     const mutate = (body?: object, mutateConfig = DefaultMutateParams) => {
         isLoading.set(true)
-        
+
         axios({
             url: BASEURL + url + mutateConfig.params,
             data: body,
@@ -52,7 +52,7 @@ function useQuery(url: string, config = DefaultQueryConfig):
     const data = writable(null)
     const error = writable(null)
 
-    const query = (queryConfig = DefaultQueryConfig) =>{
+    const query = (queryConfig = DefaultQueryConfig) => {
         axios.get(BASEURL + url + queryConfig.params)
             .then((res: any) => { data.set(res); config.onSuccess && config.onSuccess(res) })
             .catch((err: Error) => { error.set(err); config.onError && config.onError(err) })

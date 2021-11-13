@@ -46,7 +46,7 @@ export class AccountController {
 	@ApiOperation({
 		summary: 'Change password',
 	})
-	async recoverAccount(@Body() data: ChangePasswordDto,@Param("token") token : string) {
+	async recoverAccount(@Body() data: ChangePasswordDto) {
 		const respone = await this.accountService.changePassword(data)
 		return new SuccessfulResponse("Password changed")
 	}

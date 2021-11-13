@@ -35,12 +35,9 @@
 		:global(::-webkit-scrollbar-track) {
 			background: rgb(206, 206, 206);
 		}
-
-
 		:global(::-webkit-scrollbar-thumb) {
 			background: #888;
 		}
-
 		:global(::-webkit-scrollbar-thumb:hover) {
 			background: #555;
 		}

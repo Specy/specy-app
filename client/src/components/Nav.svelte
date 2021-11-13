@@ -6,14 +6,13 @@
 	import { page } from '$app/stores';	
 	import { User } from '../lib/user'
 	
-	const { user, fetchUser} = User
+	const { user} = User
 	let path = $page.path
 	$: path = $page.path
 	let scrollY = 0
 	let lastPosition = 10
 	let navHidden = false
 	let menuOpen = false;
-	$: console.log($user)
 	$: {
 		if(!menuOpen && scrollY > 300){
 			navHidden = scrollY > lastPosition
@@ -27,7 +26,7 @@
 <nav class="nav">
 	<div class="desktop-menu">
 		<Logo />
-		<div class="links">
+		<div class="links" style={$user ? "margin-right:7rem": ""}>
 			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
 			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
 			
@@ -113,9 +112,6 @@
 		padding: 0.75rem;
 		justify-content: space-between;
 		align-items: center;
-	}
-	.menu-wrapper{
-		height:2.5rem
 	}
 	.profile{
 		display: flex;

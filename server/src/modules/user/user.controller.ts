@@ -29,7 +29,10 @@ export class UserController {
 		summary: 'Manually deletes a token for an user'
 	})
 	async deleteToken(@User() user:UserEntity, @Body() data:TokenDeletionDto){
-		return this.userService.deleteTokenById(user.id,data.id)
+		const token = await this.userService.getToken({id: data.id})
+		await this.userService.deleteToken(token.token)
+		if(token.userId !== user.id) throw new UnauthorizedException("User cannot delete this token")
+		return new SuccessfulResponse("Token deleted")
 	}
 	@Get('tokens')
 	@UseGuards(JwtAuthGuard)
@@ -37,7 +40,7 @@ export class UserController {
 		summary: 'Gets list of tokens related to this user'
 	})
 	async getTokens(@User() user:UserEntity){
-		let tokens = await this.userService.getTokens(user.id)
+		let tokens = await this.userService.getTokensByUserId(user.id)
 		return tokens.map(token => {return {
 			id: token.id,
 			createdAt: token.createdAt

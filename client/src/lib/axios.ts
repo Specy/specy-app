@@ -27,9 +27,9 @@ axios.interceptors.response.use(
 	}
 )
 createAuthRefreshInterceptor(axios, async (err) => {
-	console.log("Fetch token")
+	console.log("Fetch refresh")
 	const response = await Axios.post(API_URL + 'auth/refresh', {}, { withCredentials: true })
-	if(response.data) 
-	storage.token = response.data
+	if (response.data)
+		storage.token = response.data
 	return Promise.resolve()
 })

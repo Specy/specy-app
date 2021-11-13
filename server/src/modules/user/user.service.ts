@@ -42,11 +42,11 @@ export class UserService {
 	async existsWhitelistedToken(token:string){
 		return this.prismaService.whitelistedSession.findUnique({where:{token}})
 	}
-	async getTokens(userId:string){
+	async getTokensByUserId(userId:string){
 		return this.prismaService.whitelistedSession.findMany({where:{userId}})
 	}
-	async deleteTokenById(userId:string, tokenId:number){
-	 	throw new Error("TODO, delete token without the token itself as ID")
+	async getToken(data: Prisma.WhitelistedSessionWhereUniqueInput){
+		return this.prismaService.whitelistedSession.findUnique({where:data})
 	}
 	async deleteToken(token: string){
 		return this.prismaService.whitelistedSession.delete({where:{token: token}})

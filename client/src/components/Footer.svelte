@@ -1,6 +1,6 @@
 <script lang="ts">
-	import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
-	import FaDiscord from 'svelte-icons/fa/FaDiscord.svelte';
+	import FaGithub from 'svelte-icons/fa/FaGithub.svelte'
+	import FaDiscord from 'svelte-icons/fa/FaDiscord.svelte'
 </script>
 
 <footer class="footer">
@@ -18,11 +18,15 @@
 				<a class="icon" href="https://github.com/Specy" target="_blank">
 					<FaGithub />
 				</a>
-				<a class="icon" href="https://discord.gg/Arsf65YYHq" target="_blank" style="margin-top: 0.2rem;">
+				<a
+					class="icon"
+					href="https://discord.gg/Arsf65YYHq"
+					target="_blank"
+					style="margin-top: 0.2rem;"
+				>
 					<FaDiscord />
 				</a>
 			</div>
-
 		</div>
 		<div class="copyright">
 			© {new Date().getFullYear()} Specy. All rights reserved.
@@ -43,10 +47,6 @@
 		> div {
 			font-size: 1rem;
 		}
-	}
-	.logo-copyright-wrapper {
-		display: flex;
-		flex-direction: column;
 	}
 	a {
 		color: white;

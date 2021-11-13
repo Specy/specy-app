@@ -1,6 +1,5 @@
 <script lang="ts">
     import {toast} from "./toast"
-    import {onDestroy} from "svelte"
     import FaTimes from "svelte-icons/fa/FaTimes.svelte"
     const {title,duration,message, visible, closeToast, color} = toast
     let toastVisible = false
