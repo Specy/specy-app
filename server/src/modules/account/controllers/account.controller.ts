@@ -40,6 +40,7 @@ export class AccountController {
 		return new SuccessfulResponse("User registered", response)
 	}
 
+	
 	@Post('recover/:token')
 	@UseGuards(TokenGuard)
 	@ApiOperation({

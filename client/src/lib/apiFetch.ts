@@ -2,49 +2,68 @@ import { axios } from './axios'
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
 const BASEURL = "http://localhost:5000"
-type Callbacks = {
-    onSuccess?: (res:object) => void,
+interface BaseConfig {
+    onSuccess?: (res: any) => void,
     onError?: (err: Error) => void,
 }
-type Config = {
-    method: "POST" | "PATCH" | "DELETE"
-    body?: {}
+interface MutationConfig extends BaseConfig {
+    method?: "POST" | "PATCH" | "DELETE"
+    body?: object
 }
-function useMutation(url: string, config: Config, callbacks: Callbacks = {}):
-    [Writable<null | object>,Writable<null | object>,Writable<boolean>,(body: unknown) => void]
-{
-
+interface QueryConfig extends BaseConfig {
+    params?: ""
+}
+interface MutateParams {
+    params?: string
+}
+const DefaultQueryConfig: QueryConfig = {
+    params: ""
+}
+const DefaultMutationConfig: MutationConfig = {
+    method: "POST"
+}
+const DefaultMutateParams: MutateParams = {
+    params: ""
+}
+function useMutation(url: string, config = DefaultMutationConfig):
+    [(body?: object, config?: MutateParams) => void, Writable<boolean>, Writable<any>, Writable<any>] {
     const isLoading = writable(false)
     const data = writable(null)
     const error = writable(null)
 
-    const mutate = (body) => {
+    const mutate = (body?: object, mutateConfig = DefaultMutateParams) => {
         isLoading.set(true)
-        axios.post(BASEURL + url, body, config)
-            .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
-            .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
+        
+        axios({
+            url: BASEURL + url + mutateConfig.params,
+            data: body,
+            ...config
+        }).then((res: any) => { data.set(res); config.onSuccess && config.onSuccess(res) })
+            .catch((err: Error) => { error.set(err); config.onError && config.onError(err) })
             .finally(() => isLoading.set(false))
     }
-    return [data, error, isLoading, mutate]
+    return [mutate, isLoading, data, error]
 }
 
 
-function useQuery(url: string, config: Config, callbacks: Callbacks = {}):
-    [Writable<null | object>,Writable<null | object>,Writable<boolean>,(body: unknown) => void]
-{
+function useQuery(url: string, config = DefaultQueryConfig):
+    [(body?: object, config?: QueryConfig) => void, Writable<boolean>, Writable<any>, Writable<any>] {
     const isLoading = writable(true)
     const data = writable(null)
     const error = writable(null)
 
-    const query = () =>
-        axios.get(BASEURL + url, config)
-            .then((res:object) => { data.set(res), callbacks.onSuccess && callbacks.onSuccess(res) })
-            .catch((err:Error) => { error.set(err), callbacks.onError && callbacks.onError(err) })
+    const query = (queryConfig = DefaultQueryConfig) =>{
+        axios.get(BASEURL + url + queryConfig.params)
+            .then((res: any) => { data.set(res); config.onSuccess && config.onSuccess(res) })
+            .catch((err: Error) => { error.set(err); config.onError && config.onError(err) })
             .finally(() => isLoading.set(false))
-    return [data, error, isLoading, query]
+    }
+
+    return [query, isLoading, data, error]
 }
 
 export {
     useQuery,
-    useMutation
+    useMutation,
+    BASEURL
 }

@@ -2,18 +2,26 @@
 	import Input from '../components/Input.svelte'
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import { toast } from '../components/toast'
+	import storage from '../utils/storage'
 	import { goto } from '$app/navigation'
 	import { useMutation } from '$lib/apiFetch'
 	let email = ''
 	let password = ''
-	const [loginData,loginError,isLogging,executeLogin] = useMutation('/auth/login',{method:"POST"},{
+	import { User } from '../lib/user'
+	
+	const { fetchUser }  = User
+	const [executeLogin,isLogging] = useMutation('/auth/login',{
+		method:"POST",
 		onError: (err) => { 
 			toast.error("Credentials are wrong")
-			console.log(err.name)
+			console.error(err)
 		},
 		onSuccess: (res) => {
-			return toast.success("Logged in")
-			goto('/profile')
+			if(!res.accessToken) return toast.error("Error")
+			storage.token = res.accessToken
+			toast.success("Logged in")
+			fetchUser()
+			return goto('/profile')
 		}
 	})
 </script>
@@ -25,10 +33,7 @@
 			<form
 				on:submit={(e) => {
 					e.preventDefault()
-					executeLogin({
-						email,
-						password
-					})
+					executeLogin({ email, password })
 				}}
 			>
 				<div class="input-wrapper">

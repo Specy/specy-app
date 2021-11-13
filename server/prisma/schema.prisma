@@ -21,7 +21,8 @@ model WhitelistedSession{
   id    Int @default(autoincrement())
   userId String
   token String  @unique
-  expiry Int
+  expiry DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 model VerificationToken {
   email    String  @unique

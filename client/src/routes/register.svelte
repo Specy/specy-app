@@ -3,8 +3,8 @@
 	import PasswordInput from '../components/PasswordInput.svelte'
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
-	import { Toast } from '../components/toast'
-
+	import { toast } from '../components/toast'
+	import { useMutation } from '../lib/apiFetch'
 	let email = ''
 	let password = ''
 	let username = ''
@@ -12,6 +12,44 @@
 	let verificationCode = ''
 	let step = 1
 	let isFetching = false
+	const [sendCode, isSendingCode] = useMutation('/account/activate/send',{
+		method: "POST",
+		onSuccess: () => { 
+			step = 2
+			//TODO make all errors and success statuses log data from response
+			toast.success("Code was sent to your email")
+		},
+		onError: (err) => {
+			toast.error(err.message)
+		}
+	})
+	const [register, isRegistering] = useMutation('/account/create',{
+		method: "POST",
+		onSuccess: () => {
+			step = 3
+		},
+		onError: (err) => {
+			console.log(err.message)
+			toast.error("Invalid token")
+		}
+	})
+	function validateAndSend(){
+		if (!EmailValidator.validate(email)) return toast.error("Invalid email")
+		if (username.length < 4) return toast.error("Username must be at least 4 characters long")
+		if (checkStrenght(password).id < 1)
+			return toast.error('Password must be at least 8 characters long, have An uppercase letter and one number',)
+		if (password !== confirmPassword) return toast.error("Passwords don't match")
+		sendCode({email})
+	}
+	function registerUser(){
+		register({
+			email,
+			password,
+			username,
+			confirmPassword
+		},{params:`/${verificationCode}`})
+	}
+	$: isFetching = $isRegistering || $isSendingCode
 </script>
 
 <div class="page">
@@ -22,6 +60,7 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
+						validateAndSend()
 					}}
 				>
 					<div>
@@ -67,6 +106,7 @@
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
+						registerUser()
 					}}
 				>
 					<div>

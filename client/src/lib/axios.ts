@@ -4,7 +4,7 @@ import storage from '../utils/storage'
 const API_URL = 'http://localhost:5000/' //ENV???
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
-	if (config.url == 'auth/login') return config
+	if (config.url === 'auth/login') return config
 	const token = storage.token
 	if (token) {
 		config.headers.authorization = `Bearer ${token}`
@@ -19,8 +19,6 @@ export const axios = Axios.create({
 })
 axios.interceptors.request.use(authRequestInterceptor)
 
-//This one is not rlly neccesary, its sole purpose is to extract the data only from response.
-// Result is const data = axios.get(url), and it returns data right away.
 axios.interceptors.response.use(
 	(res) => res.data,
 	(err) => {
@@ -29,7 +27,9 @@ axios.interceptors.response.use(
 	}
 )
 createAuthRefreshInterceptor(axios, async (err) => {
+	console.log("Fetch token")
 	const response = await Axios.post(API_URL + 'auth/refresh', {}, { withCredentials: true })
-	storage.token = response.data.accessToken
+	if(response.data) 
+	storage.token = response.data
 	return Promise.resolve()
 })

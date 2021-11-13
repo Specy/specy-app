@@ -11,7 +11,8 @@ import { goto } from '$app/navigation';
 	let newPassword = ''
 	let step = 1
 	let isLoading = false
-	const [tokenData,tokenError,isLoadingToken,sendCode] = useMutation("/account/token/send",{method:"POST"},{
+	const [sendCode, isLoadingToken] = useMutation("/account/token/send",{
+		method: "POST",		
 		onSuccess: (res) => {
 			step = 2
 			toast.success("Verification code sent")
@@ -21,7 +22,8 @@ import { goto } from '$app/navigation';
 			toast.error("There was an error sending the token")
 		}
 	})
-	const [resetData,resetError,isLoadingReset,sendReset] = useMutation("/account/recover/",{method:"POST"},{
+	const [sendReset,isLoadingReset] = useMutation("/account/recover",{
+		method:"POST",
 		onSuccess: (res) => {
 			toast.success("Password succesfully reset")
 			goto('/login')
@@ -43,9 +45,7 @@ import { goto } from '$app/navigation';
 					on:submit={(e) => {
 						e.preventDefault()
 						if (!EmailValidator.validate(email)) return toast.error("Invalid email")
-						sendCode({
-							email
-						})
+						sendCode({email})
 					}}
 				>
 					<div>
@@ -69,9 +69,7 @@ import { goto } from '$app/navigation';
 				<form
 					on:submit={(e) => {
 						e.preventDefault()
-						sendReset({
-
-						})
+						sendReset({email,password:newPassword},{params: verificationCode})
 					}}
 				>
 					<div>
