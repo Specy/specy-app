@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { User } from '$lib/user'
 	import Input from '$cmp/Input.svelte'
 	import PasswordInput from '$cmp/PasswordInput.svelte'
 	import FloatingContent from '$cmp/FloatingContent.svelte'
@@ -11,7 +12,7 @@
 
 	let email = ''
 	let password = ''
-	import { User } from '../lib/user'
+
 
 	const { fetchUser } = User
 	const [executeLogin, isLogging] = useMutation('/auth/login', {
