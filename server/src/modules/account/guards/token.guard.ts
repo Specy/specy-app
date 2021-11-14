@@ -11,9 +11,9 @@ export class TokenGuard implements CanActivate{
     ): Promise<boolean>{
         const request = context.switchToHttp().getRequest()
         const params = request.params
-        let token = params.token
-        let email = request.body.email
-        let isAuthorised = await this.tokenService.verifyToken({email,token})
+        const token = params.token
+        const email = request.body.email
+        const isAuthorised = await this.tokenService.verifyToken({email,token})
         if(!isAuthorised) throw new UnauthorizedException("Token is wrong")
         return isAuthorised
     }

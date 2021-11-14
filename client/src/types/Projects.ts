@@ -1,5 +1,5 @@
 
-let data = [
+const data = [
     {
         "title": "Sky Music Nightly",
         "description": "Website to compose and practice music for sky children of the light",

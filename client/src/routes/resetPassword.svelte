@@ -1,173 +1,103 @@
 <script>
-	import Input from '../components/Input.svelte'
-	import PasswordInput from '../components/PasswordInput.svelte'
+	import Input from '$cmp/Input.svelte'
+	import PasswordInput from '$cmp/PasswordInput.svelte'
+	import FloatingContent from '$cmp/FloatingContent.svelte'
+	import Submit from '$cmp/Submit.svelte';
 	import * as EmailValidator from 'email-validator'
-	import checkStrenght from '../lib/checkPassword'
-	import { toast } from '../components/toast'
+	import checkStrenght from '$lib/checkPassword'
+	import Form from '$cmp/Form.svelte'
+	import { toast } from '$cmp/toast'
+	import { useMutation } from '$lib/apiFetch'
+	import { goto } from '$app/navigation'
 	let email = ''
 	let verificationCode = ''
 	let newPassword = ''
 	let step = 1
-	let isFetching = false
-	async function sendEmail() {
-		if (!EmailValidator.validate(email))
-			return toast.set({ title: 'Error', message: 'Invalid email', duration: 3000 })
-		isFetching = true
-		let response, data
-		try {
-			response = await fetch('http://localhost:3001/account/token/send', {
-				method: 'POST',
-				body: JSON.stringify({ email: email }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) {
+	let isLoading = false
+	const [sendCode, isLoadingToken] = useMutation('/account/token/send', {
+		method: 'POST',
+		onSuccess: (res) => {
 			step = 2
-			newPassword = ''
-
-			return toast.set({ title: 'Success', message: 'Verification code sent', duration: 3000 })
+			toast.success('Verification code sent')
+		},
+		onError: (err) => {
+			console.log(err.response)
+			toast.error('There was an error sending the token')
 		}
-		return toast.set({ title: 'Error', message: data.message, duration: 3000 })
-	}
-	async function resetPassword() {
-		if (checkStrenght(newPassword).id < 1)
-			return toast.set({
-				title: 'Error',
-				message:
-					'Password must be at least 8 characters long, have An uppercase letter and one number',
-				duration: 4000
-			})
-		toast.set({ title: 'Warning', message: 'Feature coming soon', duration: 3000 })
-		let body = {
-			email: email,
-			password: newPassword
+	})
+	const [sendReset, isLoadingReset] = useMutation('/account/recover/', {
+		method: 'POST',
+		onSuccess: (res) => {
+			toast.success('Password succesfully reset')
+			goto('/login')
+		},
+		onError: (err) => {
+			console.log(err.response)
+			toast.error(err.response?.data?.message)
 		}
-		let response, data
-		isFetching = true
-		try {
-			response = await fetch(`http://localhost:3001/account/recover/${verificationCode}`, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) {
-			step = 3
-			return toast.set({ title: 'Success', message: 'Password successfully reset', duration: 4000 })
-		}
-		return toast.set({ title: 'Error', message: data.message, duration: 4000 })
-	}
+	})
+	$: isLoading = $isLoadingToken || $isLoadingReset
 </script>
 
 <div class="page">
-	<div class="center-wrapper">
-		<div class="big-title" style="margin:  2rem 0;">Reset password</div>
-		<div class="floating-middle">
-			{#if step === 1}
-				<form
-					on:submit={(e) => {
-						e.preventDefault()
-						sendEmail()
-					}}
-				>
-					<div>
-						<Input
-							bind:value={email}
-							title="Email"
-							status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
-						/>
-					</div>
-					<div class="form-buttons-wrapper">
-						<div class="note">A code will be sent to your email to reset the password</div>
-						<input
-							type="submit"
-							class="form-btn"
-							style="background-color: rgb(85, 143, 144)"
-							value={isFetching ? 'Loading...' : 'Send code'}
-						/>
-					</div>
-				</form>
-			{:else if step === 2}
-				<form
-					on:submit={(e) => {
-						e.preventDefault()
-						resetPassword()
-					}}
-				>
-					<div>
-						<Input bind:value={verificationCode} title="Verification code" hideStatus={true} />
-					</div>
-					<div>
-						<PasswordInput bind:value={newPassword} title="New password" />
-					</div>
-					<div class="form-buttons-wrapper">
-						<div class="note">* You will use those credentials to login in all apps</div>
-						<input
-							type="submit"
-							class="form-btn"
-							style="background-color: rgb(85, 143, 144)"
-							value={isFetching ? 'Loading...' : 'Reset password'}
-						/>
-					</div>
-				</form>
-			{/if}
-			{#if step === 3}
-				<div>
-					Password changed successfully. You can now login
-					<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
-						Go to login
-					</a>
+	<FloatingContent title="Reset Password">
+		{#if step === 1}
+			<Form
+				on:submit={(e) => {
+					if (!EmailValidator.validate(email)) return toast.error('Invalid email')
+					sendCode({ email })
+				}}
+			>
+				<div class="margin-bottom-1">
+					<Input
+						bind:value={email}
+						title="Email"
+						status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
+					/>
 				</div>
-			{/if}
-		</div>
-	</div>
+				<div class="form-buttons-wrapper">
+					<div class="note">A code will be sent to your email to change your password</div>
+					<Submit
+						bg='rgb(85, 143, 144)'
+						value={isLoading ? 'Loading...' : 'Send code'}
+					/>
+				</div>
+			</Form>
+		{:else if step === 2}
+			<Form
+				on:submit={(e) => {
+					if (checkStrenght(newPassword).id < 1) return toast.error('Password too weak')
+					sendReset({ email, password: newPassword }, { params: verificationCode })
+				}}
+			>
+				<div class="margin-bottom-1">
+					<Input bind:value={verificationCode} title="Verification code" hideStatus={true} />
+				</div>
+				<div class="margin-bottom-1">
+					<PasswordInput bind:value={newPassword} title="New password" />
+				</div>
+				<div class="form-buttons-wrapper">
+					<div class="note">* You will use those credentials to login in all apps</div>
+					<Submit
+						bg='rgb(85, 143, 144)'
+						value={isLoading ? 'Loading...' : 'Reset password'}
+					/>
+				</div>
+			</Form>
+		{/if}
+		{#if step === 3}
+			<div>
+				Password changed successfully. You can now login
+				<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
+					Go to login
+				</a>
+			</div>
+		{/if}
+	</FloatingContent>
 </div>
 
 <style lang="scss">
 	@import '../variables.scss';
-	.form-btn {
-		width: 100%;
-		padding: 0.5rem;
-		margin-top: 0.5rem;
-		border-radius: 0.5rem;
-		color: white;
-		text-align: center;
-		font-weight: bold;
-		display: flex;
-		transition: all 0.2s;
-		padding-left: 0.8rem;
-		font-size: 1rem;
-		justify-content: center;
-		border: none;
-		cursor: pointer;
-	}
-	.form-btn:hover {
-		filter: brightness(1.2);
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		> div {
-			margin-bottom: 1rem;
-		}
-	}
 	.form-buttons-wrapper {
 		display: flex;
 		flex: 1;
@@ -183,29 +113,7 @@
 		text-align: left;
 		width: 100%;
 	}
-	.big-title {
-		font-size: 2.5rem;
-	}
-	.floating-middle {
-		display: flex;
-		flex-direction: column;
-		width: 30rem;
-
-		background-color: rgba(246, 246, 246, 0.8);
-		backdrop-filter: blur(4px);
-		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
-		padding: 1rem;
-		border-radius: 0.5rem;
-	}
-	.center-wrapper {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		flex: 1;
-	}
-	@media (max-width: 480px) {
-		.floating-middle {
-			width: 95vw;
-		}
+	.margin-bottom-1{
+		margin-bottom: 1rem;
 	}
 </style>

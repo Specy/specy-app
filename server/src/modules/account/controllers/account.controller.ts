@@ -8,7 +8,7 @@ import { AccountService } from '../services/account.service'
 import { TokenVerificationDto } from '../dtos/verify-code.dto'
 import { TokenService } from '../services/token.service'
 import { TokenGuard } from '../guards/token.guard'
-
+import { UserService } from 'src/modules/user/user.service'
 /*#TODO 
 	- Make sure token is valid in auth
 */
@@ -17,7 +17,8 @@ import { TokenGuard } from '../guards/token.guard'
 export class AccountController {
 	constructor(
 		private readonly accountService: AccountService,
-		private readonly tokenService: TokenService
+		private readonly tokenService: TokenService,
+		private readonly userService: UserService,
 	) { }
 
 	@Post('activate/send')
@@ -36,17 +37,19 @@ export class AccountController {
 		summary: 'Create a new account',
 	})
 	async create(@Body() data: UserRegisterDto,@Param("token") token : string) {
-		let response = await this.accountService.createUser(data)
+		const response = await this.accountService.createUser(data)
 		return new SuccessfulResponse("User registered", response)
 	}
 
+	
 	@Post('recover/:token')
 	@UseGuards(TokenGuard)
 	@ApiOperation({
 		summary: 'Change password',
 	})
-	async recoverAccount(@Body() data: ChangePasswordDto,@Param("token") token : string) {
-		let respone = await this.accountService.changePassword(data)
+	async recoverAccount(@Body() data: ChangePasswordDto) {
+		const response = await this.accountService.changePassword(data)
+		this.userService.purgeTokens(response.id)
 		return new SuccessfulResponse("Password changed")
 	}
 
@@ -64,7 +67,7 @@ export class AccountController {
 		summary: 'Verifies if token and email are correct',
 	})
 	async verifyToken(@Body() data: TokenVerificationDto) {
-		let response = await this.tokenService.verifyToken(data)
+		const response = await this.tokenService.verifyToken(data)
 		if(!response) return new UnauthorizedException("Token is wrong")
 		return new SuccessfulResponse("Token verified")
 	}

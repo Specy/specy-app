@@ -1,93 +1,61 @@
-<script>
-	import Input from '../components/Input.svelte'
-	import PasswordInput from '../components/PasswordInput.svelte'
-	import { toast } from '../components/toast'
+<script lang="ts">
+	import Input from '$cmp/Input.svelte'
+	import PasswordInput from '$cmp/PasswordInput.svelte'
+	import FloatingContent from '$cmp/FloatingContent.svelte'
+	import Form from '$cmp/Form.svelte'
+	import Submit from '$cmp/Submit.svelte'
+	import { toast } from '$cmp/toast'
+	import storage from '../utils/storage'
 	import { goto } from '$app/navigation'
+	import { useMutation } from '$lib/apiFetch'
+
 	let email = ''
 	let password = ''
-	let isFetching = false
-	async function login() {
-		let body = {
-			email: email,
-			password: password
-		}
-		isFetching = true
-		let data, response
-		try {
-			response = await fetch('http://localhost:3001/auth/login', {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) {
-			toast.set({ title: 'Success', message: data.message, duration: 3000 })
+	import { User } from '../lib/user'
+
+	const { fetchUser } = User
+	const [executeLogin, isLogging] = useMutation('/auth/login', {
+		method: 'POST',
+		onError: (err) => {
+			console.log(err.response)
+			toast.error("Credentials are wrong")
+			console.error()
+		},
+		onSuccess: (res) => {
+			if (!res.accessToken) return toast.error('Error')
+			storage.token = res.accessToken
+			toast.success('Logged in')
+			fetchUser()
 			return goto('/profile')
 		}
-		toast.set({ title: 'Error', message: 'Wrong credentials', duration: 3000 })
-	}
+	})
 </script>
 
 <div class="page">
-	<div class="center-wrapper">
-		<div class="big-title" style="margin:  2rem 0;">Login</div>
-		<div class="floating-middle">
-			<form
-				on:submit={(e) => {
-					e.preventDefault()
-					login()
-				}}
-			>
-				<div class="input-wrapper">
-					<Input bind:value={email} title="E-mail" hideStatus={true} />
-				</div>
-				<div class="input-wrapper" style="margin-bottom: 0;">
-					<PasswordInput bind:value={password} title="Password" hideStatus={true} />
-				</div>
-				<a class="forgot-password" href="/resetPassword"> Forgot password? </a>
-				<div class="form-buttons-wrapper">
-					<div class="note">* You will use those credentials in all apps</div>
-					<input
-						type="submit"
-						class="form-btn"
-						style="background-color: rgb(219, 0, 97)"
-						value="Login"
-					/>
-				</div>
-			</form>
-		</div>
-	</div>
+	<FloatingContent title="Login">
+		<Form on:submit={() => executeLogin({ email, password })}>
+			<div class="input-wrapper">
+				<Input bind:value={email} title="E-mail" hideStatus={true} />
+			</div>
+			<div class="input-wrapper" style="margin-bottom: 0;">
+				<PasswordInput bind:value={password} title="Password" hideStatus={true} />
+			</div>
+			<a class="forgot-password" href="/resetPassword"> Forgot password? </a>
+			<div class="form-buttons-wrapper">
+				<div class="note">* You will use those credentials in all apps</div>
+				<Submit
+					bg="rgb(219, 0, 97)"
+					disabled={$isLogging}
+					value={$isLogging ? 'Loading...' : 'Login'}
+				/>
+			</div>
+		</Form>
+	</FloatingContent>
 </div>
 
 <style lang="scss">
 	@import '../variables.scss';
-	.form-btn {
-		width: 100%;
-		padding: 0.5rem;
-		margin-top: 0.5rem;
-		border-radius: 0.5rem;
-		color: white;
-		text-align: center;
-		font-weight: bold;
-		display: flex;
-		transition: all 0.2s;
-		padding-left: 0.8rem;
-		font-size: 1rem;
-		justify-content: center;
-		border: none;
-		cursor: pointer;
-	}
-	.form-btn:hover {
-		filter: brightness(1.2);
-	}
+
 	.form-buttons-wrapper {
 		display: flex;
 		margin-top: 2rem;
@@ -96,32 +64,8 @@
 		flex-direction: column;
 		align-items: center;
 	}
-	form {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		> .input-wrapper {
-			margin-bottom: 1rem;
-		}
-	}
-	.big-title {
-		font-size: 2.5rem;
-	}
-	.floating-middle {
-		display: flex;
-		flex-direction: column;
-		width: 30rem;
-		background-color: rgba(246, 246, 246, 0.8);
-		backdrop-filter: blur(4px);
-		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
-		padding: 1rem;
-		border-radius: 0.5rem;
-	}
-	.center-wrapper {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		flex: 1;
+	.input-wrapper {
+		margin-bottom: 1rem;
 	}
 	.note,
 	.forgot-password {
@@ -137,10 +81,5 @@
 	}
 	.forgot-password:hover {
 		color: $accent;
-	}
-	@media (max-width: 480px) {
-		.floating-middle {
-			width: 95vw;
-		}
 	}
 </style>

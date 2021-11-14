@@ -18,6 +18,14 @@ model User {
   picture  String @default("")
 }
 
+model WhitelistedSession{
+  id    Int @default(autoincrement()) @unique
+  userId String
+  token String  @unique
+  expiry DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
 model VerificationToken {
   email    String  @unique
   token    String  

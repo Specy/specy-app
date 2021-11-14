@@ -12,7 +12,7 @@ export class JwtEditGuard implements CanActivate{
     ): boolean{
         const request = context.switchToHttp().getRequest()
         const params = request.params
-        let id = params.id
+        const id = params.id
         let jwt = request.headers.authorization.replace('Bearer ', '')
         jwt = this.jwtService.decode(jwt)
         if(jwt.id !== id) throw new UnauthorizedException("Unhautorized to access this user")

@@ -1,8 +1,12 @@
 <script lang="ts">
-	import MdClose from 'svelte-icons/md/MdClose.svelte';
-	import MdMenu from 'svelte-icons/md/MdMenu.svelte';
+	import MdClose from 'svelte-icons/md/MdClose.svelte'
+	import MdMenu from 'svelte-icons/md/MdMenu.svelte'
+	import FaUser from 'svelte-icons/fa/FaUser.svelte'
 	import Logo from './logo.svelte'
-	import { page } from '$app/stores';
+	import { page } from '$app/stores';	
+	import { User } from '../lib/user'
+	
+	const { user} = User
 	let path = $page.path
 	$: path = $page.path
 	let scrollY = 0
@@ -17,29 +21,40 @@
 			navHidden = false
 		}
 	}
-
 </script>
 <svelte:window bind:scrollY />
 <nav class="nav">
 	<div class="desktop-menu">
 		<Logo />
-		<div class="links">
+		<div class="links" style={$user ? "margin-right:7rem": ""}>
 			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
 			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
 			
 		</div>
-		<a href="/login" class='login'>Login</a>
+		{#if $user}
+			<a href="/profile" class="profile"><FaUser /> </a>
+		{:else}	
+			<a href="/login" class='login'>Login</a>
+		{/if}
+
+		
 	</div>
 
 	<div class="mobile-menu" class:navHidden>
 		<div class="mobile-row">
 			<Logo logoToggled={menuOpen}/>
-			<div class="top-mobile-menu"  on:click={() => menuOpen = !menuOpen	}>
-				{#if menuOpen}
-					<MdClose />
-				{:else}
-					<MdMenu />
+			<div class="top-mobile-menu"  >
+				{#if $user}
+					<a href="/profile" class="profile"><FaUser /> </a>
 				{/if}
+				<div on:click={() => {menuOpen = !menuOpen}} style='height:2rem'>
+					{#if menuOpen}
+						<MdClose />
+					{:else}
+						<MdMenu />
+					{/if}
+				</div>
+
 			</div>
 		</div>
 
@@ -51,7 +66,6 @@
 			>Home</a>
 			<a 
 				href="/login" 
-
 				on:click={() => menuOpen = false}
 				style={path === "/login" ? "color:#b00752" : ""}
 			>Login</a>
@@ -60,6 +74,14 @@
 				on:click={() => menuOpen = false}
 				style={path === "/register" ? "color:#b00752" : ""}
 			>Register</a>
+			{#if $user}
+				<a 
+				href="/profile" 
+				on:click={() => menuOpen = false}
+				style={path === "/profile" ? "color:#b00752" : ""}
+				>Profile</a>
+			{/if}
+
 		</div>
 	</div>
 </nav>
@@ -91,6 +113,16 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+	.profile{
+		display: flex;
+		align-items: center;
+		height:2rem;
+		color: $textDark;
+		transition: all 0.3s;
+	}
+	.profile:hover{
+		color: $accent;
+	}
 	.mobile-menu {
 		position: absolute;
 		top: 0;
@@ -110,6 +142,8 @@
 	}
 	.top-mobile-menu {
 		height: 2rem;
+		display: flex;
+		align-items: center;
 	}
 
 	.links{
@@ -165,6 +199,9 @@
 		}
 		.desktop-menu{
 			display:none
+		}
+		.profile{
+			margin-right: 1rem;
 		}
 		.nav {
 			position: fixed;

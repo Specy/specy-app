@@ -1,25 +1,9 @@
 <script lang="ts">
     import {toast} from "./toast"
-    import {onDestroy} from "svelte"
     import FaTimes from "svelte-icons/fa/FaTimes.svelte"
-    let title = "Test"
-    let message = "Test"
+    const {title,duration,message, visible, closeToast, color} = toast
     let toastVisible = false
-    let timeout = setTimeout(() =>{},100)
-    let toastDuration = 0
-    let unsubscribe = toast.subscribe(data =>{
-        if(data.title === "") return
-        title = data?.title
-        message = data?.message
-        toastVisible = true
-        clearTimeout(timeout)
-        toastDuration = data?.duration
-        timeout = setTimeout(()=>{
-            toastVisible = false
-            toastDuration = 0
-        }, data?.duration)
-    })
-    onDestroy(unsubscribe)
+    $: toastVisible = $visible
 </script>
 
 <div >
@@ -27,17 +11,21 @@
     <div class="toast-wrapper" class:toastVisible>
         <div class="toast-title">
             <div >
-                {title}
+                {$title}
             </div>
-            <div class="close-icon" on:click={() => {toastVisible = false; toastDuration = 0}}>
+            <div class="close-icon" on:click={closeToast}>
                 <FaTimes />
             </div>
         </div>
         <div class="toast-text">
-            {message}
+            {$message}
         </div>
         <div class="toast-progress">
-            <div class={toastVisible ? "toast-progress-bar" : ""} style={`transition: all ${toastDuration}ms linear`}></div>
+            <div 
+                class={$visible ? "toast-progress-bar" : ""} 
+                style={`transition: all ${$duration}ms linear; background-color: ${$color}`}
+            >
+            </div>
         </div>
     </div>
 </div>
@@ -52,8 +40,8 @@
         overflow: hidden;
         max-height: 10rem;
         width: 20rem;
-		background-color: rgba(246, 246, 246, 0.8);;
-    	backdrop-filter: blur(4px);
+		background-color: rgba(246, 246, 246, 0.75);
+    	backdrop-filter: blur(3px);
         border-radius: 0.5rem;
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
         z-index: 20;

@@ -3,6 +3,8 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { IdGeneratorService } from 'src/modules/commons/services/id-generator.service'
 import { ChangePasswordDto } from './dtos/change-password.dto'
+import { WhitelistDAO } from './daos/jwt.dao'
+
 @Injectable()
 export class UserService {
 	constructor(
@@ -29,6 +31,29 @@ export class UserService {
 	async get(id: string, data: Prisma.UserSelect){
 		return this.prismaService.user.findUnique({where:{id},select:{...data}})
 	}
+	async whitelistToken(newToken:WhitelistDAO,oldToken?:string){
+		if(!oldToken) return this.prismaService.whitelistedSession.create({data:newToken})
+		return this.prismaService.whitelistedSession.upsert({
+			where:{token: oldToken},
+			create: newToken,
+			update:{ token: newToken.token, expiry: newToken.expiry}
+		})
+	}
+	async existsWhitelistedToken(token:string){
+		return this.prismaService.whitelistedSession.findUnique({where:{token}})
+	}
+	async purgeTokens(userId:string){
+		return this.prismaService.whitelistedSession.deleteMany({where:{userId:userId}})
+	}
+	async getTokensByUserId(userId:string){
+		return this.prismaService.whitelistedSession.findMany({where:{userId}})
+	}
+	async getToken(data: Prisma.WhitelistedSessionWhereUniqueInput){
+		return this.prismaService.whitelistedSession.findUnique({where:data})
+	}
+	async deleteToken(token: string){
+		return this.prismaService.whitelistedSession.delete({where:{token: token}})
+	}
 	async changePassword(data: ChangePasswordDto) {
 		return this.prismaService.user.update({
 			where: { email: data.email },
@@ -36,12 +61,12 @@ export class UserService {
 		})
 	}
 	async storeVerificationToken(email: string) {
-		let exists = await this.prismaService.verificationToken.findUnique({ where: { email: email } })
-		let token = this.idGeneratorService.randomStringId(8)
-		if (exists) {
-			await this.prismaService.verificationToken.delete({ where: { email: email } })
-		}
-		await this.prismaService.verificationToken.create({ data: { email: email, token: token } })
+		const token = this.idGeneratorService.randomStringId(8)
+		await this.prismaService.verificationToken.upsert({ 
+			update: { token: token },
+			where:{email:email},
+			create: {email: email, token:token}
+		})
 		return token
 	}
 	async deleteVerificationCodes(email:string){

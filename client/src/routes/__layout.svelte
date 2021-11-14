@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '../global.scss'
-	import NavBar from '../components/Nav.svelte'
-	import Footer from '../components/Footer.svelte'
-	import PageTransition from '../components/PageTransition.svelte'
-	import ErrorLogger from '../components/ErrorLogger.svelte'
-	import Background from '../components/Background.svelte'
-	import GlobalStyle from '../components/GlobalStyle.svelte'
+	import NavBar from '$cmp/Nav.svelte'
+	import Footer from '$cmp/Footer.svelte'
+	import PageTransition from '$cmp/PageTransition.svelte'
+	import ErrorLogger from '$cmp/ErrorLogger.svelte'
+	import Background from '$cmp/Background.svelte'
+	import GlobalStyle from '$cmp/GlobalStyle.svelte'
 	import { page } from '$app/stores'
 </script>
 

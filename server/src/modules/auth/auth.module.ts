@@ -7,6 +7,7 @@ import { CommonsModule } from '../commons/commons.module'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { LocalStrategy } from './strategies/local.strategy'
 import { AccountModule } from '../account/account.module'
+import { JwtRefreshStrategy  } from './strategies/refresh.strategy'
 import { UserModule } from '../user/user.module'
 @Module({
 	imports: [
@@ -22,7 +23,7 @@ import { UserModule } from '../user/user.module'
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, JwtStrategy, LocalStrategy],
+	providers: [AuthService, JwtStrategy, LocalStrategy,JwtRefreshStrategy],
 	exports: [AuthService],
 })
 export class AuthModule { }

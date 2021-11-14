@@ -1,5 +1,5 @@
 <script>
-	export let logoToggled = false;
+	export let logoToggled = false
 </script>
 
 <a
@@ -40,7 +40,7 @@
 	.logoToggled {
 		width: 62px !important;
 	}
-    .name {
+	.name {
 		font-size: 1.3rem;
 		font-weight: bold;
 	}
@@ -77,7 +77,7 @@
 	}
 	@media (max-width: 650px) {
 		.logo {
-			width:2.5rem;
+			width: 2.5rem;
 			height: 2.5rem;
 		}
 	}

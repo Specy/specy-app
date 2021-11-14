@@ -1,10 +1,14 @@
 <script>
-	import Input from '../components/Input.svelte'
-	import PasswordInput from '../components/PasswordInput.svelte'
+	import Input from '$cmp/Input.svelte'
+	import PasswordInput from '$cmp/PasswordInput.svelte'
+	import FloatingContent from '$cmp/FloatingContent.svelte'
+	import ButtonLink from '$cmp/ButtonLink.svelte';
+	import Form from '$cmp/Form.svelte'
+	import Submit from '$cmp/Submit.svelte'
+	import { toast } from '$cmp/toast'
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../lib/checkPassword'
-	import { toast } from '../components/toast'
-
+	import { useMutation } from '../lib/apiFetch'
 	let email = ''
 	let password = ''
 	let username = ''
@@ -12,194 +16,119 @@
 	let verificationCode = ''
 	let step = 1
 	let isFetching = false
-	async function register() {
-		let body = {
-			email: email,
-			password: password,
-			confirmPassword: confirmPassword,
-			username: username
+	const [sendCode, isSendingCode] = useMutation('/account/activate/send', {
+		method: 'POST',
+		onSuccess: () => {
+			step = 2
+			toast.success('Code was sent to your email')
+		},
+		onError: (err) => {
+			toast.error(err.response?.data?.message)
 		}
-
-		isFetching = true
-		let data, response
-		try {
-			response = await fetch(`http://localhost:3001/account/create/${verificationCode}`, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
+	})
+	const [register, isRegistering] = useMutation('/account/create', {
+		method: 'POST',
+		onSuccess: () => {
+			step = 3
+		},
+		onError: (err) => {
+			toast.error(err.response?.data?.message)
+			console.log(err.response)
 		}
-
-		if (response.ok) {
-			toast.set({ title: 'Success', message: data.message, duration: 3000 })
-			return (step = 3)
-		}
-		toast.set({ title: 'Error', message: data.message, duration: 3000 })
-	}
-	async function sendVerificationCode() {
-		if (!EmailValidator.validate(email))
-			return toast.set({ title: 'Error', message: 'Invalid email', duration: 3000 })
-		if (username.length < 4)
-			return toast.set({
-				title: 'Error',
-				message: 'Username must be at least 4 characters',
-				duration: 3000
-			})
+	})
+	function validateAndSend() {
+		if (!EmailValidator.validate(email)) return toast.error('Invalid email')
+		if (username.length < 4) return toast.error('Username must be at least 4 characters long')
 		if (checkStrenght(password).id < 1)
-			return toast.set({
-				title: 'Error',
-				message:
-					'Password must be at least 8 characters long, have An uppercase letter and one number',
-				duration: 4000
-			})
-		if (password !== confirmPassword)
-			return toast.set({ title: 'Error', message: "Passwords don't match", duration: 3000 })
-
-			
-		isFetching = true
-		let response, data
-		try {
-			response = await fetch('http://localhost:3001/account/activate/send', {
-				method: 'POST',
-				body: JSON.stringify({ email: email }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			isFetching = false
-			data = await response.json()
-		} catch (e) {
-			isFetching = false
-			console.error(e)
-			return toast.set({ title: 'Error', message: 'There was an error', duration: 3000 })
-		}
-		if (response.ok) return (step = 2)
-
-		toast.set({ title: 'Error', message: data.message, duration: 3000 })
+			return toast.error(
+				'Password must be at least 8 characters long, have An uppercase letter and one number'
+			)
+		if (password !== confirmPassword) return toast.error("Passwords don't match")
+		sendCode({ email })
 	}
+	function registerUser() {
+		register(
+			{
+				email,
+				password,
+				username,
+				confirmPassword
+			},
+			{ params: `/${verificationCode}` }
+		)
+	}
+	$: isFetching = $isRegistering || $isSendingCode
 </script>
 
 <div class="page">
-	<div class="center-wrapper">
-		<div class="big-title" style="margin:  2rem 0;">Register</div>
-		<div class="floating-middle">
-			{#if step === 1}
-				<form
-					on:submit={(e) => {
-						e.preventDefault()
-						sendVerificationCode()
-					}}
-				>
-					<div>
-						<Input
-							bind:value={email}
-							title="E-mail"
-							status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
-						/>
-					</div>
-					<div>
-						<Input
-							bind:value={username}
-							title="Username"
-							status={username.length > 3 ? 'correct' : 'wrong'}
-						/>
-					</div>
-					<div style="margin-bottom: 0;">
-						<PasswordInput bind:value={password} title="Password" />
-					</div>
-					<div>
-						<PasswordInput
-							bind:value={confirmPassword}
-							title="Confirm password"
-							passwordToCheck={password}
-						/>
-					</div>
-					<div class="note">
-						Passwords must be at least 8 characters long, have an uppercase letter and one number
-					</div>
-					<div class="form-buttons-wrapper">
-						<div class="note">* You will use those credentials to login in all apps</div>
-						<input
-							type="submit"
-							disabled={isFetching}
-							class="form-btn"
-							style="background-color: rgb(85, 143, 144)"
-							value={!isFetching ? 'Register' : 'Loading...'}
-						/>
-					</div>
-				</form>
-			{/if}
-			{#if step === 2}
-				<form
-					on:submit={(e) => {
-						e.preventDefault()
-						register()
-					}}
-				>
-					<div>
-						A verification code was sent to the email "{email}" please paste it here.
-					</div>
-					<Input bind:value={verificationCode} title="Verification code" />
-					<div class="form-buttons-wrapper">
-						<input
-							type="submit"
-							disabled={isFetching}
-							class="form-btn"
-							style="background-color: rgb(85, 143, 144)"
-							value={!isFetching ? 'Register' : 'Loading...'}
-						/>
-					</div>
-				</form>
-			{/if}
-			{#if step === 3}
-				<div>
-					You successfully registered! You can now proceed to login.
-					<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
-						Go to login
-					</a>
+	<FloatingContent title="Register">
+		{#if step === 1}
+			<Form on:submit={() => validateAndSend()}>
+				<div class="margin-bottom-1">
+					<Input
+						bind:value={email}
+						title="E-mail"
+						status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
+					/>
 				</div>
-			{/if}
-		</div>
-	</div>
+				<div class="margin-bottom-1">
+					<Input
+						bind:value={username}
+						title="Username"
+						status={username.length > 3 ? 'correct' : 'wrong'}
+					/>
+				</div>
+				<div style="margin-bottom: -0.8rem;">
+					<PasswordInput bind:value={password} title="Password" />
+				</div>
+				<div class="margin-bottom-1">
+					<PasswordInput
+						bind:value={confirmPassword}
+						title="Confirm password"
+						passwordToCheck={password}
+					/>
+				</div>
+				<div class="note">
+					Passwords must be at least 8 characters long, have an uppercase letter and one number
+				</div>
+				<div class="form-buttons-wrapper">
+					<div class="note">* You will use those credentials to login in all apps</div>
+					<Submit
+						disabled={isFetching}
+						bg="rgb(85, 143, 144)"
+						value={!isFetching ? 'Register' : 'Loading...'}
+					/>
+				</div>
+			</Form>
+		{/if}
+		{#if step === 2}
+			<Form on:submit={(e) => registerUser()}>
+				<div>
+					A verification code was sent to the email "{email}" please paste it here.
+				</div>
+				<Input bind:value={verificationCode} title="Verification code" hideStatus={true}/>
+				<div class="form-buttons-wrapper">
+					<Submit
+						disabled={isFetching}
+						bg="rgb(85, 143, 144)"
+						value={!isFetching ? 'Register' : 'Loading...'}
+					/>
+				</div>
+			</Form>
+		{/if}
+		{#if step === 3}
+			<div>
+				You successfully registered! You can now proceed to login.
+				<ButtonLink href='/login' bg='rgb(85, 143, 144)' style='margin-top:2rem;'>
+					Go to login
+				</ButtonLink>
+			</div>
+		{/if}
+	</FloatingContent>
 </div>
 
 <style lang="scss">
 	@import '../variables.scss';
-	.form-btn {
-		width: 100%;
-		padding: 0.5rem;
-		margin-top: 0.5rem;
-		border-radius: 0.5rem;
-		color: white;
-		text-align: center;
-		font-weight: bold;
-		display: flex;
-		transition: all 0.2s;
-		padding-left: 0.8rem;
-		font-size: 1rem;
-		justify-content: center;
-		border: none;
-		cursor: pointer;
-	}
-	.form-btn:hover {
-		filter: brightness(1.2);
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		> div {
-			margin-bottom: 1rem;
-		}
-	}
 	.form-buttons-wrapper {
 		display: flex;
 		flex: 1;
@@ -215,29 +144,7 @@
 		text-align: left;
 		width: 100%;
 	}
-	.big-title {
-		font-size: 2.5rem;
-	}
-	.floating-middle {
-		display: flex;
-		flex-direction: column;
-		width: 30rem;
-
-		background-color: rgba(246, 246, 246, 0.8);
-		backdrop-filter: blur(4px);
-		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
-		padding: 1rem;
-		border-radius: 0.5rem;
-	}
-	.center-wrapper {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		flex: 1;
-	}
-	@media (max-width: 480px) {
-		.floating-middle {
-			width: 95vw;
-		}
+	.margin-bottom-1{
+		margin-bottom: 1rem;
 	}
 </style>

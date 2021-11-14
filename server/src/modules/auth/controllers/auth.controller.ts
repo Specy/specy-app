@@ -1,17 +1,32 @@
-import { User as UserEntity } from '.prisma/client'
-import { Body, Controller, Get, Post, UseGuards , Logger} from '@nestjs/common'
-import { SuccessfulResponse } from 'src/shared/Responses'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { User } from '../decorators/user.decorator'
-import { UserLoginDto } from '../dtos/user-login.dto'
-import { JwtAuthGuard } from '../guards/jwt.guard'
-import { LocalAuthGuard } from '../guards/local.guard'
-import { AuthService } from '../services/auth.service'
-
+import { User as UserEntity } from '.prisma/client';
+import {
+	Body,
+	Controller,
+	Get,
+	Post,
+	UseGuards,
+	Logger,
+	Res,
+	Req,
+	UnauthorizedException,
+} from '@nestjs/common';
+import { SuccessfulResponse } from 'src/shared/Responses';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { User } from '../decorators/user.decorator';
+import { UserLoginDto } from '../dtos/user-login.dto';
+import { JwtAuthGuard } from '../guards/jwt.guard';
+import { RefreshAuthGuard } from '../guards/refresh.guard';
+import { LocalAuthGuard } from '../guards/local.guard';
+import { AuthService } from '../services/auth.service';
+import { Request, Response } from 'express';
+import { UserService } from 'src/modules/user/user.service';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-	constructor(private readonly authService: AuthService) { }
+	constructor(
+		private readonly authService: AuthService,
+		private readonly userService: UserService,
+	) { }
 
 	@Post('login')
 	@UseGuards(LocalAuthGuard)
@@ -19,11 +34,23 @@ export class AuthController {
 		summary:
 			'Authenticates using email and password. Tokens Usable within all apps',
 	})
-	async login(@Body() data: UserLoginDto, @User() user: UserEntity) {
-		let result = await this.authService.login(user)
-		return result
+	async login(
+		@Body() data: UserLoginDto,
+		@User() user: UserEntity,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const result = await this.authService.login(user);
+		const refreshDate = new Date();
+		refreshDate.setDate(refreshDate.getDate() + 7);
+		const newToken = {
+			expiry: refreshDate,
+			userId: user.id,
+			token: result.refreshToken,
+		};
+		await this.userService.whitelistToken(newToken);
+		this.setCookie(res, result.refreshToken);
+		return result;
 	}
-
 	@Get('status')
 	@ApiOperation({
 		summary: 'Validate authenticated user',
@@ -31,20 +58,71 @@ export class AuthController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	status(@User() user: UserEntity) {
-		return new SuccessfulResponse("User validated",{
+		return {
 			id: user.id,
-			username: user.username
-		})
+			username: user.username,
+		};
 	}
 
 	@Post('refresh')
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(RefreshAuthGuard)
 	@ApiBearerAuth()
 	@ApiOperation({
 		summary: 'Create new tokens using refresh token',
 	})
-	async refresh(@User() user: UserEntity) {
-		let result = await this.authService.login(user)
-		return result
+	async refresh(
+		@User() user: UserEntity,
+		@Res({ passthrough: true }) res: Response,
+		@Req() req: Request,
+	) {
+		const oldToken = this.getCookie(req);
+		const token = await this.userService.existsWhitelistedToken(oldToken)
+		if(!token) throw new UnauthorizedException("Token not valid")
+		const result = await this.authService.login(user);
+		const refreshDate = new Date();
+		refreshDate.setDate(refreshDate.getDate() + 7);
+		const newToken = {
+			expiry: refreshDate,
+			userId: user.id,
+			token: result.refreshToken,
+		};
+
+
+		await this.userService.whitelistToken(newToken, oldToken);
+		this.setCookie(res, result.refreshToken);
+		return result.accessToken;
+	}
+
+	@Post('logout')
+	@UseGuards(RefreshAuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Logs out user and deletes session',
+	})
+	async logout(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
+		const token = this.getCookie(req);
+		this.userService.deleteToken(token);
+		this.clearCookie(res);
+	}
+
+	getCookie(req: Request) {
+		return req.cookies[process.env.JWT_NAME];
+	}
+
+	clearCookie(res: Response) {
+		res.clearCookie(process.env.JWT_NAME);
+	}
+
+	setCookie(res: Response, token: string) {
+		const refreshDate = new Date();
+		refreshDate.setDate(refreshDate.getDate() + 7);
+		res.cookie(process.env.JWT_NAME, token, {
+			expires: refreshDate,
+			...(process.env.NODE_ENV == 'production' && {
+				domain: '.specy.app',
+				httpOnly: true,
+				sameSite: 'strict',
+			}),
+		});
 	}
 }

@@ -1,11 +1,11 @@
 <script>
-    	import { onDestroy, onMount } from "svelte";
+	import { onDestroy, onMount } from 'svelte'
 	let zoom = 1
 
-	function handleZoom(){
+	function handleZoom() {
 		let currentPosition = window.scrollY
 		let value = currentPosition / 600 + 1
-		if(value < 2) zoom = value
+		if (value < 2) zoom = value
 	}
 	let interval
 	onMount(() => {
@@ -40,7 +40,6 @@
 	}
 	@media (orientation: portrait) {
 		.background {
-			
 			> .background-image {
 				background-image: url('/images/circle-scatter-haikei2.svg');
 				transition: all 0.3s;
