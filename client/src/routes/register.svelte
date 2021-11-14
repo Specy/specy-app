@@ -2,6 +2,7 @@
 	import Input from '$cmp/Input.svelte'
 	import PasswordInput from '$cmp/PasswordInput.svelte'
 	import FloatingContent from '$cmp/FloatingContent.svelte'
+	import ButtonLink from '$cmp/ButtonLink.svelte';
 	import Form from '$cmp/Form.svelte'
 	import Submit from '$cmp/Submit.svelte'
 	import { toast } from '$cmp/toast'
@@ -19,11 +20,10 @@
 		method: 'POST',
 		onSuccess: () => {
 			step = 2
-			//TODO make all errors and success statuses log data from response
 			toast.success('Code was sent to your email')
 		},
 		onError: (err) => {
-			toast.error(err.message)
+			toast.error(err.response?.data?.message)
 		}
 	})
 	const [register, isRegistering] = useMutation('/account/create', {
@@ -31,8 +31,9 @@
 		onSuccess: () => {
 			step = 3
 		},
-		onError: () => {
-			toast.error('Invalid token')
+		onError: (err) => {
+			toast.error(err.response?.data?.message)
+			console.log(err.response)
 		}
 	})
 	function validateAndSend() {
@@ -63,24 +64,24 @@
 	<FloatingContent title="Register">
 		{#if step === 1}
 			<Form on:submit={() => validateAndSend()}>
-				<div>
+				<div class="margin-bottom-1">
 					<Input
 						bind:value={email}
 						title="E-mail"
 						status={EmailValidator.validate(email) ? 'correct' : 'wrong'}
 					/>
 				</div>
-				<div>
+				<div class="margin-bottom-1">
 					<Input
 						bind:value={username}
 						title="Username"
 						status={username.length > 3 ? 'correct' : 'wrong'}
 					/>
 				</div>
-				<div style="margin-bottom: 0;">
+				<div style="margin-bottom: -0.8rem;">
 					<PasswordInput bind:value={password} title="Password" />
 				</div>
-				<div>
+				<div class="margin-bottom-1">
 					<PasswordInput
 						bind:value={confirmPassword}
 						title="Confirm password"
@@ -105,7 +106,7 @@
 				<div>
 					A verification code was sent to the email "{email}" please paste it here.
 				</div>
-				<Input bind:value={verificationCode} title="Verification code" />
+				<Input bind:value={verificationCode} title="Verification code" hideStatus={true}/>
 				<div class="form-buttons-wrapper">
 					<Submit
 						disabled={isFetching}
@@ -118,9 +119,9 @@
 		{#if step === 3}
 			<div>
 				You successfully registered! You can now proceed to login.
-				<a href="/login" class="form-btn" style="background-color: rgb(85, 143, 144)">
+				<ButtonLink href='/login' bg='rgb(85, 143, 144)' style='margin-top:2rem;'>
 					Go to login
-				</a>
+				</ButtonLink>
 			</div>
 		{/if}
 	</FloatingContent>
@@ -142,5 +143,8 @@
 		color: $hint;
 		text-align: left;
 		width: 100%;
+	}
+	.margin-bottom-1{
+		margin-bottom: 1rem;
 	}
 </style>

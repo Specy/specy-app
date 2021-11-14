@@ -1,4 +1,5 @@
 import Axios, { AxiosRequestConfig } from 'axios'
+import type { AxiosError } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import storage from '../utils/storage'
 const API_URL = 'http://localhost:5000/' //ENV???
@@ -21,7 +22,7 @@ axios.interceptors.request.use(authRequestInterceptor)
 
 axios.interceptors.response.use(
 	(res) => res.data,
-	(err) => {
+	(err:AxiosError) => {
 		storage.token = ""
 		return Promise.reject(err)
 	}

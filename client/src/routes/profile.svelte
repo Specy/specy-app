@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { User } from '$lib/user'
 	import Input from '$cmp/Input.svelte'
+	import ButtonLink from '$cmp/ButtonLink.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte'
 	import { useMutation, useQuery } from '../lib/apiFetch'
 	import FloatingContent from '$cmp/FloatingContent.svelte'
@@ -36,16 +37,17 @@
 			toast.success('Token deleted')
 			updateTokens()
 		},
-		onError: () => {
-			toast.error('Error deleting token')
+		onError: (err) => {
+			console.log(err.response)
+			toast.error(err.response?.data?.message)
 			fetchUser()
 		}
 	})
 	const [updateUser, isUpdatingUser] = useMutation('/users', {
 		method: 'PATCH',
 		onError: (err) => {
-			console.log(err)
-			toast.error('Error updating')
+			console.log(err.response)
+			toast.error(err.response?.data?.message)
 		},
 		onSuccess: (res) => {
 			toast.success('Profile updated')
@@ -96,9 +98,9 @@
 			<Button bg="rgb(85, 143, 144)" on:click={logout} value="Logout" />
 		{:else}
 			Not logged in
-			<a class="form-btn" href="/login" style="background-color: rgb(219, 0, 97); margin-top:2rem;">
+			<ButtonLink href="/login" bg='rgb(219, 0, 97)' style='margin-top:2rem'>
 				Go to login
-			</a>
+			</ButtonLink>
 		{/if}
 	</FloatingContent>
 </div>

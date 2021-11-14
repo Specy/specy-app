@@ -8,7 +8,7 @@ import { AccountService } from '../services/account.service'
 import { TokenVerificationDto } from '../dtos/verify-code.dto'
 import { TokenService } from '../services/token.service'
 import { TokenGuard } from '../guards/token.guard'
-
+import { UserService } from 'src/modules/user/user.service'
 /*#TODO 
 	- Make sure token is valid in auth
 */
@@ -17,7 +17,8 @@ import { TokenGuard } from '../guards/token.guard'
 export class AccountController {
 	constructor(
 		private readonly accountService: AccountService,
-		private readonly tokenService: TokenService
+		private readonly tokenService: TokenService,
+		private readonly userService: UserService,
 	) { }
 
 	@Post('activate/send')
@@ -47,7 +48,8 @@ export class AccountController {
 		summary: 'Change password',
 	})
 	async recoverAccount(@Body() data: ChangePasswordDto) {
-		const respone = await this.accountService.changePassword(data)
+		const response = await this.accountService.changePassword(data)
+		this.userService.purgeTokens(response.id)
 		return new SuccessfulResponse("Password changed")
 	}
 

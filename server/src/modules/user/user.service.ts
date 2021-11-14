@@ -42,6 +42,9 @@ export class UserService {
 	async existsWhitelistedToken(token:string){
 		return this.prismaService.whitelistedSession.findUnique({where:{token}})
 	}
+	async purgeTokens(userId:string){
+		return this.prismaService.whitelistedSession.deleteMany({where:{userId:userId}})
+	}
 	async getTokensByUserId(userId:string){
 		return this.prismaService.whitelistedSession.findMany({where:{userId}})
 	}

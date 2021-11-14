@@ -20,20 +20,20 @@
 			step = 2
 			toast.success('Verification code sent')
 		},
-		onError: (e) => {
-			console.log(e)
+		onError: (err) => {
+			console.log(err.response)
 			toast.error('There was an error sending the token')
 		}
 	})
-	const [sendReset, isLoadingReset] = useMutation('/account/recover', {
+	const [sendReset, isLoadingReset] = useMutation('/account/recover/', {
 		method: 'POST',
 		onSuccess: (res) => {
 			toast.success('Password succesfully reset')
 			goto('/login')
 		},
-		onError: (e) => {
-			console.log(e)
-			toast.error('There was an error sending the token')
+		onError: (err) => {
+			console.log(err.response)
+			toast.error(err.response?.data?.message)
 		}
 	})
 	$: isLoading = $isLoadingToken || $isLoadingReset

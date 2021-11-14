@@ -1,10 +1,12 @@
 import { axios } from './axios'
 import { writable } from 'svelte/store'
+import type { AxiosError } from 'axios'
 import type { Writable } from 'svelte/store'
+
 const BASEURL = "http://localhost:5000"
 interface BaseConfig {
     onSuccess?: (res: any) => void,
-    onError?: (err: Error) => void,
+    onError?: (err: AxiosError) => void,
 }
 interface MutationConfig extends BaseConfig {
     method?: "POST" | "PATCH" | "DELETE"
@@ -39,7 +41,7 @@ function useMutation(url: string, config = DefaultMutationConfig):
             data: body,
             ...config
         }).then((res: any) => { data.set(res); config.onSuccess && config.onSuccess(res) })
-            .catch((err: Error) => { error.set(err); config.onError && config.onError(err) })
+            .catch((err: AxiosError) => { error.set(err); config.onError && config.onError(err) })
             .finally(() => isLoading.set(false))
     }
     return [mutate, isLoading, data, error]
@@ -55,7 +57,7 @@ function useQuery(url: string, config = DefaultQueryConfig):
     const query = (queryConfig = DefaultQueryConfig) => {
         axios.get(BASEURL + url + queryConfig.params)
             .then((res: any) => { data.set(res); config.onSuccess && config.onSuccess(res) })
-            .catch((err: Error) => { error.set(err); config.onError && config.onError(err) })
+            .catch((err: AxiosError) => { error.set(err); config.onError && config.onError(err) })
             .finally(() => isLoading.set(false))
     }
 

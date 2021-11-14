@@ -10,7 +10,7 @@ function userStore(){
         try{
             res = (await axios.get(BASEURL + "/auth/status"))
         }catch(e){
-            console.log(e)
+            console.error(e)
         }
         user.set(res)
     }

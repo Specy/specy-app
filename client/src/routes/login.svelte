@@ -17,8 +17,9 @@
 	const [executeLogin, isLogging] = useMutation('/auth/login', {
 		method: 'POST',
 		onError: (err) => {
-			toast.error('Credentials are wrong')
-			console.error(err)
+			console.log(err.response)
+			toast.error("Credentials are wrong")
+			console.error()
 		},
 		onSuccess: (res) => {
 			if (!res.accessToken) return toast.error('Error')
