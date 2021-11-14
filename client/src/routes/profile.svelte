@@ -62,7 +62,9 @@
 	}
 	$: isLoading = $isUpdatingUser || $isDeletingToken
 </script>
-
+<title>
+	Profile
+</title>
 <div class="page">
 	<FloatingContent title="Profile">
 		{#if $user}

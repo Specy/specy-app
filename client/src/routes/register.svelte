@@ -59,7 +59,9 @@
 	}
 	$: isFetching = $isRegistering || $isSendingCode
 </script>
-
+<title>
+	Register
+</title>
 <div class="page">
 	<FloatingContent title="Register">
 		{#if step === 1}

@@ -38,7 +38,9 @@
 	})
 	$: isLoading = $isLoadingToken || $isLoadingReset
 </script>
-
+<title>
+	Reset password
+</title>
 <div class="page">
 	<FloatingContent title="Reset Password">
 		{#if step === 1}

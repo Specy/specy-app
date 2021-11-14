@@ -31,7 +31,9 @@
 		}
 	})
 </script>
-
+<title>
+	Login
+</title>
 <div class="page">
 	<FloatingContent title="Login">
 		<Form on:submit={() => executeLogin({ email, password })}>

@@ -4,7 +4,9 @@
 	import Contact from '$cmp/Contact.svelte'
 	import '../global.scss'
 </script>
-
+<title>
+	Specy Hub
+</title>
 <Main />
 <Support />
 <Contact />
