@@ -5,7 +5,7 @@
 	import Logo from './logo.svelte'
 	import { page } from '$app/stores';	
 	import { User } from '../lib/user'
-	
+	import { theme } from "$lib/theme";
 	const { user} = User
 	let path = $page.path
 	$: path = $page.path
@@ -26,13 +26,14 @@
 <nav class="nav">
 	<div class="desktop-menu">
 		<Logo />
-		<div class="links" style={$user ? "margin-right:7rem": ""}>
+		<div class="links" style={$user ? "margin-right:7rem": ""} class:whiteText={$theme === 'dark'}>
 			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
 			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
-			
 		</div>
 		{#if $user}
-			<a href="/profile" class="profile"><FaUser /> </a>
+			<a href="/profile" class="profile" class:darkIcon={$theme === 'dark'}>
+				<FaUser /> 
+			</a>
 		{:else}	
 			<a href="/login" class='login'>Login</a>
 		{/if}
@@ -40,14 +41,16 @@
 		
 	</div>
 
-	<div class="mobile-menu" class:navHidden>
+	<div class="mobile-menu" class:navHidden class:mobileMenuDark={$theme === 'dark'}>
 		<div class="mobile-row">
 			<Logo logoToggled={menuOpen}/>
-			<div class="top-mobile-menu"  >
+			<div class="top-mobile-menu" >
 				{#if $user}
-					<a href="/profile" class="profile"><FaUser /> </a>
+					<a href="/profile" class="profile" class:darkIcon={$theme === 'dark'}>
+						<FaUser /> 
+					</a>
 				{/if}
-				<div on:click={() => {menuOpen = !menuOpen}} style='height:2rem'>
+				<div on:click={() => {menuOpen = !menuOpen}} style='height:2rem' class:darkIcon={$theme === 'dark'}>
 					{#if menuOpen}
 						<MdClose />
 					{:else}
@@ -58,7 +61,7 @@
 			</div>
 		</div>
 
-		<div class="links-mobile" class:menuOpen>
+		<div class="links-mobile" class:menuOpen class:mobileMenuDark={$theme === 'dark'}>
 			<a 
 				href="/" 
 				on:click={() => menuOpen = false}
@@ -117,7 +120,7 @@
 		display: flex;
 		align-items: center;
 		height:2rem;
-		color: $textDark;
+		color: $textFlip;
 		transition: all 0.3s;
 	}
 	.profile:hover{
@@ -135,6 +138,13 @@
 		transition: all 0.2s ease-out;
 		
 		transform: translateY(0);
+	}
+	.mobileMenuDark{
+		background-color: rgba(29, 32, 33, 0.9);
+		color: #bfbfbf;
+		> * {
+			color: #bfbfbf;
+		}
 	}
 	.navHidden{
 		transform: translateY(-5rem);
@@ -158,7 +168,12 @@
 			text-decoration: none;
 		}
 	}
-
+	.whiteText{
+		color: #bfbfbf;
+		> * {
+			color:#bfbfbf;
+		}
+	}
 
 	.links-mobile{
 		width: 100%;
@@ -183,7 +198,6 @@
 		color: $accent;
 	}
 	.nav {
-		
 		padding: 0.2rem;
 		margin: 3rem;
 		margin-top: 2rem;
@@ -192,6 +206,9 @@
 		z-index: 10;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.darkIcon{
+		color: #bfbfbf;
 	}
 	@media (max-width: 650px) {
 		.mobile-menu{
@@ -202,6 +219,7 @@
 		}
 		.profile{
 			margin-right: 1rem;
+			padding: 0.3rem;
 		}
 		.nav {
 			position: fixed;

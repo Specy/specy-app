@@ -8,3 +8,6 @@
 		<slot />
 	</div>
 {/key}
+
+<style>
+</style>

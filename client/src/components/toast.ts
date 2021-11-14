@@ -9,7 +9,6 @@ function Toast() {
     const title = writable("")
     const message = writable("")
     const duration = writable(3000)
-    const lastEdit = writable(0)
     const visible = writable(false)
     const color = writable("")
     let timeout = setTimeout(() => { }, 10)
@@ -17,7 +16,6 @@ function Toast() {
         color.set(colorName)
         message.set(text)
         duration.set(time)
-        lastEdit.set(new Date().getTime())
         clearTimeout(timeout)
         visible.set(true)
         timeout = setTimeout(() => {
@@ -51,7 +49,7 @@ function Toast() {
         execute(text, timeout, Colors.Hint)
     }
     return {
-        title, message, duration, error, success, custom, lastEdit, visible, closeToast, log, warn, color
+        title, message, duration, error, success, custom, visible, closeToast, log, warn, color
     }
 }
 

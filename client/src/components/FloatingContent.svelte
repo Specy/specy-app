@@ -1,12 +1,13 @@
 <script>
 	export let title = ''
+	import { theme } from "$lib/theme";
 </script>
 
-<div class="center-wrapper">
+<div class="center-wrapper" >
 	{#if title}
 		<div class="big-title" style="margin:  2rem 0;">{title}</div>
 	{/if}
-	<div class="floating-middle">
+	<div class="floating-middle" class:dark={$theme === 'dark'}>
 		<slot />
 	</div>
 </div>
@@ -21,6 +22,10 @@
 		box-shadow: 1px 1px 5px rgba(69, 69, 89, 0.25);
 		padding: 1rem;
 		border-radius: 0.5rem;
+	}
+	.dark{
+		background-color: rgba(29, 32, 33, 0.9);
+		color: #bfbfbf;
 	}
 	.center-wrapper {
 		display: flex;

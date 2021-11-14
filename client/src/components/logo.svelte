@@ -1,5 +1,6 @@
 <script>
 	export let logoToggled = false
+	import { theme } from "$lib/theme";
 </script>
 
 <a
@@ -9,7 +10,7 @@
 	href="/"
 >
 	<img src="/images/logo.png" alt="logo" class="logo" />
-	<div class="name">
+	<div class="name" class:whiteText={$theme === 'dark'}>
 		<div>Specy</div>
 		<div class="overflow-wrapper">
 			<div class="logo-line-wrapper">
@@ -39,6 +40,9 @@
 
 	.logoToggled {
 		width: 62px !important;
+	}
+	.whiteText{
+		color: #bfbfbf;
 	}
 	.name {
 		font-size: 1.3rem;

@@ -10,6 +10,7 @@
 	import Button from '$cmp/Button.svelte'
 	import { goto } from '$app/navigation'
 	import storage from '../utils/storage'
+	import { theme } from '$lib/theme';
 	const { user, fetchUser } = User
 	let username = $user?.username || ''
 	let isLoading = false
@@ -68,12 +69,12 @@
 			<div>
 				<Input bind:value={username} title="Username" hideStatus={true} />
 			</div>
-			<a href="/resetPassword" class="change-psw"> Change password </a>
+			<a href="/resetPassword" class="change-psw" class:dark={$theme === 'dark'}> Change password </a>
 			<div class="tokens-wrapper">
 				Active sessions
-				<div class="tokens-wrapper-inner">
+				<div class="tokens-wrapper-inner" >
 					{#each tokens as token}
-						<div class="token">
+						<div class="token" class:dark={$theme === 'dark'}>
 							{new Date(token.createdAt).toLocaleString()}
 							<div class="token-icons">
 								<div style="color: rgb(237, 79, 79)" on:click={() => deleteToken({ id: token.id })}>
@@ -126,6 +127,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.token-icons {
 		display: flex;
 		align-items: center;
@@ -152,7 +154,7 @@
 		border: none;
 		cursor: pointer;
 		background-color: rgba(214, 214, 214, 0.5);
-		color: $textDark;
+		color: $textFlip;
 		padding: 0.5rem;
 	}
 	.change-psw:hover {
@@ -163,5 +165,9 @@
 		color: $hint;
 		text-align: left;
 		width: 100%;
+	}
+	.dark{
+		background-color: rgba(47, 51, 53, 0.5);
+		color: #bfbfbf;
 	}
 </style>

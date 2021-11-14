@@ -77,7 +77,7 @@
 	}
 	.forgot-password {
 		text-align: right;
-		color: $textDark;
+		color: $textFlip;
 		transition: all 0.2s;
 	}
 	.forgot-password:hover {

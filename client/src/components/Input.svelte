@@ -3,6 +3,7 @@
 	import FaExclamationCircle from 'svelte-icons/fa/FaExclamationCircle.svelte'
 	import FaCheckCircle from 'svelte-icons/fa/FaCheckCircle.svelte'
 	import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
+	import { theme } from '$lib/theme';
 	export let title = ''
 	export let value = ''
 	export let status: statusType = ''
@@ -16,7 +17,7 @@
 
 <div class="input-wrapper">
 	<div>{title}</div>
-	<div class="input-row">
+	<div class="input-row" class:dark={$theme === 'dark'}>
 		<input
 			bind:value
 			class="form-input"
@@ -47,6 +48,12 @@
 		background-color: rgba(214, 214, 214, 0.5);
 		padding: 0.2rem;
 		margin-top: 0.2rem;
+	}
+	.dark{
+		background-color: rgba(47, 51, 53, 0.5);
+		> input {
+			color: white;
+		}
 	}
 	.input-wrapper {
 		display: flex;

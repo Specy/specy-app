@@ -7,14 +7,21 @@
 	import Background from '$cmp/Background.svelte'
 	import GlobalStyle from '$cmp/GlobalStyle.svelte'
 	import { page } from '$app/stores'
+	import { browser } from '$app/env';
+	import { theme } from '$lib/theme';
+	theme.subscribe((value) => {
+		if(!browser) return
+		if(value === 'dark') return document.body.classList.add("body-dark")
+		document.body.classList.remove("body-dark")	
+	})
 </script>
 
 <NavBar />
-<Background />
 <ErrorLogger>
 	<PageTransition refresh={$page.path}>
 		<slot />
 	</PageTransition>
 </ErrorLogger>
 <Footer />
+<Background />
 <GlobalStyle />

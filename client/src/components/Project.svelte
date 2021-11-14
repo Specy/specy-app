@@ -2,9 +2,10 @@
 	import type { ProjectData } from "../types/Types.js"
 	import MdOpenInNew from "svelte-icons/md/MdOpenInNew.svelte"
 	export let data: ProjectData
+	import { theme } from "$lib/theme";
 </script>
 
-<div class="project">
+<div class="project" class:projectDark={$theme === "dark"}>
 	<div class="row">
 		<img src={data.image} alt={data.title} />
 		<div class="app-title">
@@ -30,7 +31,7 @@
 <style lang="scss">
 	@import "../variables.scss";
 	.project {
-		background-color: rgba(246, 246, 246, 0.8);;
+		background-color: rgba(246, 246, 246, 0.8);
     	backdrop-filter: blur(4px);
 		box-shadow: 1px 1px 5px rgb(69 69 89 / 25%);
 		display: flex;
@@ -40,6 +41,9 @@
 		border-radius: 1rem;
 		min-width: 16rem;
 		flex: 1;
+	}
+	.projectDark{
+		background-color: rgba(29, 32, 33, 0.8);
 	}
 	.row {
 		display: flex;
@@ -100,7 +104,10 @@
 	@media (max-width: 480px) {
 		.project {
 			backdrop-filter: none;
-			background-color: #f6f6f6f5;
+			background-color: rgba(246, 246, 246, 0.9);
+		}
+		.projectDark{
+			background-color: rgba(29, 32, 33, 0.9) ;
 		}
 	}
 </style>

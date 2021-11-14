@@ -6,10 +6,18 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
+		z-index: -2;
 		overflow-x: hidden;
 	}
 	:global(html) {
 		overflow-y: scroll;
+	}
+	:global(*){
+		transition: background-color 0.5s, color 0.5s;
+	}
+	:global(.body-dark){
+		background-color: #181a1b;
+		color: #bfbfbf;
 	}
 	:global(#svelte) {
 		min-height: 100vh;
@@ -26,7 +34,7 @@
 	}
 	:global(a) {
 		text-decoration: none;
-		color: $textDark;
+		color: $textFlip;
 	}
 	@media (min-width: 650px) {
 		:global(::-webkit-scrollbar) {

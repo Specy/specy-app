@@ -1,14 +1,15 @@
 <script lang="ts">
     import {toast} from "./toast"
     import FaTimes from "svelte-icons/fa/FaTimes.svelte"
+    import { theme } from "$lib/theme";
     const {title,duration,message, visible, closeToast, color} = toast
     let toastVisible = false
     $: toastVisible = $visible
 </script>
 
-<div >
+<div>
     <slot/>
-    <div class="toast-wrapper" class:toastVisible>
+    <div class="toast-wrapper" class:toastVisible class:dark={$theme === 'dark'}>
         <div class="toast-title">
             <div >
                 {$title}
@@ -49,6 +50,10 @@
         transition: transform 0.3s ease-out;
         flex-direction: column;
     }
+    .dark{
+        color: #bfbfbf;
+        background-color: rgba(29, 32, 33, 0.8);
+    }
     .toastVisible{
         transform: translateY(0);
     }
@@ -65,7 +70,7 @@
         width: 0% !important;
     }
     .close-icon{
-        color: $textDark;
+        color: $textFlip;
         width:1.2rem;
         padding-top: 0.2rem;
         height: 1.2rem;
