@@ -9,7 +9,7 @@
 	import storage from '../utils/storage'
 	import { goto } from '$app/navigation'
 	import { useMutation } from '$lib/apiFetch'
-
+	import { theme } from '$lib/theme'
 	let email = ''
 	let password = ''
 
@@ -41,7 +41,7 @@
 			<div class="input-wrapper" style="margin-bottom: 0;">
 				<PasswordInput bind:value={password} title="Password" hideStatus={true} />
 			</div>
-			<a class="forgot-password" href="/resetPassword"> Forgot password? </a>
+			<a class="forgot-password" href="/resetPassword" class:dark={$theme === 'dark'}> Forgot password? </a>
 			<div class="form-buttons-wrapper">
 				<div class="note">* You will use those credentials in all apps</div>
 				<Submit
@@ -79,6 +79,9 @@
 		text-align: right;
 		color: $textFlip;
 		transition: all 0.2s;
+	}
+	.dark{
+		color:#bfbfbf;
 	}
 	.forgot-password:hover {
 		color: $accent;

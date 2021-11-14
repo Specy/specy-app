@@ -52,7 +52,7 @@
 	.dark{
 		background-color: rgba(47, 51, 53, 0.5);
 		> input {
-			color: white;
+			color: #bfbfbf;
 		}
 	}
 	.input-wrapper {

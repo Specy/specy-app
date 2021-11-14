@@ -13,7 +13,7 @@
 		overflow-y: scroll;
 	}
 	:global(*){
-		transition: background-color 0.5s, color 0.5s;
+		transition: background-color 0.3s, color 0.3s;
 	}
 	:global(.body-dark){
 		background-color: #181a1b;
