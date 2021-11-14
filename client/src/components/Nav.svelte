@@ -112,7 +112,7 @@
 	}
 	.mobile-row{
 		display: flex;
-		padding: 0.75rem;
+		padding: 0.5rem;
 		justify-content: space-between;
 		align-items: center;
 	}

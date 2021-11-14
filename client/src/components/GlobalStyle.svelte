@@ -13,7 +13,7 @@
 		overflow-y: scroll;
 	}
 	:global(*){
-		transition: background-color 0.3s, color 0.3s;
+		transition: background-color 0.3s, color 0.1s;
 	}
 	:global(.body-dark){
 		background-color: #181a1b;
@@ -49,5 +49,6 @@
 		:global(::-webkit-scrollbar-thumb:hover) {
 			background: #555;
 		}
+
 	}
 </style>
