@@ -25,10 +25,10 @@ const data = [
         "color": "#6BACCB"
     },
     {
-        "title": "SP Code",
-        "description": "A sort of QR code, but with much more data",
+        "title": "Soundboard",
+        "description": "An app to create soundboards that you can share",
         "image": "images/logo.png",
-        "url": "https://specy.github.io/apps/SP_Code/index.html",
+        "url": "https://soundboard.specy.app",
         "github": "",
         "color": "rgb(219, 0, 97)"
     }
