@@ -18,7 +18,7 @@
 		position: relative;
 		border-radius: 0.6rem;
 		transition: all 0.2s;
-        background-color: #f0f0f6;
+        background-color: #f9f9fa;
         box-shadow: 1px 1px 5px #45455940;
 	}
 	.cardDark {
