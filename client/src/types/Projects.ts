@@ -6,7 +6,7 @@ const data = [
         "image": "/images/skyMusicNightly.png",
         "url": "https://sky-music.specy.app",
         "github": "c",
-        "color": "rgb(211, 189, 143)"
+        "color": "rgb(186, 167, 128)"
     },
     {
         "title": "Genshin music Nightly",
@@ -17,21 +17,21 @@ const data = [
         "color": "rgb(85, 143, 144)"
     },
     {
-        "title": "Sky Music",
-        "description": "Older sky music website with accounts",
-        "image": "/images/Sky.png",
-        "url": "https://sky-music.herokuapp.com/",
-        "github": "",
-        "color": "#6BACCB"
-    },
-    {
         "title": "Soundboard",
         "description": "An app to create soundboards that you can share",
         "image": "images/logo.png",
         "url": "https://soundboard.specy.app",
         "github": "",
+        "color": "#243B4A"
+    },
+    {
+        "title": "Portfolio",
+        "description": "My portfolio website where i list what i made",
+        "image": "images/logo.png",
+        "url": "https://portfolio.specy.app",
+        "github": "",
         "color": "rgb(219, 0, 97)"
-    }
+    },
 ]
 
 export { data }

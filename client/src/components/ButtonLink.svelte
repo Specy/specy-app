@@ -18,7 +18,6 @@
 		border-radius: 0.5rem;
 		color: white;
 		text-align: center;
-		font-weight: bold;
 		display: flex;
 		transition: all 0.2s;
 		padding-left: 0.8rem;

@@ -8,5 +8,5 @@
 	Specy Hub
 </title>
 <Main />
-<Support />
+<Support style="margin-top:6rem;"/>
 <Contact />

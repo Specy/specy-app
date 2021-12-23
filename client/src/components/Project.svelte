@@ -38,7 +38,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		padding: 0.8rem;
-		border-radius: 1rem;
+		border-radius: 0.8rem;
 		min-width: 16rem;
 		flex: 1;
 	}
@@ -65,7 +65,6 @@
 		border-radius: 0.5rem;
 		color: white;
 		text-align: center;
-		font-weight: bold;
 		display: flex;
 		transition: all 0.2s;
 		padding-left: 0.8rem;

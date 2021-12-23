@@ -7,7 +7,7 @@
     $: toastVisible = $visible
 </script>
 
-<div>
+
     <slot/>
     <div class="toast-wrapper" class:toastVisible class:dark={$theme === 'dark'}>
         <div class="toast-title">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 <style lang="scss">
     @import "../variables.scss";
