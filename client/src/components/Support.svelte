@@ -9,10 +9,9 @@
 			Each App I develop takes months of learning and development. Added to that are also the costs
 			of hosting. With a higher budget I can afford to not worry so much about how much I spend on
 			the server, giving you the best possible experience.<br />I care about giving users all
-			features without having to pay for it, neither having intrusive ads which can be annoying. For
-			this same reason, there is no source of income except donations.
+			features without having to pay for it, neither having intrusive ads which can be annoying.
 			<br /><br />
-			I would be really thankful if you could consider donating in order to fund development and costs
+			I would be really thankful if you could consider donating in order to fund development and costs.
 		</div>
 		<div class="donation-wrapper">
 			<a href="https://ko-fi.com/specy" target="_blank" class="donation-img">
