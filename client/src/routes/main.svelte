@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Project from '$cmp/Project.svelte'
-	import type { ProjectData } from '../types/Types'
-	import { data } from '../types/Projects'
+	import type { ProjectData } from '../lib/Projects'
+	import { data } from '../lib/Projects'
 	const projects: ProjectData[] = data
 </script>
 

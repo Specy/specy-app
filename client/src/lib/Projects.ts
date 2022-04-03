@@ -1,4 +1,11 @@
-
+export type ProjectData = {
+    title: string;
+    description: string;
+    image: string;
+    url: string;
+    github: string;
+    color: string;
+}
 const data = [
     {
         "title": "Sky Music Nightly",
@@ -21,6 +28,14 @@ const data = [
         "description": "An app to create soundboards that you can share",
         "image": "images/logo.png",
         "url": "https://soundboard.specy.app",
+        "github": "",
+        "color": "#243B4A"
+    },
+    {
+        "title": "Conway generator",
+        "description": "An app to create backgrounds with Conway's game of life",
+        "image": "images/logo.png",
+        "url": "https://conway-generator.specy.app",
         "github": "",
         "color": "#243B4A"
     },
