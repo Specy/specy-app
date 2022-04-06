@@ -22,6 +22,13 @@ const data = [
         "url": "https://genshin-music.specy.app",
         "github": "",
         "color": "rgb(85, 143, 144)"
+    },{
+        "title": "ASM Editor",
+        "description": "An editor and interpreter for M68K and MIPS languages",
+        "image": "images/logo.png",
+        "url": "https://asm-editor.specy.app",
+        "github": "",
+        "color": "#f2a65a"
     },
     {
         "title": "Soundboard",
