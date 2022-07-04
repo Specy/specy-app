@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';	
 	import { User } from '../lib/user'
 	import { theme } from "$lib/theme";
+	import { toast } from './toast';
 	const { user} = User
 	let path = $page.path
 	$: path = $page.path
@@ -28,14 +29,18 @@
 		<Logo />
 		<div class="links" style={$user ? "margin-right:7rem": ""} class:whiteText={$theme === 'dark'}>
 			<a href="/" style={path === "/" ? "color:#b00752" : ""}>Home</a>
-			<a href="/register" style={path === "/register" ? "color:#b00752" : ""}>Register</a>
+			<button on:click={() => toast.error("Registration is not yet available!", 5000)}>
+				Register
+			</button>
 		</div>
 		{#if $user}
 			<a href="/profile" class="profile" class:darkIcon={$theme === 'dark'}>
 				<FaUser /> 
 			</a>
 		{:else}	
-			<a href="/login" class='login'>Login</a>
+			<button class="login" on:click={() => toast.error("Login is not yet available!", 5000)}>
+				Login
+			</button>
 		{/if}
 
 		
@@ -67,16 +72,14 @@
 				on:click={() => menuOpen = false}
 				style={path === "/" ? "color:#b00752" : ""}
 			>Home</a>
-			<a 
-				href="/login" 
-				on:click={() => menuOpen = false}
+			<button
+				on:click={() => toast.error("Login is not yet available!", 5000)}
 				style={path === "/login" ? "color:#b00752" : ""}
-			>Login</a>
-			<a 
-				href="/register" 
-				on:click={() => menuOpen = false}
+			>Login</button>
+			<button
+				on:click={() => toast.error("Registration is not yet available!", 5000)}
 				style={path === "/register" ? "color:#b00752" : ""}
-			>Register</a>
+			>Register</button>
 			{#if $user}
 				<a 
 				href="/profile" 
@@ -161,11 +164,17 @@
 		flex-direction: row;
 		align-items: center;
 		margin-right: 3rem;
-		> a {
+		> a, button {
 			margin-left: 1.5rem;
 			transition: all 0.2s ease-in-out;
 			cursor: pointer;
 			text-decoration: none;
+		}
+		> button{
+			background-color: transparent;
+			border: none;
+			text-align: start;
+			font-size: 1rem;
 		}
 	}
 	.whiteText{
@@ -184,9 +193,15 @@
 		padding:0;
 		transition: all 0.4s ease-out;
 		justify-content: space-around;
-		> a {
+		> a, button {
 			padding: 0.2rem;
 			margin-left: 2rem ;
+		}
+		> button{
+			background-color: transparent;
+			border: none;
+			text-align: start;
+			font-size: 1rem;
 		}
 	}
 	.menuOpen{	

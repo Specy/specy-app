@@ -31,8 +31,7 @@
 <style lang="scss">
 	@import "../variables.scss";
 	.project {
-		background-color: rgba(246, 246, 246, 0.8);
-    	backdrop-filter: blur(4px);
+		background-color: rgba(246, 246, 246, 0.85);
 		box-shadow: 1px 1px 5px rgb(69 69 89 / 25%);
 		display: flex;
 		flex-direction: column;

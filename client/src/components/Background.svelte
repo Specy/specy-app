@@ -29,7 +29,7 @@
 			width: 100%;
 			height: 100%;
 			background-repeat: no-repeat;
-			transition: all 1s;
+			transition: all 0.3s;
 		}
 		z-index: -1;
 		overflow: hidden;

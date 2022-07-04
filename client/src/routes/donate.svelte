@@ -1,23 +1,24 @@
 <script lang="ts">
-	import Support from '$cmp/Support.svelte';
-	import Card from '$cmp/Card.svelte';
+	import Support from '$cmp/Support.svelte'
 </script>
 
 <div class="center">
-	<Card style='width:fit-content; margin-top:2rem;'>
+	<div class="support-wrapper">
 		<Support />
-	</Card>
+	</div>
 </div>
 
-
-
-
 <style lang="scss">
-	.center{
+	.support-wrapper {
+		background-color: rgba(246, 246, 246, 0.8);
+		backdrop-filter: blur(4px);
+		box-shadow: 1px 1px 5px rgb(69 69 89 / 25%);
+		border-radius: 0.8rem;
+	}
+	.center {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
+		flex: 1;
 	}
 </style>
-

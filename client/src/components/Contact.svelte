@@ -1,6 +1,6 @@
 <div class="wrapper">
 	<div class="contact" id="contact">
-		<div class="title">Contact me</div>
+		<a href="#contact" class="title">Contact me</a>
 		<div class="text">
 			If you have any questions, bug reports, suggestions, work proposal,
 			anything, you can contact me at:

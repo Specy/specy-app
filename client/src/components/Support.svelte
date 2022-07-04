@@ -3,8 +3,8 @@
 </script>
 
 <div class="wrapper" {style}>
-	<div class="support" id="support">
-		<div class="title">Support Me</div>
+	<div class="support" id="donate">
+		<a class="title" href="#donate">Support Me</a>
 		<div class="text">
 			Each App I develop takes months of learning and development. Added to that are also the costs
 			of hosting. With a higher budget I can afford to not worry so much about how much I spend on
