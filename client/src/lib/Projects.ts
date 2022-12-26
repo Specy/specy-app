@@ -24,7 +24,7 @@ const data = [
         "color": "rgb(85, 143, 144)"
     },{
         "title": "ASM Editor",
-        "description": "An editor and interpreter for M68K and MIPS languages",
+        "description": "An editor and interpreter for M68K assembly",
         "image": "images/logo.png",
         "url": "https://asm-editor.specy.app",
         "github": "",
