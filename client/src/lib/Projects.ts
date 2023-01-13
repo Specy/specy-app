@@ -25,7 +25,7 @@ const data = [
     },{
         "title": "ASM Editor",
         "description": "An editor and interpreter for M68K assembly",
-        "image": "images/logo.png",
+        "image": "images/asmEditor.png",
         "url": "https://asm-editor.specy.app",
         "github": "",
         "color": "#f2a65a"
