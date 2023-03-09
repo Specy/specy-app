@@ -12,9 +12,10 @@
 	.support-wrapper {
 		background-color: rgba(var(--RGB-secondary), 0.8);
 		color: var(--secondary-text);
-		backdrop-filter: blur(4px);
+		backdrop-filter: blur(0.5rem);
 		box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.25);
 		border-radius: 0.8rem;
+		padding: 0.8rem
 	}
 	.center {
 		display: flex;

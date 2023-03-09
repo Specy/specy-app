@@ -170,10 +170,12 @@
 <svelte:window
 	on:scroll={handleScroll}
 	on:resize={() => {
-		debouncer(createCanvas)
+		if(!"ontouchstart" in window){ //don't resize on mobile
+			debouncer(createCanvas)
+		}
 	}}
 />
-<div class="column" style="flex: 1">
+<div class="column" style="flex: 1; position: relative;">
 	<div class="background">
 		<canvas bind:this={canvas} class="background-image" />
 	</div>
@@ -188,11 +190,13 @@
 		> .background-image {
 			width: 100%;
 			height: 100%;
+			
 		}
 		overflow: hidden;
 		width: 100%;
 		padding: 2rem;
 		height: calc(100% - 3rem);
+		max-height: calc(100vh - 6rem);
 		top: 3rem;
 		opacity: 0.4;
 		left: 0;

@@ -4,7 +4,7 @@
 
 <div class="wrapper" {style}>
 	<div class="support" id="donate">
-		<a class="title" href="#donate">Support Me</a>
+		<a class="title" href="/donate">Support Me</a>
 		<div class="text">
 			Each App I develop takes months of learning and development. Added to that are also the costs
 			of hosting. With a higher budget I can afford to not worry so much about how much I spend on
@@ -16,9 +16,6 @@
 		<div class="donation-wrapper">
 			<a href="https://ko-fi.com/specy" target="_blank" class="donation-img">
 				<img src="/images/kofi.png" alt="kofi" />
-			</a>
-			<a href="https://www.buymeacoffee.com/specy" target="_blank">
-				<img src="/images/buymeacoffee.svg" alt="buymeacoffee" style="height: 4rem" />
 			</a>
 			<a href="https://paypal.me/specyDev" target="_blank" class="donation-img">
 				<img src="/images/paypalme.png" alt="paypal" />
@@ -55,7 +52,7 @@
 		flex-wrap: wrap;
 		width: 100%;
 		justify-content: space-around;
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 	.donation-wrapper a {
 		margin-top: 0.5rem;

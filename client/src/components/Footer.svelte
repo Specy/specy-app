@@ -119,7 +119,6 @@
 		padding: 1.5rem;
 		padding-bottom: 0rem;
 		display: flex;
-		margin-top: 3rem;
 		z-index: 2;
 		flex-direction: column;
 		background-color: var(--footer);

@@ -8,7 +8,7 @@
 <main class="main">
 	<div class="main-title">
 		<div>SPECY DEV</div>
-		<div>The hub of all apps</div>
+		<div class="hub-name">The hub of all apps</div>
 	</div>
 	<div class="apps" id="apps">
 		<div class="title project-title">Apps</div>
@@ -26,6 +26,10 @@
 		flex-direction: column;
 		align-items: center;
 		padding: 1rem;
+	}
+	.hub-name{
+		font-size: 1.2rem;
+		text-shadow: 1px 1px 4px rgba(var(--RGB-shadow-color), 0.25);
 	}
 	.main-title {
 		margin-top: 4rem;
