@@ -19,6 +19,7 @@
 		target="_blank"
 		class="open-btn"
 		style="background-color: {data.color}"
+		rel="canonical"
 	>
 		<div>Open</div>
 		<div class="icon">
