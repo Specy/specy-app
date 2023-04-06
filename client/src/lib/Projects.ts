@@ -6,7 +6,7 @@ export type ProjectData = {
     github: string;
     color: string;
 }
-const data = [
+const projects = [
     {
         "title": "Sky Music Nightly",
         "description": "Website to compose and practice music for sky children of the light",
@@ -54,6 +54,21 @@ const data = [
         "github": "",
         "color": "rgb(219, 0, 97)"
     },
-]
+] satisfies ProjectData[]
 
-export { data }
+const desktopProjects = [
+    {
+        "title": "Scapix",
+        "description": "A desktop app to upscale and denoise images, gifs and videos",
+        "image": "images/scapix.png",
+        "url": "https://github.com/Specy/Scapix",
+        "github": "",
+        "color": "#f2a65a"
+    }
+] satisfies ProjectData[]
+
+
+export { 
+    projects,
+    desktopProjects
+ }

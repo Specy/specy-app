@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Project from '$cmp/Project.svelte'
-	import type { ProjectData } from '../../lib/Projects'
-	import { data } from '../../lib/Projects'
-	const projects: ProjectData[] = data
+	import type { ProjectData } from '$lib/Projects'
+	import { projects, desktopProjects } from '$lib/Projects'
 </script>
 
 <main class="main">
@@ -10,10 +9,18 @@
 		<div>SPECY DEV</div>
 		<div class="hub-name">The hub of all apps</div>
 	</div>
-	<div class="apps" id="apps">
-		<div class="title project-title">Apps</div>
+	<div class="apps" id="web-apps" style="margin-top: 4rem;">
+		<div class="title project-title">Web Apps</div>
 		<div class="projects-wrapper">
 			{#each projects as project (project.title)}
+				<Project data={project} />
+			{/each}
+		</div>
+	</div>
+	<div class="apps" id="desktop-apps">
+		<div class="title project-title">Desktop apps</div>
+		<div class="projects-wrapper">
+			{#each desktopProjects as project (project.title)}
 				<Project data={project} />
 			{/each}
 		</div>
@@ -57,7 +64,6 @@
 	}
 	.apps {
 		max-width: 50rem;
-		margin-top: 4rem;
 	}
 	.projects-wrapper {
 		display: grid;

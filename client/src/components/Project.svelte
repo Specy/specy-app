@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProjectData } from "../types/Types.js"
+	import type { ProjectData } from "$lib/Projects"
 	import MdOpenInNew from "svelte-icons/md/MdOpenInNew.svelte"
 	export let data: ProjectData
 </script>
@@ -74,7 +74,7 @@
 		filter: brightness(1.1);
 	}
 	.description {
-		margin-top: 1rem;
+		margin-top: 0.5rem;
 		flex: 1;
 		width: 100%;
 		overflow-y: auto;

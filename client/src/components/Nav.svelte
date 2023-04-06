@@ -28,9 +28,7 @@
 		<Logo />
 		<div class="links" style={$user ? "margin-right:7rem": ""}>
 			<a href="/" style={path === "/" ? "color: var(--accent)" : ""}>Home</a>
-			<button on:click={() => toast.error("Registration is not yet available!", 5000)} style="color: var(--primary-text)">
-				Register
-			</button>
+			<a href="/donate" style={path === "/donate" ? "color: var(--accent)" : ""}>Donate</a>
 		</div>
 		{#if $user}
 			<a href="/profile" class="profile">
