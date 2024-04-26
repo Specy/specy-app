@@ -8,12 +8,12 @@
 				<tr class="contact-info">
 					<td>Email: </td>
 					<td style="width: 1rem;"></td>
-					<td>Specy.dev@gmail.com</td>
+					<td>specy.dev@gmail.com</td>
 				</tr>
 				<tr class="contact-info">
 					<td>Discord: </td>
 					<td style="width: 1rem;"></td>
-					<td>Specy#7347</td>
+					<td>@Specy</td>
 				</tr>
 			</table>
 		</div>

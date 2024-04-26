@@ -30,15 +30,17 @@
 			<a href="/" style={path === "/" ? "color: var(--accent)" : ""}>Home</a>
 			<a href="/donate" style={path === "/donate" ? "color: var(--accent)" : ""}>Donate</a>
 		</div>
+		<!--
 		{#if $user}
-			<a href="/profile" class="profile">
-				<FaUser /> 
-			</a>
-		{:else}	
-			<button class="login" on:click={() => toast.error("Login is not yet available!", 5000)}>
-				Login
-			</button>
-		{/if}
+					<a href="/profile" class="profile">
+						<FaUser /> 
+					</a>
+				{:else}	
+					<button class="login" on:click={() => toast.error("Login is not yet available!", 5000)}>
+						Login
+					</button>
+				{/if}
+		-->
 
 		
 	</div>
