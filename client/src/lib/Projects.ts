@@ -29,6 +29,13 @@ const projects = [
         "url": "https://asm-editor.specy.app",
         "github": "",
         "color": "#f2a65a"
+    },{
+        "title": "Tokeko",
+        "description": "Interactive LR parsers visualization to learn compilers",
+        "image": "images/tokeko.png",
+        "url": "https://tokeko.specy.app",
+        "github": "",
+        "color": "rgb(100 78 117)"
     },
     {
         "title": "Soundboard",
