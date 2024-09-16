@@ -38,14 +38,6 @@
 				<a href="https://portfolio.specy.app" target="_blank"> Portfolio </a>
 			</div>
 			<div class="icon-wrapper">
-				<div class="icon" on:click={toggleTheme}>
-					{#if $current.meta.name === "light"}
-						<FaSun />
-					{:else}
-						<FaMoon />
-					{/if}
-				</div>
-
 				<a class="icon" href="https://github.com/Specy" target="_blank">
 					<FaGithub />
 				</a>

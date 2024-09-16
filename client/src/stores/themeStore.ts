@@ -131,4 +131,4 @@ const baseWhiteTheme = {
 } satisfies SerializedTheme
 
 
-export const [themeStorage, currentTheme] = createThemeStorage(new LocalStorageThemePersistence("_app_themes_meta", "app_themes"), baseWhiteTheme, baseDarkTheme)   
+export const [themeStorage, currentTheme] = createThemeStorage(new LocalStorageThemePersistence("_app_themes_meta", "app_themes"), baseDarkTheme)

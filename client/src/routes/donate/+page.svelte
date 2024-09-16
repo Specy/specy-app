@@ -15,10 +15,12 @@
 		backdrop-filter: blur(0.5rem);
 		box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.25);
 		border-radius: 0.8rem;
-		padding: 0.8rem
+		margin-top: 3rem;
+		padding: 0.5rem
 	}
 	.center {
 		display: flex;
+		padding: 1rem;
 		align-items: center;
 		justify-content: center;
 		flex: 1;
