@@ -36,6 +36,13 @@ const projects = [
         "url": "https://tokeko.specy.app",
         "github": "",
         "color": "rgb(100 78 117)"
+    },{
+        "title": "Rooc",
+        "description": "Mathematical optimization for real, integer, boolean models",
+        "image": "images/rooc.png",
+        "url": "https://rooc.specy.app",
+        "github": "",
+        "color": "rgb(83, 87, 165)"
     },
     {
         "title": "Soundboard",
