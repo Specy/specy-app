@@ -9,6 +9,11 @@
 	import { page } from "$app/stores"
 	import "../global.scss"
   import { onMount } from "svelte"
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 
 	onMount(() => {
@@ -24,7 +29,7 @@
 		<Background>
 			<Nav />
 			<PageTransition refresh={$page.url.pathname}>
-				<slot />
+				{@render children?.()}
 			</PageTransition>
 		</Background>
 		<Footer />

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { run } from 'svelte/legacy';
+
     import MdClose from 'svelte-icons/md/MdClose.svelte'
     import MdMenu from 'svelte-icons/md/MdMenu.svelte'
     import FaUser from 'svelte-icons/fa/FaUser.svelte'
@@ -7,20 +9,22 @@
     import {User} from '../lib/user'
 
     const {user} = User
-    let path = $page.path
-    $: path = $page.path
-    let scrollY = 0
-    let lastPosition = 10
-    let navHidden = false
-    let menuOpen = false;
-    $: {
+    let path = $state($page.path)
+    run(() => {
+        path = $page.path
+    });
+    let scrollY = $state(0)
+    let lastPosition = $state(10)
+    let navHidden = $state(false)
+    let menuOpen = $state(false);
+    run(() => {
         if (!menuOpen && scrollY > 300) {
             navHidden = scrollY > lastPosition
             lastPosition = scrollY
         } else {
             navHidden = false
         }
-    }
+    });
 </script>
 <svelte:window bind:scrollY/>
 <nav class="nav">
@@ -54,7 +58,7 @@
                         <FaUser/>
                     </a>
                 {/if}
-                <div on:click={() => {menuOpen = !menuOpen}} style='height:2rem'>
+                <div onclick={() => {menuOpen = !menuOpen}} style='height:2rem'>
                     {#if menuOpen}
                         <MdClose/>
                     {:else}
@@ -68,12 +72,12 @@
         <div class="links-mobile" class:menuOpen>
             <a
                     href="/"
-                    on:click={() => menuOpen = false}
+                    onclick={() => menuOpen = false}
                     style={path === "/" ? "color: var(--accent)" : ""}
             >Home</a>
             <a
                     href="/donate"
-                    on:click={() => menuOpen = false}
+                    onclick={() => menuOpen = false}
                     style={path === "/" ? "color: var(--accent)" : ""}
             >Donate</a>
             <!--

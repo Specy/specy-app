@@ -1,11 +1,12 @@
 <script>
-	export let logoToggled = false
+	/** @type {{logoToggled?: boolean}} */
+	let { logoToggled = $bindable(false) } = $props();
 </script>
 
 <a
 	class="logo-wrapper"
-	on:mouseenter={() => (logoToggled = true)}
-	on:mouseleave={() => (logoToggled = false)}
+	onmouseenter={() => (logoToggled = true)}
+	onmouseleave={() => (logoToggled = false)}
 	href="/"
 >
 	<img src="/images/logo.png" alt="logo" class="logo" />
@@ -13,7 +14,7 @@
 		<div>Specy</div>
 		<div class="overflow-wrapper">
 			<div class="logo-line-wrapper">
-				<div class="logo-line" class:logoToggled />
+				<div class="logo-line" class:logoToggled></div>
 				<div class="logo-app">
 					<span> . </span>
 					app

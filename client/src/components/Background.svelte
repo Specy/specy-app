@@ -1,9 +1,16 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createDebouncer } from "$lib/utils"
 	import { currentTheme } from "$stores/themeStore"
 	import { onMount } from "svelte"
-	let canvas: HTMLCanvasElement | null = null
-	let ctx: CanvasRenderingContext2D | null = null
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+	let canvas: HTMLCanvasElement | null = $state(null)
+	let ctx: CanvasRenderingContext2D | null = $state(null)
 	let width = 60
 	let height = 60
 	let color = currentTheme.getColor("accent")
@@ -162,14 +169,16 @@
 		}
 	}
 	const [debouncer] = createDebouncer(1000)
-	$: if (canvas) {
-		ctx = canvas.getContext("2d")!
-	}
+	run(() => {
+		if (canvas) {
+			ctx = canvas.getContext("2d")!
+		}
+	});
 </script>
 
 <svelte:window
-	on:scroll={handleScroll}
-	on:resize={() => {
+	onscroll={handleScroll}
+	onresize={() => {
 		if(!"ontouchstart" in window){ //don't resize on mobile
 			debouncer(createCanvas)
 		}
@@ -177,10 +186,10 @@
 />
 <div class="column" style="flex: 1; position: relative;">
 	<div class="background">
-		<canvas bind:this={canvas} class="background-image" />
+		<canvas bind:this={canvas} class="background-image"></canvas>
 	</div>
 	<div class="column" style="flex: 1; z-index: 2">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

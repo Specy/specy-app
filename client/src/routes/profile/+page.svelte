@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { User } from '$lib/user'
 	import Input from '$cmp/Input.svelte'
 	import ButtonLink from '$cmp/ButtonLink.svelte';
@@ -11,9 +13,9 @@
 	import { goto } from '$app/navigation'
 	import storage from '../../utils/storage'
 	const { user, fetchUser } = User
-	let username = $user?.username || ''
-	let isLoading = false
-	let tokens = []
+	let username = $state($user?.username || '')
+	let isLoading = $state(false)
+	let tokens = $state([])
 	user.subscribe(() => {
 		username = $user?.username
 	})
@@ -59,7 +61,9 @@
 	function update() {
 		updateUser({ username }, { params: `/${$user.id}` })
 	}
-	$: isLoading = $isUpdatingUser || $isDeletingToken
+	run(() => {
+		isLoading = $isUpdatingUser || $isDeletingToken
+	});
 </script>
 <title>
 	Profile
@@ -78,7 +82,7 @@
 						<div class="token">
 							{new Date(token.createdAt).toLocaleString()}
 							<div class="token-icons">
-								<div style="color: rgb(237, 79, 79)" on:click={() => deleteToken({ id: token.id })}>
+								<div style="color: rgb(237, 79, 79)" onclick={() => deleteToken({ id: token.id })}>
 									<FaTrash />
 								</div>
 							</div>

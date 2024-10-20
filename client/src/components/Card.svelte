@@ -1,13 +1,13 @@
 <script>
-	export let morePadding = false
-    export let style = ''
+	/** @type {{morePadding?: boolean, style?: string, children?: import('svelte').Snippet}} */
+	let { morePadding = false, style = '', children } = $props();
 </script>
 
 <div 
 	class="card" 
 	style={`padding: ${morePadding ? '1.2rem' : '0.6rem'}; ${style}`}
 >
-    <slot />
+    {@render children?.()}
 </div>
 
 <style lang="scss">

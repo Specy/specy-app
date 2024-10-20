@@ -1,8 +1,9 @@
 <script>
 	import { fly } from 'svelte/transition'
-	export let refresh = ''
+	/** @type {{refresh?: string, children?: import('svelte').Snippet}} */
+	let { refresh = '', children } = $props();
 
-	let status = ''
+	let status = $state('')
 	let timeout = setTimeout(() =>{}, 0)
 	function handleProgress(s){
 		if(s === 'started') status = 'progress-70'
@@ -17,15 +18,15 @@
 </script>
 
 <svelte:window
-    on:sveltekit:navigation-start={() => handleProgress('started')}
-    on:sveltekit:navigation-end={() => handleProgress('ended')}
+    onsveltekit:navigation-start={() => handleProgress('started')}
+    onsveltekit:navigation-end={() => handleProgress('ended')}
 />
 {#key refresh}
 	<div class={`progress ${status}`}>
 
 	</div>
-	<div in:fly={{ x: -50, duration: 500 }} class="page column">
-		<slot />
+	<div in:fly|global={{ x: -50, duration: 500 }} class="page column">
+		{@render children?.()}
 	</div>
 {/key}
 

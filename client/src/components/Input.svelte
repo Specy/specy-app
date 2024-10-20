@@ -1,17 +1,31 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	type statusType = '' | 'correct' | 'wrong'
 	import FaExclamationCircle from 'svelte-icons/fa/FaExclamationCircle.svelte'
 	import FaCheckCircle from 'svelte-icons/fa/FaCheckCircle.svelte'
-	import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
-	export let title = ''
-	export let value = ''
-	export let status: statusType = ''
-	$: if (value === '') status = ''
-	export let type = 'text'
-	export let hideStatus = false
+	import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte'
+	interface Props {
+		title?: string;
+		value?: string;
+		status?: statusType;
+		type?: string;
+		hideStatus?: boolean;
+	}
+
+	let {
+		title = '',
+		value = $bindable(''),
+		status = $bindable(''),
+		type = 'text',
+		hideStatus = false
+	}: Props = $props();
 	const setType = (node) => {
 		node.type = type
 	}
+	run(() => {
+		if (value === '') status = ''
+	});
 </script>
 
 <div class="input-wrapper">

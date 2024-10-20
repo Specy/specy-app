@@ -1,30 +1,42 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	type statusType = '' | 'correct' | 'wrong'
 	import FaExclamationCircle from 'svelte-icons/fa/FaExclamationCircle.svelte'
 	import FaCheckCircle from 'svelte-icons/fa/FaCheckCircle.svelte'
 	import FaEye from 'svelte-icons/fa/FaEye.svelte'
 	import FaEyeSlash from 'svelte-icons/fa/FaEyeSlash.svelte'
 	import checkStrenght from '../lib/checkPassword'
-	export let title = ''
-	export let value = ''
-	export let status: statusType = ''
-	export let hideStatus = false
-	export let passwordToCheck = ''
-	let element = null
-	let passwordShown = false
-	let passwordStatus = checkStrenght(value)
+	interface Props {
+		title?: string;
+		value?: string;
+		status?: statusType;
+		hideStatus?: boolean;
+		passwordToCheck?: string;
+	}
+
+	let {
+		title = '',
+		value = $bindable(''),
+		status = $bindable(''),
+		hideStatus = false,
+		passwordToCheck = ''
+	}: Props = $props();
+	let element = $state(null)
+	let passwordShown = $state(false)
+	let passwordStatus = $state(checkStrenght(value))
 
 	function togglePassword() {
 		if (element === null) return
 		passwordShown = !passwordShown
 		element.type = passwordShown ? 'text' : 'password'
 	}
-	$: {
+	run(() => {
 		if (value === '') status = ''
 		passwordStatus = checkStrenght(value)
 		status = passwordStatus.id > 0 ? 'correct' : 'wrong'
 		if (passwordToCheck !== '') status = passwordToCheck === value ? 'correct' : 'wrong'
-	}
+	});
 </script>
 
 <div class="input-wrapper">
@@ -39,7 +51,7 @@
 			style={value === '' ? 'border: none' : ''}
 		/>
 		{#if value !== ''}
-			<div class="show-password" on:click={togglePassword}>
+			<div class="show-password" onclick={togglePassword}>
 				{#if passwordShown}
 					<FaEyeSlash />
 				{:else}

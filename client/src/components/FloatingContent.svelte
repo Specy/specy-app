@@ -1,5 +1,6 @@
 <script>
-	export let title = ''
+	/** @type {{title?: string, children?: import('svelte').Snippet}} */
+	let { title = '', children } = $props();
 </script>
 
 <div class="center-wrapper" >
@@ -7,7 +8,7 @@
 		<div class="big-title" style="margin:  2.6rem 0 1.4rem;">{title}</div>
 	{/if}
 	<div class="floating-middle">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

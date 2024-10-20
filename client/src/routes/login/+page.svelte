@@ -9,8 +9,8 @@
 	import storage from '../../utils/storage'
 	import { goto } from '$app/navigation'
 	import { useMutation } from '$lib/apiFetch'
-	let email = ''
-	let password = ''
+	let email = $state('')
+	let password = $state('')
 
 
 	const { fetchUser } = User

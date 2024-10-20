@@ -1,13 +1,17 @@
 <script>
-    export let href = ''
-    export let target = ''
-    export let style = ''
-    export let bg = 'rgb(219, 0, 97)'
-    export let color = 'white'
+	/** @type {{href?: string, target?: string, style?: string, bg?: string, color?: string, children?: import('svelte').Snippet}} */
+	let {
+		href = '',
+		target = '',
+		style = '',
+		bg = 'rgb(219, 0, 97)',
+		color = 'white',
+		children
+	} = $props();
 </script>
 
 <a {href} {target} style={`background-color:${bg}; color:${color}; ${style}`} class="btn">
-    <slot/>
+    {@render children?.()}
 </a>
 
 <style>

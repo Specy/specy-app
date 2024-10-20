@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { createDerivedThemeColors } from "./SvelteTheme"
 	import { TinyColor } from "@ctrl/tinycolor"
-	export let style = ""
-	export let theme: any //i have no idea how to type this
+	interface Props {
+		style?: string;
+		theme: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { style = "", theme, children }: Props = $props();
 	let colors = createDerivedThemeColors(theme)
 
 	function toRgb(color: string) {
@@ -33,5 +38,5 @@
     ${style}
 `}
 >
-	<slot />
+	{@render children?.()}
 </div>

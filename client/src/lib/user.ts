@@ -1,7 +1,7 @@
 import { writable } from "svelte/store"
 import { axios } from "./axios"
-import type { Writable } from 'svelte/store'
 import { BASEURL } from "./apiFetch"
+
 function userStore(){
     const user = writable(null)
 
@@ -14,7 +14,7 @@ function userStore(){
         }
         user.set(res)
     }
-    fetchUser()
+    //fetchUser()
     return { user, fetchUser}
 }
 export const User = userStore()

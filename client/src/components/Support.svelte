@@ -1,5 +1,9 @@
 <script lang="ts">
-	export let style = ''
+	interface Props {
+		style?: string;
+	}
+
+	let { style = '' }: Props = $props();
 </script>
 
 <div class="wrapper" {style}>
@@ -52,7 +56,7 @@
 		flex-wrap: wrap;
 		width: 100%;
 		justify-content: space-around;
-		margin-top: 1rem;
+		margin-top: 2rem;
 	}
 	.donation-wrapper a {
 		margin-top: 0.5rem;

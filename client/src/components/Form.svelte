@@ -1,5 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	/** @type {{children?: import('svelte').Snippet}} */
+	let { children } = $props();
 	const dispatch = createEventDispatcher()
 	function submit(e) {
 		e.preventDefault()
@@ -7,8 +9,8 @@
 	}
 </script>
 
-<form on:submit={submit} >
-    <slot/>
+<form onsubmit={submit} >
+    {@render children?.()}
 </form>
 
 <style lang="scss">

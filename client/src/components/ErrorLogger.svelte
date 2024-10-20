@@ -3,14 +3,19 @@
 	import { fly } from 'svelte/transition';
 	import Icon from '$cmp/Icon.svelte'
 	import FaTimes from 'svelte-icons/fa/FaTimes.svelte'
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 </script>
 
-<slot />
+{@render children?.()}
 {#key $toast.id}
 	<div class="toast-wrapper" 
 		class:toastVisible={$toast.visible} 
-		in:fly={{y: -100}}
+		in:fly|global={{y: -100}}
 	>
 		<div 
 			class="toast-title"
@@ -33,7 +38,7 @@
 					animation-duration: ${$toast.duration}ms; 
 					background-color: ${$toast.color};
 				`}
-			/>
+			></div>
 		</div>
 	</div>
 {/key}

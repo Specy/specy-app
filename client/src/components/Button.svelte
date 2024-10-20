@@ -1,9 +1,15 @@
 <script>
-	export let disabled = false
-	export let value = ''
-	export let color = 'white'
-	export let style = ''
-	export let bg = 'rgb(219, 0, 97)'
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	/** @type {{disabled?: boolean, value?: string, color?: string, style?: string, bg?: string}} */
+	let {
+		disabled = false,
+		value = '',
+		color = 'white',
+		style = '',
+		bg = 'rgb(219, 0, 97)'
+	} = $props();
 
 </script>
 
@@ -13,7 +19,7 @@
 	style={`background-color: ${bg}; color: ${color}; ${style}`}
 	{disabled}
 	{value}
-    on:click
+    onclick={bubble('click')}
 />
 
 <style>

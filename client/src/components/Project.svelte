@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { ProjectData } from "$lib/Projects"
 	import MdOpenInNew from "svelte-icons/md/MdOpenInNew.svelte"
-	export let data: ProjectData
+	interface Props {
+		data: ProjectData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <div class="project">

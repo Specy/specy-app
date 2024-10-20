@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import Input from '$cmp/Input.svelte'
 	import PasswordInput from '$cmp/PasswordInput.svelte'
 	import FloatingContent from '$cmp/FloatingContent.svelte'
@@ -9,13 +11,13 @@
 	import * as EmailValidator from 'email-validator'
 	import checkStrenght from '../../lib/checkPassword'
 	import { useMutation } from '../../lib/apiFetch'
-	let email = ''
-	let password = ''
-	let username = ''
-	let confirmPassword = ''
-	let verificationCode = ''
-	let step = 1
-	let isFetching = false
+	let email = $state('')
+	let password = $state('')
+	let username = $state('')
+	let confirmPassword = $state('')
+	let verificationCode = $state('')
+	let step = $state(1)
+	let isFetching = $state(false)
 	const [sendCode, isSendingCode] = useMutation('/account/activate/send', {
 		method: 'POST',
 		onSuccess: () => {
@@ -57,7 +59,9 @@
 			{ params: `/${verificationCode}` }
 		)
 	}
-	$: isFetching = $isRegistering || $isSendingCode
+	run(() => {
+		isFetching = $isRegistering || $isSendingCode
+	});
 </script>
 <title>
 	Register

@@ -1,11 +1,18 @@
 <script>
-    export let size = 1.2
-    export let style = ''
-    export let hoverable = false
+    import { createBubbler } from 'svelte/legacy';
+
+    const bubble = createBubbler();
+    /** @type {{size?: number, style?: string, hoverable?: boolean, children?: import('svelte').Snippet}} */
+    let {
+        size = 1.2,
+        style = '',
+        hoverable = false,
+        children
+    } = $props();
 </script>
 
-<div class="icon" style={`width:${size}rem; min-width: ${size}; height:${size}rem; ${style};`} on:click>
-    <slot />
+<div class="icon" style={`width:${size}rem; min-width: ${size}; height:${size}rem; ${style};`} onclick={bubble('click')}>
+    {@render children?.()}
 </div>
 
 <style>

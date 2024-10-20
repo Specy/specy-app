@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import Input from '$cmp/Input.svelte'
 	import PasswordInput from '$cmp/PasswordInput.svelte'
 	import FloatingContent from '$cmp/FloatingContent.svelte'
@@ -9,11 +11,11 @@
 	import { toast } from '$cmp/toast'
 	import { useMutation } from '$lib/apiFetch'
 	import { goto } from '$app/navigation'
-	let email = ''
-	let verificationCode = ''
-	let newPassword = ''
-	let step = 1
-	let isLoading = false
+	let email = $state('')
+	let verificationCode = $state('')
+	let newPassword = $state('')
+	let step = $state(1)
+	let isLoading = $state(false)
 	const [sendCode, isLoadingToken] = useMutation('/account/token/send', {
 		method: 'POST',
 		onSuccess: (res) => {
@@ -36,7 +38,9 @@
 			toast.error(err.response?.data?.message)
 		}
 	})
-	$: isLoading = $isLoadingToken || $isLoadingReset
+	run(() => {
+		isLoading = $isLoadingToken || $isLoadingReset
+	});
 </script>
 <title>
 	Reset password
