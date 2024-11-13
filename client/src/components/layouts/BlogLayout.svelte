@@ -1,0 +1,189 @@
+<script lang="ts">
+    import './prism-one-dark.css'
+    import type {PostMetadata} from "$lib/post";
+    import {desktopProjects, projects} from "$lib/Projects";
+    import Project from "$cmp/Project.svelte";
+
+    let {
+        children,
+        datePublished,
+        title,
+        description,
+        tags,
+        relatedProjects
+    } = $props<PostMetadata & { children: any }>()
+
+    let relatedProjectsData = $derived(relatedProjects.map(getRelatedProject).filter(Boolean))
+
+    function getRelatedProject(id: string) {
+        return projects.find(project => project.id === id) ?? desktopProjects.find(project => project.id === id)
+    }
+</script>
+
+<svelte:head>
+    <title>{title}</title>
+    <meta name="description" content={description}/>
+    <meta property="og:title" content={title}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:type" content="article"/>
+</svelte:head>
+
+<article class="content-wrapper">
+    <div class="content">
+        <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem">
+            <h1 class="main-header">{title}</h1>
+            <p class="date-published">{new Date(datePublished).toLocaleDateString()}</p>
+
+        </header>
+        <section class="blog-description">
+            {description}
+        </section>
+        <div class="badge-wrapper">
+            {#each tags as tag, i}
+                <span
+                        class="badge"
+                        style={`--index: ${i}`}
+
+                >{tag}</span>
+            {/each}
+        </div>
+        {#if relatedProjectsData.length > 0}
+            <h1>Related Projects</h1>
+            <div class="projects-wrapper">
+                {#each relatedProjectsData as project}
+                    <Project data={project}/>
+                {/each}
+            </div>
+        {/if}
+        <section class="md-content">
+            {@render children?.()}
+        </section>
+    </div>
+</article>
+
+
+<style lang="scss">
+
+
+  .date-published {
+    font-size: 1.5rem;
+    color: #6c757d;
+  }
+
+  .content-wrapper {
+    padding: 1rem;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content {
+    display: flex;
+    margin-top: 3rem;
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 80ch;
+  }
+
+  .md-content > :global(:first-child) {
+    margin-top: 1rem !important;
+  }
+
+  .badge-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.3rem 0.7rem;
+    border-radius: 1rem;
+    color: white;
+    background-color: hsl(calc(var(--index) * 26 + -26), 40%, 50%);
+  }
+
+  .main-header {
+    font-size: 3.2rem;
+    font-weight: bold;
+  }
+
+  .blog-description {
+    font-size: 1.4rem;
+    color: #cacaca;
+    padding: 1rem;
+  }
+
+  .md-content {
+    margin-top: 1rem;
+
+    :global(p) {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin: 1rem 0;
+      color: #cacaca;
+    }
+
+    :global(h1) {
+      margin-top: 2rem;
+        font-size: 2rem;
+    }
+
+    :global(a) {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    :global(h1) > :global(a),
+    :global(h2) > :global(a),
+    :global(h3) > :global(a),
+    :global(h4) > :global(a) {
+      color: var(--background-text);
+      text-decoration: unset;
+    }
+
+    :global(ul), :global(ol) {
+      padding-left: 1rem;
+      font-size: 1.1rem;
+      color: #cacaca;
+
+      > :global(li) {
+        margin: 0.5rem 0;
+      }
+    }
+
+    :global(blockquote) {
+      :global(:first-child) {
+        margin-top: 0;
+      }
+
+      :global(:last-child) {
+        margin-bottom: 0;
+      }
+
+      border-radius: 0.3rem 0.8rem 0.8rem 0.3rem;
+      padding: 0.5rem;
+      border-left: 0.3rem solid var(--accent);
+      background: rgb(31 36 43 / 70%);
+    }
+
+  }
+
+  .projects-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .projects-wrapper {
+      grid-template-columns: repeat(1, 1fr);
+      margin-left: 0rem;
+    }
+    .main-header {
+      font-size: 2.5rem;
+    }
+  }
+</style>

@@ -10,10 +10,9 @@
 
 <style lang="scss">
 	.support-wrapper {
-		background-color: rgba(var(--RGB-secondary), 0.8);
+		background-color: rgba(31, 36, 43, 0.5);
 		color: var(--secondary-text);
-		backdrop-filter: blur(0.5rem);
-		box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.25);
+		box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
 		border-radius: 0.8rem;
 		margin-top: 3rem;
 		padding: 0.5rem

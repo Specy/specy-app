@@ -52,4 +52,9 @@
     font-weight: bold;
   }
 
+  .text {
+    line-height: 1.4;
+    font-size: 1.1rem;
+    color: #cacaca;
+  }
 </style>

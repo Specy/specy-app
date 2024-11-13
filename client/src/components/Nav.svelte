@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { run } from 'svelte/legacy';
 
     import MdClose from 'svelte-icons/md/MdClose.svelte'
     import MdMenu from 'svelte-icons/md/MdMenu.svelte'
@@ -7,31 +6,36 @@
     import Logo from './logo.svelte'
     import {page} from '$app/stores';
     import {User} from '../lib/user'
+    import {fromStore} from "svelte/store";
+    import {onMount} from "svelte";
 
     const {user} = User
-    let path = $state($page.path)
-    run(() => {
-        path = $page.path
-    });
-    let scrollY = $state(0)
+    const _page = fromStore(page)
+    let path = $derived(_page.current.url.pathname)
     let lastPosition = $state(10)
     let navHidden = $state(false)
     let menuOpen = $state(false);
-    run(() => {
+
+    function handleScroll() {
+        const scrollY = window.scrollY
         if (!menuOpen && scrollY > 300) {
             navHidden = scrollY > lastPosition
             lastPosition = scrollY
         } else {
             navHidden = false
         }
-    });
+    }
+
 </script>
-<svelte:window bind:scrollY/>
+<svelte:window onscroll={handleScroll}/>
 <nav class="nav">
     <div class="desktop-menu">
         <Logo/>
         <div class="links" style={$user ? "margin-right:7rem": ""}>
             <a href="/" style={path === "/" ? "color: var(--accent)" : ""}>Home</a>
+            <a href="/#web-apps"> Apps </a>
+            <a href="/blog" style={path?.startsWith("/blog") ? "color: var(--accent)" : ""}> Blog </a>
+
             <a href="/donate" style={path === "/donate" ? "color: var(--accent)" : ""}>Donate</a>
         </div>
         <!--
@@ -76,9 +80,19 @@
                     style={path === "/" ? "color: var(--accent)" : ""}
             >Home</a>
             <a
+                    href="/#web-apps"
+                    onclick={() => menuOpen = false}
+                    style={path === "/#web-apps" ? "color: var(--accent)" : ""}
+            >Apps</a>
+            <a
+                    href="/blog"
+                    onclick={() => menuOpen = false}
+                    style={path?.startsWith("/blog") ? "color: var(--accent)" : ""}
+            >Blog</a>
+            <a
                     href="/donate"
                     onclick={() => menuOpen = false}
-                    style={path === "/" ? "color: var(--accent)" : ""}
+                    style={path === "/donate" ? "color: var(--accent)" : ""}
             >Donate</a>
             <!--
 
@@ -218,7 +232,7 @@
   .menuOpen {
     opacity: 1;
     border-bottom: solid 2px var(--accent);
-    height: 7rem;
+    height: 10rem;
   }
 
   .links a:hover {

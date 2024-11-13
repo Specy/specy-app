@@ -2,13 +2,17 @@
 	font-family: Orienta;
 	src: url(/fonts/Orienta-Regular.ttf);
 }
+@font-face {
+	font-family: Rubik;
+	src: url("https://fonts.gstatic.com/s/rubik/v28/iJWKBXyIfDnIV7nBrXw.woff2");
+}
 
 * {
 	margin: 0;
 	padding: 0;
 	border: none;
 	box-sizing: border-box;
-	font-family: Orienta;
+	font-family: Rubik;
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 }
@@ -26,10 +30,12 @@ html {
 	height: 100%;
 	width: 100%;
 	display: flex;
-	font-family: Orienta;
+	font-family: Rubik;
 	flex-direction: column;
 }
-
+html{
+	overflow-y: scroll;
+}
 .ellipsis {
 	white-space: nowrap;
 	overflow: hidden;
@@ -83,7 +89,7 @@ input:disabled {
 }
 
 ::-webkit-scrollbar-track {
-	background: none;
+	background: #222222;
 }
 
 ::-webkit-scrollbar-thumb {

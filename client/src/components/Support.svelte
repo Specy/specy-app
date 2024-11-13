@@ -42,8 +42,10 @@
 		flex-direction: column;
 		align-items: flex-start;
 		> .text {
+			color: #cacaca;
 			margin: 1rem;
-			line-height: 1.3rem;
+			line-height: 1.4;
+			font-size: 1.1rem;
 		}
 	}
 	.title {

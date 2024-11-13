@@ -14,6 +14,7 @@
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/clone-deep": "^4.0.4",
+		"mdsvex": "^0.11.2",
 		"sass": "^1.80.3",
 		"svelte": "^5.0.3",
 		"svelte-check": "^4.0.5",
@@ -29,6 +30,11 @@
 		"axios-auth-refresh": "^3.3.6",
 		"clone-deep": "^4.0.1",
 		"email-validator": "^2.0.4",
+		"reading-time": "^1.5.0",
+		"rehype-autolink-headings": "^7.1.0",
+		"rehype-slug": "^6.0.0",
+		"remark-containers": "^1.2.0",
+		"remark-github": "^12.0.0",
 		"svelte-icons": "^2.1.0"
 	}
 }

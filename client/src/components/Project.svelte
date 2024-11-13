@@ -34,8 +34,8 @@
 
 <style lang="scss">
 	.project {
-		background-color: rgba(var(--RGB-secondary), 0.85);
-		box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.15);
+		background-color: rgb(31 36 43 / 50%);
+		box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -83,6 +83,7 @@
 		width: 100%;
 		overflow-y: auto;
 		padding: 0.5rem;
+		color: #cacaca;
 		border-radius: 0.5rem;
 	}
 	::-webkit-scrollbar {
@@ -97,11 +98,5 @@
 
 	.description:hover::-webkit-scrollbar-thumb {
 		background: #555;
-	}
-	@media (max-width: 480px) {
-		.project {
-			backdrop-filter: none;
-			background-color: rgba(var(--RGB-secondary), 0.9);
-		}
 	}
 </style>
