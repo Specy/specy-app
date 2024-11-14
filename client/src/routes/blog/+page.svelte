@@ -7,6 +7,12 @@
     }>()
 </script>
 
+<svelte:head>
+    <title>Specy's Blog</title>
+    <meta name="description" content="Specy's Blog" />
+    <meta property="og:title" content="Specy's Blog" />
+    <meta property="og:description" content="Specy's Blog" />
+</svelte:head>
 
 <div class="content-wrapper">
     <div class="content">

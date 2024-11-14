@@ -2,6 +2,11 @@
 	import Support from '$cmp/Support.svelte'
 </script>
 
+<svelte:head>
+	<title>Donate</title>
+	<meta name="description" content="Help the funding of the development of my apps" />
+</svelte:head>
+
 <div class="center">
 	<div class="support-wrapper">
 		<Support />

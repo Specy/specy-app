@@ -33,7 +33,7 @@ const baseDarkTheme = {
             cssProp: 'footer'
         },
         accent: {
-            hex: '#b53c71',
+            hex: 'hsl(273.05, 67.64%, 62.44%)',
             name: 'accent',
             cssProp: 'accent'
         },

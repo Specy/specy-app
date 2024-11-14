@@ -20,14 +20,6 @@
     }
 </script>
 
-<svelte:head>
-    <title>{title}</title>
-    <meta name="description" content={description}/>
-    <meta property="og:title" content={title}/>
-    <meta property="og:description" content={description}/>
-    <meta property="og:type" content="article"/>
-</svelte:head>
-
 <article class="content-wrapper">
     <div class="content">
         <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem">
@@ -63,7 +55,11 @@
 
 
 <style lang="scss">
-
+    $paragraph-font: "Noto Serif";
+    $paragraph-weight: 500;
+    $heading-font: "Rubik";
+    $heading-weight: 800;
+    $code-font: "Fira Code";
 
   .date-published {
     font-size: 1.5rem;
@@ -111,7 +107,9 @@
 
   .blog-description {
     font-size: 1.4rem;
-    color: #cacaca;
+    line-height: 1.5;
+    font-family: $paragraph-font;
+    color: #dbdbdb;
     padding: 1rem;
   }
 
@@ -121,13 +119,26 @@
     :global(p) {
       font-size: 1.2rem;
       line-height: 1.5;
-      margin: 1rem 0;
-      color: #cacaca;
+      margin: 1.3rem 0;
+      color: #dbdbdb;
+      font-family: $paragraph-font;
+      font-weight: $paragraph-weight;
+    }
+
+
+    :global(h1) > :global(a),
+    :global(h2) > :global(a),
+    :global(h3) > :global(a),
+    :global(h4) > :global(a) {
+      color: var(--background-text);
+      font-family: $heading-font;
+      font-weight: $heading-weight;
+      text-decoration: unset;
     }
 
     :global(h1) {
-      margin-top: 2rem;
-        font-size: 2rem;
+      margin-top: 4rem;
+      font-size: 2.2rem;
     }
 
     :global(a) {
@@ -135,18 +146,11 @@
       text-decoration: underline;
     }
 
-    :global(h1) > :global(a),
-    :global(h2) > :global(a),
-    :global(h3) > :global(a),
-    :global(h4) > :global(a) {
-      color: var(--background-text);
-      text-decoration: unset;
-    }
 
     :global(ul), :global(ol) {
       padding-left: 1rem;
       font-size: 1.1rem;
-      color: #cacaca;
+      color: #dbdbdb;
 
       > :global(li) {
         margin: 0.5rem 0;
@@ -184,6 +188,14 @@
     }
     .main-header {
       font-size: 2.5rem;
+    }
+    .md-content{
+        :global(h1){
+            font-size: 2rem;
+        }
+        :global(p){
+            font-size: 1.15rem;
+        }
     }
   }
 </style>

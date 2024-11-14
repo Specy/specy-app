@@ -83,7 +83,7 @@
 		width: 100%;
 		overflow-y: auto;
 		padding: 0.5rem;
-		color: #cacaca;
+		color: #dbdbdb;
 		border-radius: 0.5rem;
 	}
 	::-webkit-scrollbar {

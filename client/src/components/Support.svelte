@@ -42,7 +42,7 @@
 		flex-direction: column;
 		align-items: flex-start;
 		> .text {
-			color: #cacaca;
+			color: #dbdbdb;
 			margin: 1rem;
 			line-height: 1.4;
 			font-size: 1.1rem;

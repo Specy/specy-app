@@ -1,6 +1,4 @@
 <script lang="ts">
-    import {run} from 'svelte/legacy';
-
     import {createDebouncer} from "$lib/utils"
     import {currentTheme} from "$stores/themeStore"
     import {onMount} from "svelte"
@@ -12,9 +10,19 @@
     let {children}: Props = $props();
     let canvas: HTMLCanvasElement | null = $state(null)
     let ctx: CanvasRenderingContext2D | null = $derived(canvas?.getContext("2d"))
-    let width = 80
-    let height = 80
+    let aspectRatio = typeof window !== "undefined" ? window.innerWidth / window.innerHeight : 1
+    const defSize = 50
+    let height = defSize
+    let width = clampMultipleOf(defSize * aspectRatio, 4)
+    if (aspectRatio < 1) {
+        width = defSize
+        height = clampMultipleOf(defSize / aspectRatio, 4)
+    }
     let color = currentTheme.getColor("accent")
+
+    function clampMultipleOf(n: number, m: number) {
+        return Math.ceil(n / m) * m
+    }
 
     function createMatrix() {
         //function that creates a matrix, in which there will be stored the alive/dead cells
@@ -227,5 +235,8 @@
 		.background {
 			padding: 1rem;
 		}
+        canvas{
+            filter: blur(6px);
+        }
 	}
 </style>

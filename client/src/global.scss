@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 @font-face {
 	font-family: Orienta;
 	src: url(/fonts/Orienta-Regular.ttf);
@@ -12,7 +13,6 @@
 	padding: 0;
 	border: none;
 	box-sizing: border-box;
-	font-family: Rubik;
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 }
@@ -93,7 +93,7 @@ input:disabled {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #b00752;
+	background: hsl(273.05deg 67.14% 59.87%);
 	border-radius: 2px;
 	cursor:pointer
 }
