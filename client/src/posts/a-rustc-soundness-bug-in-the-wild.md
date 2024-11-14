@@ -68,7 +68,7 @@ stack backtrace:
    5: microlp::main
 ```
 Ah ok, it's just a simple unwrap on a None value, i probably messed up somewhere in the adapter code. 
-Let me reuse the same model that had issues add a new test for this case, so i don't have a regression in the future.
+Let me create a new test using the same model that had issues, so i don't have a regression in the future.
 
 > `cargo test`
 
