@@ -57,11 +57,7 @@
         <div class="mobile-row">
             <Logo logoToggled={menuOpen}/>
             <div class="top-mobile-menu">
-                {#if $user}
-                    <a href="/profile" class="profile">
-                        <FaUser/>
-                    </a>
-                {/if}
+
                 <div onclick={() => {menuOpen = !menuOpen}} style='height:2rem'>
                     {#if menuOpen}
                         <MdClose/>
@@ -143,6 +139,7 @@
   .mobile-row {
     display: flex;
     padding: 0.5rem;
+
     justify-content: space-between;
     align-items: center;
   }
@@ -180,6 +177,7 @@
 
   .top-mobile-menu {
     height: 2rem;
+    width: 2rem;
     display: flex;
     align-items: center;
   }
