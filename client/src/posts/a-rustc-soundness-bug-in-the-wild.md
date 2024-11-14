@@ -5,6 +5,9 @@
     tags: ['rust', 'rooc']
     relatedProjects: ['rooc']
 ---
+<script>
+    import WaveText from "$cmp/blog/WaveText.svelte";    
+</script>
 
 
 # How it started
@@ -18,10 +21,12 @@ The easiest way to do this is to find pure rust libraries, which would allow me 
 
 After many failed attempts at compiling for wasm, searching through the whole crates.io, i stumbled upon [minilp](https://github.com/ztlpn/minilp), a rust only linear programming library. Perfect! 
 
-But wait... "The project was archived 2 years ago, last commit 4 years ago", oh well, i heard that rust is a stable language, so it should be fine, right?
+But wait... _"The project was archived 2 years ago, last commit 4 years ago"_, oh well, i heard that rust is a stable language, so it should be fine, right?
+
+<WaveText text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Implementation
-After i discovered the library i immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
+After discovering the library i immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
 that transformed a `LinearModel` into a `minilp::Problem`. 
 
 Let's see how that goes!
@@ -47,11 +52,11 @@ Huh? A panic? Oh well, i guess even this library does not work on the web...
 
 Being a bit discouraged, i kept searching on crates.io for alternatives, but sadly found none. 
 
-Looking back at the minilp code, it seemed like there were no weird dependencies, and no usage of OS specific things, so it should have worked on the web.
+My only chance was getting minilp to work, it seemed like there were no weird dependencies, no usage of OS specific things, so it _should_ have worked on the web.
 
 # Debugging begins
 
-Maybe it's a web only thing? WASM stack traces are a bit... cryptic, you don't really know where or what happened, as it completely strips away any kind of debug information to keep bundle sizes small.
+Maybe it's a web only problem? WASM stack traces are a bit... cryptic, you don't really know where or what happened, as it completely strips away any kind of debug information to keep bundle sizes small.
 But let's try using [wasm2map](https://github.com/mtolmacs/wasm2map) to add debug map information to the wasm file, and see if we can get a better stack trace.
 
 ```
@@ -63,7 +68,7 @@ stack backtrace:
    5: microlp::main
 ```
 Ah ok, it's just a simple unwrap on a None value, i probably messed up somewhere in the adapter code. 
-Let me add a new test for this case, so i don't have a regression in the future, and so i can use a debugger to see where i messed up.
+Let me reuse the same model that had issues add a new test for this case, so i don't have a regression in the future.
 
 > `cargo test`
 
@@ -73,7 +78,10 @@ running 19 tests
 ...
 test result: ok. 19 passed; 0 failed; 0 measured; 0 filtered out; finished in 0.03s
 ```
-??? The test passed? **How??** I just had this panic on me a *few seconds ago*?
+What??? The test passed? 
+<WaveText text="How??" style="font-size: 1.3rem; margin: -1rem 0" /> 
+
+I just had this panic on me a *few seconds ago*?
 
 Ah whatever, let's go to the issues page of the minilp repository, maybe someone else had this issue before.
 
@@ -142,7 +150,7 @@ I also noticed that the bug happens *only* when running in release mode, so that
 Just to be sure i ran the same code in debug mode but disabling all debug checks like bound checking and overflow checking, but the bug
 did not reproduce. I managed to narrow it down to `opt-level = 1` causing the panic.
 
-I go and remove all `unsafe` usage everywhere in the library to make sure that's not the issue, but the panic is still there.
+I try to remove all `unsafe` usage everywhere in the library to make sure that's not the issue. But the panic is still there.
 
 Hm, the only dependency of the crate is `sprs` which has *a ton* of unsafe code, let's file [an issue](https://github.com/sparsemat/sprs/issues/370#issuecomment-2446583795) to see if i'm breaking some invariants.
 
@@ -159,7 +167,7 @@ Hm, the only dependency of the crate is `sprs` which has *a ton* of unsafe code,
 >    });
 > ```
 
-Which... still panics? Ok, ok, ok, let's recap:
+Which... still panics? *Ok, ok, ok*, let's recap:
 
 - The bug happens only in release mode
 - There is no unsafe code anywhere in the library
@@ -171,7 +179,7 @@ So how can it be panicking? Isn't the whole purpose of rust to not have this kin
 
 # The bug report 
 
-I decided to make sure i wasn't making any mistakes and tried to build a [minimal reproduction](https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=0b00575c9057e816cddce89d00a0d856) using no dependencies or unsafe code:
+I decided to make sure i wasn't making any silly mistakes and tried to build a [minimal reproduction](https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=0b00575c9057e816cddce89d00a0d856) using no dependencies or unsafe code:
 ```rust
 fn main() {
     order_simple(4, |c| {
@@ -210,12 +218,12 @@ fn pop_min(mut score2head: Vec<Option<usize>>) -> Option<usize> {
     }
 }
 ```
-which turns out to have been caused by a `unsound_mir_opts` optimization in the rustc compiler. 
-The issue was given a `P-critical` priority, the bugged code found in a few days, and a bug fix was published a week later.
+which turns out to have been caused by a `unsound_mir_opts` in the rustc compiler. 
+The issue was given a `P-critical` priority, the bugged code fixed in a few days, and released a week later.
 
 # Conclusion
-After the bug was resolved i managed to publish the new version of the [rooc library](https://github.com/specy/rooc) which *now* does 
-work in the browser, and also forked the [minilp](https://github.com/Specy/microlp) crate to fix some bugs and add some new features.
+After the bug was resolved i managed to publish the new version of the [rooc library](https://github.com/specy/rooc) which *now does* 
+work in the browser, also forked the [minilp](https://github.com/Specy/microlp) crate to fix some bugs and add some new features.
 
 I'm by no means a rust expert, nor a good low-level programmer, i'm just a frontender after all! But this experience taught
 me a ton about debugging so i wanted to share the thought process going through this bug.

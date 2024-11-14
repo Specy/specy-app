@@ -34,7 +34,7 @@
 	.go-back-text {
 		font-size: 1rem;
 		margin-top: -1rem;
-		color: #bd7796;
+		color: var(--accent);
 	}
 	.center-wrapper {
 		display: flex;
