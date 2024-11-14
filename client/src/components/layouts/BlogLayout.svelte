@@ -55,11 +55,7 @@
 
 
 <style lang="scss">
-    $paragraph-font: "Noto Serif";
-    $paragraph-weight: 500;
-    $heading-font: "Rubik";
-    $heading-weight: 800;
-    $code-font: "Fira Code";
+
 
   .date-published {
     font-size: 1.5rem;
@@ -72,6 +68,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    --paragraph-font: "Noto Serif";
+    --paragraph-weight: 500;
+    --heading-font: "Rubik";
+    --heading-weight: 800;
+    --code-font: "Fira Code";
   }
 
   .content {
@@ -108,7 +110,7 @@
   .blog-description {
     font-size: 1.4rem;
     line-height: 1.5;
-    font-family: $paragraph-font;
+    font-family: var(--paragraph-font), Rubik, sans-serif;
     color: #dbdbdb;
     padding: 1rem;
   }
@@ -118,11 +120,12 @@
 
     :global(p) {
       font-size: 1.2rem;
+      letter-spacing: 0.01em;
       line-height: 1.5;
       margin: 1.3rem 0;
       color: #dbdbdb;
-      font-family: $paragraph-font;
-      font-weight: $paragraph-weight;
+      font-family: var(--paragraph-font), Rubik, sans-serif;
+      font-weight: var(--paragraph-weight);
     }
 
 
@@ -130,9 +133,10 @@
     :global(h2) > :global(a),
     :global(h3) > :global(a),
     :global(h4) > :global(a) {
+      letter-spacing: 0.02em;
       color: var(--background-text);
-      font-family: $heading-font;
-      font-weight: $heading-weight;
+      font-family: var(--heading-font), Rubik, sans-serif;;
+      font-weight: var(--heading-weight);
       text-decoration: unset;
     }
 
