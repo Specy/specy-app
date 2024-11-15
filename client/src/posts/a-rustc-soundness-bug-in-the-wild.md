@@ -96,7 +96,7 @@ pub fn order_simple<'a>(size: usize, get_col: impl Fn(usize) -> &'a [usize]) -> 
     //some code...
     let mut new2orig = Vec::with_capacity(size);
     while new2orig.len() < size {
-        let min = cols_queue.min();
+        let min = cols_queue.pop_min();
         println!("min {:?}", min);
         new2orig.push(min.unwrap());
     }
