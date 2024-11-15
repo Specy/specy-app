@@ -76,6 +76,7 @@
     --code-font: "Fira Code";
   }
 
+
   .content {
     --bg: #171a21b0;
     display: flex;
@@ -86,6 +87,14 @@
     max-width: 80ch;
     box-shadow: 0 0 6rem 6rem var(--bg);
     background-color: var(--bg);
+  }
+
+  @media (max-width: 600px) {
+    .content {
+      --bg: rgba(23, 26, 33, 0.5);
+      box-shadow: 0 0 6rem 6rem var(--bg);
+      background-color: var(--bg);
+    }
   }
 
   .md-content > :global(:first-child) {
