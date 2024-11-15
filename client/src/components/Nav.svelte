@@ -158,7 +158,8 @@
     top: 0;
     right: 0;
     padding-bottom: 0;
-    background-color: rgba(var(--RGB-primary), 0.96);
+    background: linear-gradient(180deg, rgba(var(--RGB-background), 1) 0%, rgba(var(--RGB-background), 0.2) 100%);
+    backdrop-filter: blur(6px);
     color: var(--primary-text);
     width: 100%;
     display: none;

@@ -95,7 +95,7 @@
 
   @media (max-width: 600px) {
     .md-content {
-      --bg: rgba(23, 26, 33, 0.45);
+      --bg: rgba(23, 26, 33, 0.3);
       box-shadow: 0 0 6rem 6rem var(--bg);
       background-color: var(--bg);
     }
