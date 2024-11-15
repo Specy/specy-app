@@ -28,7 +28,7 @@ const baseDarkTheme = {
             cssProp: 'tertiary'
         },
         footer: {
-            hex: '#212630',
+            hex: '#1c2029',
             name: 'footer',
             cssProp: 'footer'
         },

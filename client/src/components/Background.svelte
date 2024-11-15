@@ -2,22 +2,36 @@
     import {createDebouncer} from "$lib/utils"
     import {currentTheme} from "$stores/themeStore"
     import {onMount} from "svelte"
+    import {page} from "$app/stores"
+    import {fromStore} from "svelte/store";
 
     interface Props {
         children?: import('svelte').Snippet;
     }
 
+    const isReduced = typeof window !== "undefined" && (window.matchMedia(`(prefers-reduced-motion: reduce)`).matches)
+
+    const multiplier = 5
     let {children}: Props = $props();
     let canvas: HTMLCanvasElement | null = $state(null)
     let ctx: CanvasRenderingContext2D | null = $derived(canvas?.getContext("2d"))
-    let aspectRatio = typeof window !== "undefined" ? window.innerWidth / window.innerHeight : 1
-    const defSize = 50
-    let height = defSize
-    let width = clampMultipleOf(defSize * aspectRatio, 4)
-    if (aspectRatio < 1) {
-        width = defSize
-        height = clampMultipleOf(defSize / aspectRatio, 4)
+    const offCanvas = typeof window !== "undefined" ? document.createElement("canvas") : null
+    const offCtx = offCanvas?.getContext("2d")
+    const defSize = 40
+    let {width, height} = calculateSizes()
+
+    function calculateSizes() {
+        let aspectRatio = typeof window !== "undefined" ? window.innerWidth / document.body.scrollHeight : 1
+        let height = defSize
+        let width = clampMultipleOf(defSize * aspectRatio, 4)
+        if (aspectRatio < 1) {
+            width = defSize
+            height = clampMultipleOf(defSize / aspectRatio, 4)
+        }
+        return {width, height}
     }
+
+
     let color = currentTheme.getColor("accent")
 
     function clampMultipleOf(n: number, m: number) {
@@ -100,8 +114,16 @@
         if (!erase) secondCanvasData = data
         //actually draw the image generated above
         const img = new ImageData(data, width, height)
-        context.putImageData(img, 0, 0)
+        offCtx!.putImageData(img, 0, 0)
+        context.clearRect(0, 0, width * multiplier, height * multiplier)
+        //draw over the whole canvas
+        context.drawImage(
+            offCanvas!
+            , 0, 0, width, height
+            , 0, 0, width * multiplier, height * multiplier
+        )
     }
+
 
     function calculateGeneration(matrix: Uint8Array[]) {
         //function that calculates the next generation for Conway's game of life
@@ -139,11 +161,20 @@
     }
 
     let raf = 0
-    let frame = 0
-    let max = 60
+    let max = 100
+    let frame = max
+    let frameId = 0
 
     function handleFrame() {
+
         if (frame++ > max) {
+            frameId++
+            if (frameId > 1 && isReduced) {
+                matrix = calculateGeneration(matrix)
+                matrix = calculateGeneration(matrix)
+                matrix = calculateGeneration(matrix)
+                return
+            }
             frame = 0
             //every 100 frames, draw the canvas and calculate the next generation
             matrix = calculateGeneration(matrix)
@@ -152,52 +183,57 @@
         raf = window.requestAnimationFrame(handleFrame)
     }
 
+    let mainScreenPercentage = $state(1)
     function createCanvas() {
-        const ratio = window.innerHeight / window.innerWidth
-        if (ratio > 1) {
-            width = Math.round(width / ratio)
-        } else {
-            height = Math.round(width * ratio)
-        }
-        canvas!.width = width
-        canvas!.height = height
+        const sizes = calculateSizes()
+        width = sizes.width
+        height = sizes.height
+        canvas!.width = width * multiplier
+        canvas!.height = height * multiplier
         matrix = createMatrix()
         matrix = generateRandomMatrix(0.25)
+        offCanvas!.width = width * multiplier
+        offCanvas!.height = height * multiplier
+        ctx!.filter = "blur(6px)"
+        mainScreenPercentage = window.innerHeight / document.body.scrollHeight * 100
         for (let i = 0; i < 20; i++) {
             matrix = calculateGeneration(matrix)
         }
+        drawCanvas(matrix, ctx!, color?.toHex()!, true)
     }
 
+    const pageStore = $state(fromStore(page))
+    let lastPage = pageStore.current.url
+    $effect(() => {
+        if (pageStore.current.url !== lastPage) {
+            lastPage = pageStore.current.url
+            createCanvas()
+        }
+    })
     onMount(() => {
+
         createCanvas()
-        handleFrame()
+        //handleFrame()
         return () => {
             window.cancelAnimationFrame(raf)
         }
     })
-
-    function handleScroll() {
-        //speed up the animation when the user scrolls
-        const top = window.scrollY
-        const percent = top / window.innerHeight
-        max = 60 - percent * 55
-        if (percent > 0.9) {
-            max = 10000
-        }
-    }
-
     const [debouncer] = createDebouncer(1000)
 </script>
 
 <svelte:window
-        onscroll={handleScroll}
         onresize={() => {
 		if(!"ontouchstart" in window){ //don't resize on mobile
 			debouncer(createCanvas)
 		}
 	}}
 />
-<div class="column" style="flex: 1; position: relative;">
+<div class="column"
+style={`
+flex: 1; position: relative;
+--first-section-height: ${mainScreenPercentage}%;
+`}
+>
 	<div class="background">
 		<canvas bind:this={canvas} class="background-image"></canvas>
 	</div>
@@ -216,9 +252,7 @@
 		}
 		overflow: hidden;
 		width: 100%;
-		padding: 2rem;
 		height: calc(100%);
-		max-height: calc(100vh);
 		top: 0;
 		opacity: 0.5;
 		left: 0;
@@ -228,15 +262,16 @@
 		image-rendering: -webkit-crisp-edges;
 		image-rendering: pixelated;
 		image-rendering: crisp-edges;
-        filter: blur(8px);
-        mask-image: linear-gradient(155deg, rgba(0,0,0, 0.2) 0%, rgba(0,0,0, 1) 200%)
+        mask-image: linear-gradient(180deg,
+            rgba(0,0,0, 0.8) var(--first-section-height),
+            rgba(0,0,0, 0.5) calc(var(--first-section-height) + 10vh),
+            rgba(0,0,0, 0.3) 100%
+            )
 	}
 	@media (orientation: portrait) {
 		.background {
 			padding: 1rem;
 		}
-        canvas{
-            filter: blur(6px);
-        }
+
 	}
 </style>

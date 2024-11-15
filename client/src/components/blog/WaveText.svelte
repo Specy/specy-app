@@ -59,4 +59,10 @@
             transform: translateY(var(--wave-vertical)) skew(calc(-1 * var(--wave-skew)));
         }
     }
+
+    @media (prefers-reduced-motion) {
+        span {
+            animation: none;
+        }
+    }
 </style>

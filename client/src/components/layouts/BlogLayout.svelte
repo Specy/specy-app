@@ -77,12 +77,15 @@
   }
 
   .content {
+    --bg: #171a21b0;
     display: flex;
     margin-top: 3rem;
     width: 100%;
     flex-direction: column;
     gap: 1rem;
     max-width: 80ch;
+    box-shadow: 0 0 4rem 4rem var(--bg);
+    background-color: var(--bg);
   }
 
   .md-content > :global(:first-child) {
@@ -193,13 +196,14 @@
     .main-header {
       font-size: 2.5rem;
     }
-    .md-content{
-        :global(h1){
-            font-size: 2rem;
-        }
-        :global(p){
-            font-size: 1.1rem;
-        }
+    .md-content {
+      :global(h1) {
+        font-size: 2rem;
+      }
+
+      :global(p) {
+        font-size: 1.1rem;
+      }
     }
   }
 </style>

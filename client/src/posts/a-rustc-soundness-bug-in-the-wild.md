@@ -12,21 +12,21 @@
 
 # How it started
 I was working on [rooc](https://rooc.specy.app), a modeling language for optimization problems running in the web; 
-After months of "just one more feature" i decided to stop adding new things to the language, and instead focus on improving the 
-solvers, which so far implemented only a very simple one which i developed.
+After months of "just one more feature" I decided to stop adding new things to the language, and instead focus on improving the 
+solvers, which so far implemented only a very simple one which I developed.
 
 My goal was to be able to run everything in the browser, so solvers must be able to compile to WebAssembly.
 
 The easiest way to do this is to find pure rust libraries, which would allow me to simply compile the rust code to the wasm target.
 
-After many failed attempts at compiling for wasm, searching through the whole crates.io, i stumbled upon [minilp](https://github.com/ztlpn/minilp), a rust only linear programming library. Perfect! 
+After many failed attempts at compiling for wasm, searching through the whole crates.io, I stumbled upon [minilp](https://github.com/ztlpn/minilp), a rust only linear programming library. Perfect! 
 
-But wait... _"The project was archived 2 years ago, last commit 4 years ago"_, oh well, i heard that rust is a stable language, so it should be fine, right?
+But wait... _"The project was archived 2 years ago, last commit 4 years ago"_, oh well, I heard that rust is a stable language, so it should be fine, right?
 
 <WaveText text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Implementation
-After discovering the library i immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
+After discovering the library I immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
 that transformed a `LinearModel` into a `minilp::Problem`. 
 
 Let's see how that goes!
@@ -41,16 +41,16 @@ test result: ok. 18 passed; 0 failed; 0 measured; 0 filtered out; finished in 0.
 ```
 Looks good to me! Let's publish a new version of the library to npm with this newly added solver!
 
-But wait, right, before that i should probably test it in the browser, *just to make sure*.
+But wait, right, before that I should probably test it in the browser, *just to make sure*.
 ```
 Uncaught (in promise) RuntimeError: unreachable
     at __rust_start_panic (http://127.0.0.1:8080/wasm_bg.wasm:wasm-function[346]:0x274ec)
     at rust_panic (http://127.0.0.1:8080/wasm_bg.wasm:wasm-function[254]:0x26d0b)
     ...
 ```
-Huh? A panic? Oh well, i guess even this library does not work on the web...
+Huh? A panic? Oh well, I guess even this library does not work on the web...
 
-Being a bit discouraged, i kept searching on crates.io for alternatives, but sadly found none. 
+Being a bit discouraged, I kept searching on crates.io for alternatives, but sadly found none. 
 
 My only chance was getting minilp to work, it seemed like there were no weird dependencies, no usage of OS specific things, so it _should_ have worked on the web.
 
@@ -67,8 +67,8 @@ stack backtrace:
    4: microlp::order_simple
    5: microlp::main
 ```
-Ah ok, it's just a simple unwrap on a None value, i probably messed up somewhere in the adapter code. 
-Let me create a new test using the same model that had issues, so i don't have a regression in the future.
+Ah ok, it's just a simple unwrap on a None value, I probably messed up somewhere in the adapter code. 
+Let me create a new test using the same model that had issues, so I don't have a regression in the future.
 
 > `cargo test`
 
@@ -85,8 +85,8 @@ I just had this panic on me a *few seconds ago*?
 
 Ah whatever, let's go to the issues page of the minilp repository, maybe someone else had this issue before.
 
-[One random issue](https://github.com/ztlpn/minilp/issues/6) shows another panic at runtime, so i guess the library doesn't guarantee the lack of panics,
-and it being archived, i should probably just fork it and fix it myself.
+[One random issue](https://github.com/ztlpn/minilp/issues/6) shows another panic at runtime, so I guess the library doesn't guarantee the lack of panics,
+and it being archived, I should probably just fork it and fix it myself.
 
 Let's look at the `minilp::order_simple` function and see what's going on there.
 
@@ -134,20 +134,20 @@ min: Some(2)
 min: Some(3)
 called `Option::unwrap()` on a `None` value
 ```
-Ok good, at least the bug happens now? *I guess?* But where is the `None on min_score: {}` print that i put in the *only* place where `None` is returned?
+Ok good, at least the bug happens now? *I guess?* But where is the `None on min_score: {}` print that I put in the *only* place where `None` is returned?
 
 Let's add more prints!
 
 <video src=https://github.com/user-attachments/assets/2631f7bf-4363-4305-8950-03b94b018d61 style="width: 100%; border-radius: 0.5rem" controls></video>
 
-*Yeeeeeeah*, no, this cannot be sound, there must be something wrong somewhere, i did see an [unsafe](https://github.com/ztlpn/minilp/blob/master/src/helpers.rs#L26)
+*Yeeeeeeah*, no, this cannot be sound, there must be something wrong somewhere, I did see an [unsafe](https://github.com/ztlpn/minilp/blob/master/src/helpers.rs#L26)
 in the library, so maybe some memory corruption is happening?
 
 Running miri did not show any issues, but going step by step with my debugger did show an illegal memory access, so definitely something is wrong with the library.
 
 I also noticed that the bug happens *only* when running in release mode, so that does narrow down the issue a bit.
 
-Just to be sure i ran the same code in debug mode but disabling all debug checks like bound checking and overflow checking, but the bug
+Just to be sure I ran the same code in debug mode but disabling all debug checks like bound checking and overflow checking, but the bug
 did not reproduce. I managed to narrow it down to `opt-level = 1` causing the panic.
 
 I try to remove all `unsafe` usage everywhere in the library to make sure that's not the issue. But the panic is still there.
@@ -179,7 +179,7 @@ So how can it be panicking? Isn't the whole purpose of rust to not have this kin
 
 # The bug report 
 
-I decided to make sure i wasn't making any silly mistakes and tried to build a [minimal reproduction](https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=0b00575c9057e816cddce89d00a0d856) using no dependencies or unsafe code:
+I decided to make sure I wasn't making any silly mistakes and tried to build a [minimal reproduction](https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=0b00575c9057e816cddce89d00a0d856) using no dependencies or unsafe code:
 ```rust
 fn main() {
     order_simple(4, |c| {
@@ -218,12 +218,12 @@ fn pop_min(mut score2head: Vec<Option<usize>>) -> Option<usize> {
     }
 }
 ```
-which turns out to have been caused by a `unsound_mir_opts` in the rustc compiler. 
+which turns out to have been an unsound mir optimization in the rustc compiler, affecting rust nightly versions 1.83.0 and 1.84.0. 
 The issue was given a `P-critical` priority, the bugged code fixed in a few days, and released a week later.
 
 # Conclusion
-After the bug was resolved i managed to publish the new version of the [rooc library](https://github.com/specy/rooc) which *now does* 
+After the bug was resolved I managed to publish the new version of the [rooc library](https://github.com/specy/rooc) which *now does* 
 work in the browser, also forked the [minilp](https://github.com/Specy/microlp) crate to fix some bugs and add some new features.
 
 I'm by no means a rust expert, nor a good low-level programmer, i'm just a frontender after all! But this experience taught
-me a ton about debugging so i wanted to share the thought process going through this bug.
+me a ton about debugging so I wanted to share the thought process going through this bug.
