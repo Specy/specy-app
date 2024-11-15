@@ -8,10 +8,10 @@
         children?: import('svelte').Snippet;
     }
 
-    const hasFilter = typeof window !== "undefined" ? 'filter' in CanvasRenderingContext2D.prototype : true
+    const hasFilter = (typeof window !== "undefined" ? 'filter' in CanvasRenderingContext2D.prototype : true)
 
 
-    const multiplier = 4
+    const multiplier = hasFilter ? 5 : 3
     let {children}: Props = $props();
     let canvas: HTMLCanvasElement | null = $state(null)
     let ctx: CanvasRenderingContext2D | null = $derived(canvas?.getContext("2d"))
@@ -175,7 +175,7 @@
         offCanvas!.width = width * multiplier
         offCanvas!.height = height * multiplier
         if (hasFilter) {
-            ctx!.filter = "blur(6px)"
+            ctx!.filter = "blur(8px)"
         }
         mainScreenPercentage = window.innerHeight / document.body.scrollHeight * 100
         for (let i = 0; i < 20; i++) {
@@ -244,7 +244,8 @@ flex: 1; position: relative;
   }
 
   .noFilter {
-    filter: blur(6px);
+    filter: blur(20px);
+    opacity: 0.4;
   }
 
 </style>
