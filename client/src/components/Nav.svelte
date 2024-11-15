@@ -158,8 +158,8 @@
     top: 0;
     right: 0;
     padding-bottom: 0;
-    background: linear-gradient(180deg, rgba(var(--RGB-background), 1) 0%, rgba(var(--RGB-background), 0.2) 100%);
-    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(var(--RGB-background), 1) 0%, rgba(var(--RGB-background), 0.7) 100%);
+    box-shadow: 0 0 1rem 1.5rem rgba(var(--RGB-background), 0.7);
     color: var(--primary-text);
     width: 100%;
     display: none;
@@ -211,6 +211,7 @@
     padding: 0;
     transition: all 0.4s ease-out;
     justify-content: space-around;
+    background-color: rgba(var(--RGB-background), 0.7);
 
     > a, button {
       padding: 0.2rem;

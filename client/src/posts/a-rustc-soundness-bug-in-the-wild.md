@@ -150,7 +150,7 @@ I also noticed that the bug happens *only* when running in release mode, so that
 Just to be sure I ran the same code in debug mode but disabling all debug checks like bound checking and overflow checking, but the bug
 did not reproduce. I managed to narrow it down to `opt-level = 1` causing the panic.
 
-I try to remove all `unsafe` usage everywhere in the library to make sure that's not the issue. But the panic is still there.
+I tried to remove all `unsafe` usage everywhere in the library to make sure that's not the issue. But the panic was still there.
 
 Hm, the only dependency of the crate is `sprs` which has *a ton* of unsafe code, let's file [an issue](https://github.com/sparsemat/sprs/issues/370#issuecomment-2446583795) to see if i'm breaking some invariants.
 

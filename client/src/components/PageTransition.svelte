@@ -1,5 +1,6 @@
 <script>
     import {fly} from 'svelte/transition'
+    import { sineOut} from 'svelte/easing'
 
     /** @type {{refresh?: string, children?: import('svelte').Snippet}} */
     let {refresh = '', children} = $props();
@@ -28,7 +29,7 @@
     <div class={`progress ${status}`}>
 
     </div>
-    <div in:fly|global={{ y: -10, duration: 500 }} class="page column">
+    <div in:fly={{duration: 1000, opacity: 0, y: -10 }} class="page column">
         {@render children?.()}
     </div>
 {/key}

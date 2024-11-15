@@ -1,6 +1,5 @@
 <script lang="ts">
     import {currentTheme} from "$stores/themeStore"
-    import {onMount} from "svelte"
     import {page} from "$app/stores"
     import {fromStore} from "svelte/store";
 
@@ -161,10 +160,11 @@
         return nextGen
     }
 
-    let raf = 0
     let mainScreenPercentage = $state(1)
 
-    function createCanvas() {
+    let firstTime = true
+
+    function createCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         const sizes = calculateSizes()
         width = sizes.width
         height = sizes.height
@@ -182,18 +182,20 @@
             matrix = calculateGeneration(matrix)
         }
         drawCanvas(matrix, ctx!, color?.toHex()!, true)
+        firstTime = false
+        canvas.animate([
+            {opacity: firstTime ? 0.2 : 0.5},
+            {opacity: 1}
+        ], {
+            duration: 1000,
+        })
     }
 
+
     const pageStore = $state(fromStore(page))
-    let lastPage = pageStore.current.url
     $effect(() => {
-        if (pageStore.current.url !== lastPage) {
-            lastPage = pageStore.current.url
-            createCanvas()
-        }
-    })
-    onMount(() => {
-        createCanvas()
+        if (!canvas || !ctx) return
+        createCanvas(canvas, ctx)
     })
 </script>
 
@@ -204,9 +206,11 @@ flex: 1; position: relative;
 `}
 >
     <div class="background">
-        <canvas
-                class:noFilter={!hasFilter}
-                bind:this={canvas} class="background-image"></canvas>
+        {#key pageStore.current.url}
+            <canvas
+                    class:noFilter={!hasFilter}
+                    bind:this={canvas} class="background-image"></canvas>
+        {/key}
     </div>
     <div class="column" style="flex: 1; z-index: 2">
         {@render children?.()}
