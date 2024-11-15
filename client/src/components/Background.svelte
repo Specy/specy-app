@@ -263,7 +263,7 @@ flex: 1; position: relative;
 		image-rendering: pixelated;
 		image-rendering: crisp-edges;
         mask-image: linear-gradient(180deg,
-            rgba(0,0,0, 0.8) var(--first-section-height),
+            rgba(0,0,0, 0.7) var(--first-section-height),
             rgba(0,0,0, 0.5) calc(var(--first-section-height) + 10vh),
             rgba(0,0,0, 0.3) 100%
             )
