@@ -84,7 +84,7 @@
     flex-direction: column;
     gap: 1rem;
     max-width: 80ch;
-    box-shadow: 0 0 4rem 4rem var(--bg);
+    box-shadow: 0 0 6rem 6rem var(--bg);
     background-color: var(--bg);
   }
 

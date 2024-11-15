@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {createDebouncer} from "$lib/utils"
     import {currentTheme} from "$stores/themeStore"
     import {onMount} from "svelte"
     import {page} from "$app/stores"
@@ -9,9 +8,10 @@
         children?: import('svelte').Snippet;
     }
 
-    const isReduced = typeof window !== "undefined" && (window.matchMedia(`(prefers-reduced-motion: reduce)`).matches)
+    const hasFilter = typeof window !== "undefined" ? 'filter' in CanvasRenderingContext2D.prototype : true
 
-    const multiplier = 5
+
+    const multiplier = 4
     let {children}: Props = $props();
     let canvas: HTMLCanvasElement | null = $state(null)
     let ctx: CanvasRenderingContext2D | null = $derived(canvas?.getContext("2d"))
@@ -22,11 +22,12 @@
 
     function calculateSizes() {
         let aspectRatio = typeof window !== "undefined" ? window.innerWidth / document.body.scrollHeight : 1
-        let height = defSize
-        let width = clampMultipleOf(defSize * aspectRatio, 4)
-        if (aspectRatio < 1) {
-            width = defSize
-            height = clampMultipleOf(defSize / aspectRatio, 4)
+        let screenAspectRatio = typeof window !== "undefined" ? window.innerWidth / window.innerHeight : 1
+        let height = clampMultipleOf(defSize / aspectRatio, 4)
+        let width = defSize
+        if (screenAspectRatio < 1) {
+            height = clampMultipleOf(defSize / aspectRatio / 2, 4)
+            width = defSize / 2
         }
         return {width, height}
     }
@@ -161,29 +162,8 @@
     }
 
     let raf = 0
-    let max = 100
-    let frame = max
-    let frameId = 0
-
-    function handleFrame() {
-
-        if (frame++ > max) {
-            frameId++
-            if (frameId > 1 && isReduced) {
-                matrix = calculateGeneration(matrix)
-                matrix = calculateGeneration(matrix)
-                matrix = calculateGeneration(matrix)
-                return
-            }
-            frame = 0
-            //every 100 frames, draw the canvas and calculate the next generation
-            matrix = calculateGeneration(matrix)
-            drawCanvas(matrix, ctx!, color?.toHex()!, true)
-        }
-        raf = window.requestAnimationFrame(handleFrame)
-    }
-
     let mainScreenPercentage = $state(1)
+
     function createCanvas() {
         const sizes = calculateSizes()
         width = sizes.width
@@ -194,7 +174,9 @@
         matrix = generateRandomMatrix(0.25)
         offCanvas!.width = width * multiplier
         offCanvas!.height = height * multiplier
-        ctx!.filter = "blur(6px)"
+        if (hasFilter) {
+            ctx!.filter = "blur(6px)"
+        }
         mainScreenPercentage = window.innerHeight / document.body.scrollHeight * 100
         for (let i = 0; i < 20; i++) {
             matrix = calculateGeneration(matrix)
@@ -211,67 +193,58 @@
         }
     })
     onMount(() => {
-
         createCanvas()
-        //handleFrame()
-        return () => {
-            window.cancelAnimationFrame(raf)
-        }
     })
-    const [debouncer] = createDebouncer(1000)
 </script>
 
-<svelte:window
-        onresize={() => {
-		if(!"ontouchstart" in window){ //don't resize on mobile
-			debouncer(createCanvas)
-		}
-	}}
-/>
 <div class="column"
-style={`
+     style={`
 flex: 1; position: relative;
 --first-section-height: ${mainScreenPercentage}%;
 `}
 >
-	<div class="background">
-		<canvas bind:this={canvas} class="background-image"></canvas>
-	</div>
-	<div class="column" style="flex: 1; z-index: 2">
-		{@render children?.()}
-	</div>
+    <div class="background">
+        <canvas
+                class:noFilter={!hasFilter}
+                bind:this={canvas} class="background-image"></canvas>
+    </div>
+    <div class="column" style="flex: 1; z-index: 2">
+        {@render children?.()}
+    </div>
 </div>
 <style lang="scss">
 
-	.background {
-		position: absolute;
-		> .background-image {
-			width: 100%;
-			height: 100%;
+  .background {
+    position: absolute;
 
-		}
-		overflow: hidden;
-		width: 100%;
-		height: calc(100%);
-		top: 0;
-		opacity: 0.5;
-		left: 0;
-	}
-	canvas {
-		image-rendering: -moz-crisp-edges;
-		image-rendering: -webkit-crisp-edges;
-		image-rendering: pixelated;
-		image-rendering: crisp-edges;
-        mask-image: linear-gradient(180deg,
-            rgba(0,0,0, 0.7) var(--first-section-height),
-            rgba(0,0,0, 0.5) calc(var(--first-section-height) + 10vh),
-            rgba(0,0,0, 0.3) 100%
-            )
-	}
-	@media (orientation: portrait) {
-		.background {
-			padding: 1rem;
-		}
+    > .background-image {
+      width: 100%;
+      height: 100%;
 
-	}
+    }
+
+    overflow: hidden;
+    width: 100%;
+    height: calc(100%);
+    top: 0;
+    opacity: 0.5;
+    left: 0;
+  }
+
+  canvas {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    mask-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.7) var(--first-section-height),
+            rgba(0, 0, 0, 0.5) calc(var(--first-section-height) + 10vh),
+            rgba(0, 0, 0, 0.3) 100%
+    )
+  }
+
+  .noFilter {
+    filter: blur(6px);
+  }
+
 </style>

@@ -2,12 +2,10 @@
 
     import MdClose from 'svelte-icons/md/MdClose.svelte'
     import MdMenu from 'svelte-icons/md/MdMenu.svelte'
-    import FaUser from 'svelte-icons/fa/FaUser.svelte'
     import Logo from './logo.svelte'
     import {page} from '$app/stores';
     import {User} from '../lib/user'
     import {fromStore} from "svelte/store";
-    import {onMount} from "svelte";
 
     const {user} = User
     const _page = fromStore(page)
