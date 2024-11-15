@@ -78,20 +78,24 @@
 
 
   .content {
-    --bg: #171a21b0;
+    --bg: rgba(23, 26, 33, 0.67);
     display: flex;
     margin-top: 3rem;
     width: 100%;
     flex-direction: column;
     gap: 1rem;
     max-width: 80ch;
+
+  }
+
+  .md-content {
     box-shadow: 0 0 6rem 6rem var(--bg);
     background-color: var(--bg);
   }
 
   @media (max-width: 600px) {
-    .content {
-      --bg: rgba(23, 26, 33, 0.5);
+    .md-content {
+      --bg: rgba(23, 26, 33, 0.45);
       box-shadow: 0 0 6rem 6rem var(--bg);
       background-color: var(--bg);
     }
@@ -105,6 +109,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    z-index: 2;
   }
 
   .badge {
@@ -125,6 +130,7 @@
     font-family: var(--paragraph-font), Rubik, sans-serif;
     color: #dbdbdb;
     padding: 1rem;
+    z-index: 2;
   }
 
   .md-content {
@@ -192,6 +198,7 @@
 
   .projects-wrapper {
     display: grid;
+    z-index: 2;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     gap: 1rem;
