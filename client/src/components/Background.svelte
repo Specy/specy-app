@@ -127,7 +127,7 @@
         // Create a gradient for the mask
         const gradient = context.createLinearGradient(0, 0, 0, height * multiplier);
         gradient.addColorStop(0, 'rgba(0, 0, 0, 0.7)'); // Start with 70% opacity
-        gradient.addColorStop(mainScreenPercentage / 100, 'rgba(0, 0, 0, 5)'); // Midpoint with 50% opacity
+        gradient.addColorStop(mainScreenPercentage / 100, 'rgba(0, 0, 0, 0.5)'); // Midpoint with 50% opacity
         gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)'); // End with 30% opacity
 
 // Set the gradient as a mask
