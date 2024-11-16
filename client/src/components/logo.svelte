@@ -38,7 +38,7 @@
 	}
 
 	.logoToggled {
-		width: 70px !important;
+		width: 65px !important;
 	}
 	.whiteText{
 		color: #bfbfbf;
@@ -48,7 +48,7 @@
 		font-weight: bold;
 	}
 	.overflow-wrapper {
-		width: 70px;
+		width: 65px;
 		overflow: hidden;
 	}
 	.logo-line-wrapper {
