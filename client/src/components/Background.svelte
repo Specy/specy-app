@@ -9,8 +9,8 @@
 
     const hasFilter = (typeof window !== "undefined" ? 'filter' in CanvasRenderingContext2D.prototype : true)
 
-
-    const multiplier = hasFilter ? 5 : 3
+    const blur = 8
+    const multiplier = hasFilter ? 5 : 2
     let {children}: Props = $props();
     let canvas: HTMLCanvasElement | null = $state(null)
     let ctx: CanvasRenderingContext2D | null = $derived(canvas?.getContext("2d"))
@@ -112,16 +112,31 @@
             }
         }
         if (!erase) secondCanvasData = data
-        //actually draw the image generated above
-        const img = new ImageData(data, width, height)
-        offCtx!.putImageData(img, 0, 0)
-        context.clearRect(0, 0, width * multiplier, height * multiplier)
-        //draw over the whole canvas
+        // Actually draw the image generated above
+        const img = new ImageData(data, width, height);
+        offCtx!.putImageData(img, 0, 0);
+        context.clearRect(0, 0, width * multiplier, height * multiplier);
+
+        // Draw over the whole canvas
         context.drawImage(
-            offCanvas!
-            , 0, 0, width, height
-            , 0, 0, width * multiplier, height * multiplier
-        )
+            offCanvas!,
+            0, 0, width, height,
+            0, 0, width * multiplier, height * multiplier
+        );
+
+        // Create a gradient for the mask
+        const gradient = context.createLinearGradient(0, 0, 0, height * multiplier);
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 0.7)'); // Start with 70% opacity
+        gradient.addColorStop(mainScreenPercentage / 100, 'rgba(0, 0, 0, 5)'); // Midpoint with 50% opacity
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)'); // End with 30% opacity
+
+// Set the gradient as a mask
+        context.globalCompositeOperation = 'destination-in'; // Keep the intersection
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, width * multiplier, height * multiplier);
+
+// Reset globalCompositeOperation to default
+        context.globalCompositeOperation = 'source-over';
     }
 
 
@@ -160,7 +175,7 @@
         return nextGen
     }
 
-    let mainScreenPercentage = $state(1)
+    let mainScreenPercentage = 1
 
     let firstTime = true
 
@@ -174,21 +189,20 @@
         matrix = generateRandomMatrix(0.25)
         offCanvas!.width = width * multiplier
         offCanvas!.height = height * multiplier
-        if (hasFilter) {
-            ctx!.filter = "blur(8px)"
-        }
-        mainScreenPercentage = window.innerHeight / document.body.scrollHeight * 100
+        ctx!.filter = `blur(${blur}px)`
+        mainScreenPercentage = (window.innerHeight * 1.1) / document.body.scrollHeight * 100
         for (let i = 0; i < 20; i++) {
             matrix = calculateGeneration(matrix)
         }
         drawCanvas(matrix, ctx!, color?.toHex()!, true)
-        firstTime = false
         canvas.animate([
-            {opacity: firstTime ? 0.2 : 0.5},
-            {opacity: 1}
+            {opacity: firstTime ? 0 : hasFilter ? 0.5 : 0.2},
+            {opacity: hasFilter ? 1 : 0.5}
         ], {
             duration: 1000,
         })
+        firstTime = false
+
     }
 
 
@@ -200,11 +214,7 @@
 </script>
 
 <div class="column"
-     style={`
-flex: 1; position: relative;
---first-section-height: ${mainScreenPercentage}%;
-`}
->
+     style={`flex: 1; position: relative;`}>
     <div class="background">
         {#key pageStore.current.url}
             <canvas
@@ -235,21 +245,9 @@ flex: 1; position: relative;
     left: 0;
   }
 
-  canvas {
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    mask-image: linear-gradient(180deg,
-            rgba(0, 0, 0, 0.7) var(--first-section-height),
-            rgba(0, 0, 0, 0.5) calc(var(--first-section-height) + 10vh),
-            rgba(0, 0, 0, 0.3) 100%
-    )
-  }
-
   .noFilter {
     filter: blur(20px);
-    opacity: 0.4;
+    opacity: 0.5;
   }
 
 </style>

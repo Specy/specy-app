@@ -89,14 +89,14 @@
   }
 
   .md-content {
-    box-shadow: 0 0 6rem 6rem var(--bg);
+    box-shadow: 0 0 3rem 3rem var(--bg);
     background-color: var(--bg);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 80ch) {
     .md-content {
       --bg: rgba(23, 26, 33, 0.3);
-      box-shadow: 0 0 6rem 6rem var(--bg);
+      box-shadow: unset;
       background-color: var(--bg);
     }
   }
