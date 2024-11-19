@@ -32,7 +32,7 @@
 code[class*="language-"],
 pre[class*="language-"] {
 	color: hsl(220, 14%, 71%);
-	background: rgb(31 36 43 / 70%);
+	background: #52537a1a;
 
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;

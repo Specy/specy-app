@@ -218,7 +218,7 @@ fn pop_min(mut score2head: Vec<Option<usize>>) -> Option<usize> {
     }
 }
 ```
-which turns out to have been an unsound mir optimization in the rustc compiler, affecting rust nightly versions 1.83.0 and 1.84.0. 
+which turns out to have been an unsound mir optimization in the rustc compiler, affecting rust beta 1.83.0 and nightly 1.84.0. 
 The issue was given a `P-critical` priority, the bugged code fixed in a few days, and released a week later.
 
 # Conclusion

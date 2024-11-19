@@ -191,7 +191,7 @@
       border-radius: 0.3rem 0.8rem 0.8rem 0.3rem;
       padding: 0.5rem;
       border-left: 0.3rem solid var(--accent);
-      background: rgb(31 36 43 / 70%);
+      background: #52537a1a;
     }
 
   }
