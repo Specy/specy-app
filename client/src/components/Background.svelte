@@ -127,7 +127,7 @@
         // Create a gradient for the mask
         const gradient = context.createLinearGradient(0, 0, 0, height * multiplier);
         gradient.addColorStop(0, 'rgba(0, 0, 0, 0.7)'); // Start with 70% opacity
-        gradient.addColorStop(mainScreenPercentage / 100, 'rgba(0, 0, 0, 0.5)'); // Midpoint with 50% opacity
+        gradient.addColorStop(Math.min(mainScreenPercentage / 100, 0.7), 'rgba(0, 0, 0, 0.5)'); // Midpoint with 50% opacity
         gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)'); // End with 30% opacity
 
 // Set the gradient as a mask
@@ -180,6 +180,7 @@
     let firstTime = true
 
     function createCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+        console.log("aa")
         const sizes = calculateSizes()
         width = sizes.width
         height = sizes.height
@@ -200,6 +201,7 @@
             {opacity: hasFilter ? 1 : 0.5}
         ], {
             duration: 1000,
+            easing: 'cubic-bezier(.2,.7,.46,1.01)'
         })
         firstTime = false
 

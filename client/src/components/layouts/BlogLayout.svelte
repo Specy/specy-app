@@ -22,31 +22,35 @@
 
 <article class="content-wrapper">
     <div class="content">
-        <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem">
-            <h1 class="main-header">{title}</h1>
-            <p class="date-published">{new Date(datePublished).toLocaleDateString()}</p>
+        <div class="post-introduction">
 
-        </header>
-        <section class="blog-description">
-            {description}
-        </section>
-        <div class="badge-wrapper">
-            {#each tags as tag, i}
+            <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem">
+                <h1 class="main-header">{title}</h1>
+                <p class="date-published">{new Date(datePublished).toLocaleDateString()}</p>
+
+            </header>
+            <section class="blog-description">
+                {description}
+            </section>
+            <div class="badge-wrapper">
+                {#each tags as tag, i}
                 <span
                         class="badge"
                         style={`--index: ${i}`}
 
                 >{tag}</span>
-            {/each}
-        </div>
-        {#if relatedProjectsData.length > 0}
-            <h1>Related Projects</h1>
-            <div class="projects-wrapper">
-                {#each relatedProjectsData as project}
-                    <Project data={project}/>
                 {/each}
             </div>
-        {/if}
+            {#if relatedProjectsData.length > 0}
+                <h1>Related Projects</h1>
+                <div class="projects-wrapper">
+                    {#each relatedProjectsData as project}
+                        <Project data={project}/>
+                    {/each}
+                </div>
+            {/if}
+        </div>
+
         <section class="md-content">
             {@render children?.()}
         </section>
@@ -62,8 +66,14 @@
     color: #6c757d;
   }
 
-  .content-wrapper {
+  .post-introduction {
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .content-wrapper {
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -84,16 +94,17 @@
     width: 100%;
     flex-direction: column;
     gap: 1rem;
-    max-width: 80ch;
+    max-width: calc(80ch + 2rem);
 
   }
 
   .md-content {
     box-shadow: 0 0 3rem 3rem var(--bg);
     background-color: var(--bg);
+    padding: 1rem;
   }
 
-  @media (max-width: 80ch) {
+  @media (max-width: 84ch) {
     .md-content {
       --bg: rgba(23, 26, 33, 0.3);
       box-shadow: unset;
@@ -102,7 +113,7 @@
   }
 
   .md-content > :global(:first-child) {
-    margin-top: 1rem !important;
+    margin-top: 0rem !important;
   }
 
   .badge-wrapper {
@@ -134,8 +145,6 @@
   }
 
   .md-content {
-    margin-top: 1rem;
-
     :global(p) {
       font-size: 1.2rem;
       letter-spacing: 0.01em;
@@ -161,6 +170,11 @@
     :global(h1) {
       margin-top: 4rem;
       font-size: 2.2rem;
+    }
+
+    :global(video) {
+      border-radius: 0.5rem;
+      background-color: var(--bg);
     }
 
     :global(a) {
