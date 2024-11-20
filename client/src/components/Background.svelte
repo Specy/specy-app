@@ -180,7 +180,6 @@
     let firstTime = true
 
     function createCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
-        console.log("aa")
         const sizes = calculateSizes()
         width = sizes.width
         height = sizes.height

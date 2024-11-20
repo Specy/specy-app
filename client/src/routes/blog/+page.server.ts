@@ -21,5 +21,5 @@ async function serverGetPosts(): Promise<PostMetadata[]> {
 
         })
     )
-    return posts
+    return posts.sort((a,b) => new Date(b.datePublished) - new Date(a.datePublished))
 }

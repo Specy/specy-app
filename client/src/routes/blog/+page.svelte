@@ -19,7 +19,7 @@
         <h1 class="main-title">
             Specy's Blog
         </h1>
-        <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem">
 
             {#each data.posts as post}
                 <a class="blog-post" href={post.url}>
@@ -65,6 +65,7 @@
         width: 100%;
         flex-direction: column;
         gap: 1rem;
+        margin-bottom: 8rem;
         max-width: 80ch;
     }
 
@@ -103,6 +104,7 @@
 
     .blog-description {
         font-size: 1.1rem;
+        color: #dbdbdb;
         padding: 1rem;
     }
 </style>

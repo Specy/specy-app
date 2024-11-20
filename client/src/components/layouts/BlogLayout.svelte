@@ -15,6 +15,12 @@
 
     let relatedProjectsData = $derived(relatedProjects.map(getRelatedProject).filter(Boolean))
 
+    let formattedDate = $derived(new Intl.DateTimeFormat(undefined, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(new Date(datePublished)))
+
     function getRelatedProject(id: string) {
         return projects.find(project => project.id === id) ?? desktopProjects.find(project => project.id === id)
     }
@@ -26,7 +32,7 @@
 
             <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem">
                 <h1 class="main-header">{title}</h1>
-                <p class="date-published">{new Date(datePublished).toLocaleDateString()}</p>
+                <p class="date-published">{formattedDate}</p>
 
             </header>
             <section class="blog-description">
@@ -55,11 +61,24 @@
             {@render children?.()}
         </section>
     </div>
+    <a href="/blog" class="to-posts">
+        {'<'} Look at other posts
+    </a>
 </article>
 
 
 <style lang="scss">
 
+  .to-posts {
+    font-size: 1.8rem;
+    color: #6c757d;
+    margin-top: 2rem;
+    transition: color 0.3s;
+  }
+
+  .to-posts:hover {
+    color: var(--accent);
+  }
 
   .date-published {
     font-size: 1.5rem;
@@ -74,6 +93,7 @@
   }
 
   .content-wrapper {
+    margin-bottom: 6rem;
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -165,6 +185,13 @@
       font-family: var(--heading-font), Rubik, sans-serif;;
       font-weight: var(--heading-weight);
       text-decoration: unset;
+    }
+
+    :global(hr) {
+      border: none;
+      height: 2px;
+      background-color: #212431;
+      margin: 2rem 0;
     }
 
     :global(h1) {
