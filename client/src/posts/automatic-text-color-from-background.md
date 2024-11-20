@@ -111,7 +111,7 @@ Much better! But this text is not exactly black or white, it still has a little 
 It's actually kinda cool and could be used for buttons. 
 
 If we want more of the original color to blend in, we can change
-the `100 - l` to `95 - l` etc...
+the `round((100 - l), 100)` to `round((90 - l), 90)` etc...
 I'm gonna save this for future projects.
 
 --- 
