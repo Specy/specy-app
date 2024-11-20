@@ -15,11 +15,11 @@ As you might have experienced in the past, handling themes in a website can be q
 
 I had this happen in the themes selection of [Sky Music](https://sky-music.specy.app/theme), where users have the ability to choose *any* color they want for the background, and the text color must be readable.
 
-In that project i solved the issue by using JavaScript, but i wanted to explore if there was a way to do this in pure CSS.
+In that project I solved the issue by using JavaScript, but I wanted to explore if there was a way to do this in pure CSS.
 
 # The problem
 
-Throughout the years i reimplemented theming in every project i've made, now i landed on a good solution which allows you all the freedom, flexibility and ease of use you could want.
+Throughout the years I reimplemented theming in every project I've made, now I landed on a good solution which allows you all the freedom, flexibility and ease of use you could want.
 
 Let's define a theme as a typescript type:
 ```typescript
@@ -70,7 +70,7 @@ But how can we do this in CSS? There clearly are no if statements, and neither f
 
 # The CSS solution
 
-In modern CSS, there exists the `lch`, `hsl`, `rgb`,..., functions which allow you to specify a color in a different color space.
+In modern CSS, there exists the `lch`, `hsl`, `rgb`..., functions which allow you to specify a color in a different color space.
 Another cool thing it allows you to do, is to "parse" a color, and then use it's individual components to create a new color.
 
 For example the [lch](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch) CSS color function,
