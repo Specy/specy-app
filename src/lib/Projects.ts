@@ -11,7 +11,7 @@ const projects = [
     {
         "title": "Sky Music Nightly",
         "description": "Website to compose and practice music for sky children of the light",
-        "image": "/images/skyMusicNightly.png",
+        "image": "/images/skyMusicNightly.webp",
         "url": "https://sky-music.specy.app",
         "github": "c",
         "id": "sky-music",

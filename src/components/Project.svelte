@@ -10,7 +10,11 @@
 
 <div class="project">
 	<div class="row">
-		<img src={data.image} alt={data.title} />
+		<img
+				style="width: 3rem; height: 3rem"
+				src={data.image}
+				alt={data.title}
+		/>
 		<div class="app-title">
 			{data.title}
 		</div>
@@ -48,8 +52,6 @@
 		display: flex;
 		align-items: center;
 		> img {
-			width: 3rem;
-			height: 3rem;
 			margin-right: 1rem;
 		}
 		> .app-title {

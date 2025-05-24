@@ -38,10 +38,11 @@
 				<a href="https://portfolio.specy.app" target="_blank"> Portfolio </a>
 			</div>
 			<div class="icon-wrapper">
-				<a class="icon" href="https://github.com/Specy" target="_blank">
+				<a title="Open github profile" class="icon" href="https://github.com/Specy" target="_blank">
 					<FaGithub />
 				</a>
 				<a
+					title="Enter Discord server"
 					class="icon"
 					href="https://discord.gg/Arsf65YYHq"
 					target="_blank"

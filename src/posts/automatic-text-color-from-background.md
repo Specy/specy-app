@@ -174,7 +174,7 @@ A bit of a monster, but it works, we can just create a single class `.auto-color
 </button>
 ```
 
-<iframe src="https://codepen.io/specy-the-bold/embed/BaXgoPE" style="width: 100%; height: 300px; border-radius: 0.5rem"></iframe>
+<iframe title="Code playground" src="https://codepen.io/specy-the-bold/embed/BaXgoPE" style="width: 100%; height: 300px; border-radius: 0.5rem"></iframe>
 
 # Conclusion
 
