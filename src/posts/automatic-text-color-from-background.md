@@ -44,7 +44,7 @@ In the surfaces backgrounds, variants will be created which slightly change the 
 For example, we want to create surfaces that are 3, 5, 7% lighter/darker than the base color.
 This will generate a `--{name}-layer-{layerNumber}` css variable for each surface color. 
 
-In the branded colors, each weight will have it's own name `--{name}-{weight}`.
+In the branded colors, each weight will have its own name `--{name}-{weight}`.
 
 As you can see, there is no text color in the theme, that's because we will automatically generate it based on the background color.
 
@@ -71,7 +71,7 @@ But how can we do this in CSS? There clearly are no if statements, and neither f
 # The CSS solution
 
 In modern CSS, there exists the `lch`, `hsl`, `rgb`..., functions which allow you to specify a color in a different color space.
-Another cool thing it allows you to do, is to "parse" a color, and then use it's individual components to create a new color.
+Another cool thing it allows you to do, is to "parse" a color, and then use its individual components to create a new color.
 
 For example the [lch](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch) CSS color function,
 parses the color into Lightness, Chroma and Hue. So we can do something like this:
@@ -99,7 +99,7 @@ This works, but it just inverts the luminance of the color, we need to select ei
 
 --- 
 
-Let's try to use the [`clamp()`](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp) function, which will round the value to it's nearest bound.
+Let's try to use the [`clamp()`](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp) function, which will round the value to its nearest bound.
 ```css
 color: lch(from var(--bg) round((100 - l), 100) c h);
 ```
@@ -181,4 +181,4 @@ A bit of a monster, but it works, we can just create a single class `.auto-color
 There are different levels of complexity that you can choose from, pick whichever you feel best suits your needs.
 
 I recommend to use it as a default value when you don't know/can't specify the text color.
-Or if you have a component that often changes it's background depending on some state.
+Or if you have a component that often changes its background depending on some state.
