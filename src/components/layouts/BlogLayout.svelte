@@ -187,6 +187,13 @@
       text-decoration: unset;
     }
 
+    :global(img){
+      width: 100%;
+      max-width: 35rem;
+      display: block;
+      margin: 0 auto;
+      border-radius: 0.5rem;
+    }
     :global(hr) {
       border: none;
       height: 2px;

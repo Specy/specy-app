@@ -51,7 +51,7 @@
 
     </div>
 
-    <div class="mobile-menu" class:navHidden>
+    <div class="mobile-menu html2canvas-ignore" class:navHidden>
         <div class="mobile-row">
             <Logo logoToggled={menuOpen}/>
             <div class="top-mobile-menu">
