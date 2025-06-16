@@ -15,7 +15,6 @@
 
 <LiquidGlass>
 
-
 <a href='https://github.com/Specy/liquid-glass' style='font-size: 1.2rem; color: white; display: flex; align-items: center; gap: 0.5rem' target="_blank">
 <div style="width: 1.2rem; color: #daaa3f"><FaStar> </FaStar></div>
 Star it on Github!

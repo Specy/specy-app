@@ -15,7 +15,4 @@ export default defineConfig({
 			$utils: resolve('./src/utils/')
 		}
 	},
-	optimizeDeps: {
-		exclude: ['@specy/liquid-glass']
-	}
 });

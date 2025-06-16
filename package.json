@@ -24,7 +24,7 @@
 	"type": "module",
 	"dependencies": {
 		"@ctrl/tinycolor": "^4.1.0",
-		"@specy/liquid-glass": "^1.0.5",
+		"@specy/liquid-glass": "^1.0.7",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"axios": "^1.9.0",
 		"axios-auth-refresh": "^3.3.6",
