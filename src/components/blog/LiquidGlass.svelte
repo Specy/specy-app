@@ -42,7 +42,7 @@
                 `,
                 {
                     radius: 24,
-                    depth: 24,  
+                    depth: 22,  
                 }
             )
 
