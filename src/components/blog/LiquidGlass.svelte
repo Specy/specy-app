@@ -6,6 +6,7 @@
     let glassEffect1: LiquidGlass | null = $state(null)
     let glassEffect2: LiquidGlass | null = $state(null)
     let row: HTMLAnchorElement | null = $state(null)
+    let visible = $state(false)
 
     onMount(() => {
         import('@specy/liquid-glass').then(({LiquidGlass, PaintLayerCache}) => {
@@ -43,12 +44,14 @@
                 {
                     radius: 24,
                     depth: 22,  
+                    roughness: 0,
                 }
             )
 
             const el = `Star it on Github!`
 
             const element = document.createElement('div')
+            element.style.cssText = `text-shadow: rgb(0, 0, 0) 1px 1px 3px`
             element.innerHTML = el
             glassEffect1.content.appendChild(element)
 
@@ -65,7 +68,7 @@
                 {
                     radius: 24,
                     depth: 24,
-
+                    roughness: 0,
                 }
             )
 
@@ -81,6 +84,13 @@
             row.appendChild(glassEffect1.element)
             row.appendChild(glassEffect2.element)
         })
+        function checkVisibility() {
+            visible = window.scrollY >= window.innerHeight
+        }
+        window.addEventListener('scroll',checkVisibility)
+        return () => {
+            window.removeEventListener('scroll', checkVisibility)
+        }
     })
 
     $effect(() => {
@@ -91,6 +101,9 @@
             glassEffect1?.destroy()
             glassEffect2?.destroy()
         }
+    })
+    $effect(() => {
+        row?.style.setProperty('display', visible ? 'flex' : 'none')
     })
 
 </script>

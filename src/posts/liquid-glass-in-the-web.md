@@ -22,6 +22,10 @@ Star it on Github!
 
 </LiquidGlass>
 
+
+<iframe src="https://liquid-glass.specy.app/" style="width: 100%; height: 28rem; border-radius: 1rem;"></iframe>
+
+
 Recently, Apple came out with its latest design system called [liquid glass](https://www.youtube.com/watch?v=jGztGfRujSE).
 It uses light reflection and refraction to create a glass-like effect that makes it look like the content is sitting on a piece of translucent glass.
 
@@ -150,7 +154,7 @@ It does not have all the effects that apple's liquid glass has, but it could be 
 
 We could do a shader for it, but I'll leave that to the next person that wants to challenge themselves. 
 
-The [code is available here on github](https://github.com/Specy/liquid-glass) and I've also published this silly code to [npm](https://www.npmjs.com/package/@specy/liquid-glass)
-if you want to use it to experiment. 
+The [code is available here on github](https://github.com/Specy/liquid-glass) and I've also published this silly react library to [npm](https://www.npmjs.com/package/@specy/liquid-glass-react)
+if you want to experiment with it. 
 
 
