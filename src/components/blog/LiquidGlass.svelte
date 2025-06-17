@@ -38,9 +38,10 @@
                 overflow: hidden;
                 font-size: 1.15rem;
                 color: white;
+                1px 1px 2px black;
                 `,
                 {
-                    radius: 22,
+                    radius: 24,
                     depth: 24,  
                 }
             )
@@ -62,8 +63,9 @@
                 justify-content: center;
                 `,
                 {
-                    radius: 30,
+                    radius: 24,
                     depth: 24,
+
                 }
             )
 
