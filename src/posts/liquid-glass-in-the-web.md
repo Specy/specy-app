@@ -23,7 +23,7 @@ Star it on Github!
 </LiquidGlass>
 
 
-<iframe src="https://liquid-glass.specy.app/" style="width: 100%; height: 28rem; border-radius: 1rem;"></iframe>
+<iframe src="https://liquid-glass.specy.app/" style="width: 100%; height: 30rem; border-radius: 1rem;"></iframe>
 
 
 Recently, Apple came out with its latest design system called [liquid glass](https://www.youtube.com/watch?v=jGztGfRujSE).
