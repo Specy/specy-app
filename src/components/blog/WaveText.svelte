@@ -25,6 +25,7 @@
           animation-delay: {i * letterDelay}s;
           --wave-vertical: {verticalDistance}px;
           --wave-skew: {skewAngle}deg;
+          {!letter.trim() ? 'width: 1ch' : ''}
         "
       >
         {letter}

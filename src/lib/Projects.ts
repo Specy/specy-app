@@ -6,6 +6,7 @@ export type ProjectData = {
     github: string;
     id: string;
     color: string;
+    hidden?: boolean;
 }
 const projects = [
     {
@@ -77,6 +78,16 @@ const projects = [
         id: "portfolio",
         "color": "rgb(219, 0, 97)"
     },
+    {
+        'title': 'Discerns',
+        'description': 'An auto improving AI platform to create clones of people with their knowledge.',
+        'image': '/images/discerns.png',
+        'url': 'https://discerns.ai',
+        'github': '',
+        'id': 'discerns',
+        hidden: true,
+        'color': '#9a8bec'
+    }
 ] satisfies ProjectData[]
 
 const desktopProjects = [

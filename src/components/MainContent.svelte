@@ -12,7 +12,7 @@
 	<div class="apps" id="web-apps" style="margin-top: 4rem;">
 		<div class="title project-title">Web Apps</div>
 		<div class="projects-wrapper">
-			{#each projects as project (project.title)}
+			{#each projects.filter(p => !p.hidden) as project (project.title)}
 				<Project data={project} />
 			{/each}
 		</div>

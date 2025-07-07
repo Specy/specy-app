@@ -165,12 +165,12 @@
   }
 
   .md-content {
-    :global(p) {
+    :global(p), :global(li){
       font-size: 1.2rem;
       letter-spacing: 0.01em;
       line-height: 1.5;
       margin: 1.3rem 0;
-      color: #dbdbdb;
+      color: #d4d4d4;
       font-family: var(--paragraph-font), Rubik, sans-serif;
       font-weight: var(--paragraph-weight);
     }
