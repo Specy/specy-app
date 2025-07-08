@@ -265,7 +265,7 @@
         font-size: 2rem;
       }
 
-      :global(p) {
+      :global(p), :global(li) {
         font-size: 1.1rem;
       }
     }
