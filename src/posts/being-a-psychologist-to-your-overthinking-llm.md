@@ -12,7 +12,7 @@
 # A little introduction
 
 When LLMs became mainstream years ago, people all over the world started using them to automate tasks, generate content, classify things, etc...
-People started becoming prompt engineers, trying to perfect their prompts and make the LLM do exactly what they wanted to achieve. 
+People started becoming prompt engineers, perfecting their prompts to make the LLM do exactly what they wanted to achieve. 
 
 But LLMs are stubborn and unreliable, so people started writing step-by-step instructions inside of a prompt, things like:
 
@@ -23,9 +23,11 @@ But LLMs are stubborn and unreliable, so people started writing step-by-step ins
 
 This was with the hope of "steering" the LLM to follow instructions more closely, but it didn't always work.
 
-So people added a new detail. Instead of trying to steer the LLM into "thinking internally" (something that it cannot really do), why don't we make the LLM actually write out thoughts? 
+So people added a new detail. Instead of trying to steer the LLM into "thinking internally" (something that it cannot really do), they thought:
 
-That's when the concept of "scratchpad" was introduced. Prompters would give the LLM instructions but then tell the LLM to "think out loud", by writing its thoughts inside of an XML "scratchpad" tag. A prompt would look something like this:
+> "Why don't we make the LLM _actually_ write out thoughts?"
+
+That's when the concept of the "scratchpad" was introduced. Prompters would give the LLM instructions about the task and also tell it to "think out loud", by writing its thoughts inside of an XML tag claled the "scratchpad". A prompt would look something like this:
 
 ```
 You are an AI doing ...
@@ -51,15 +53,19 @@ Now I need to do Y, so ...
 Here is your answer: Z
 ```
 
-What a developer had to do afterward was simply remove everything inside the scratchpad tag, and what was left was the final answer.
+What a developer had to do afterward was simply remove everything inside the scratchpad, and what was left was the final answer.
 
 This increased latency, but it forced the LLM to follow a strict set of rules, hopefully increasing the reliability and quality of the LLM.
 
-Model providers picked up on this idea and thought "What if LLMs could create their own thinking rules, think for themselves like the scratchpad, but without having to explicitly write it out?". This is where reasoning models like openai's `o1`, google's `gemini2.5-pro`, or deepseek `R1` were born.
+Model providers picked up on this idea and thought:
+
+> "What if LLMs could create their own thinking rules, think for themselves like the scratchpad, but without having to explicitly write it out?". 
+
+This is where reasoning models like openai's `o1`, google's `gemini2.5-pro`, or deepseek `R1` were born.
 
 # Prior tokens matter (inline thinking)
 
-An important detail I learned during the time that I've been working with LLMs is that everything in your context, be the message you wrote, or the currently generated tokens from the LLM matter enormously to the quality of your output.
+An important detail I learned during the time that I've been working with LLMs is that everything in your context, be the message you wrote, or the currently generated tokens from the LLM. matter enormously to the quality of your output.
 
 Imagine you are doing classification. You have a list of facts:
 ```ts
@@ -71,7 +77,7 @@ type Fact = {
 
 That you want to classify as being "true" or "false".
 
-You write out your prompt that asks the LLM to return a list of classifications. You obviously want to match the ID with the result from the LLM so you ask to give both the ID and the classification. Your prompt might look something like
+You write out a prompt that asks the LLM to return a list of classifications. You obviously want to match the ID with the result from the LLM so you ask to give both the ID and the classification. Your prompt might look something like
 
 ```xml
 You need to classify a set of facts as being true or false:
@@ -89,7 +95,7 @@ Write your classification like this:
 </result>
 ```
 
-This might work with few facts, but say you give it 20, and you will see that the LLM starts giving out random answers or forgets to classify some facts.
+This might work with few facts, but say you give it 20, you will see that the LLM starts giving out random answers or forgets to classify some facts.
 
 One reason for this is that the "classification" property in our result comes *before* the ID, LLMs generate content top-down and every token that has been generated so far will be useful for the LLM to predict the next token.
 
@@ -120,10 +126,10 @@ We can add a *mini scratchpad* **before** giving the classification. This way th
 
 ```diff
 <classification>
- fact: the content of the fact
- ID: the id of the fact
+    fact: the content of the fact
+    ID: the id of the fact
 +   reason: your analysis of why the fact might be true or false
- classification: true if the fact is true, else false
+    classification: true if the fact is true, else false
 </classification>
 ```
 
@@ -162,7 +168,7 @@ The pipeline will do something like:
 - Get 10 chapters at a time and ask the LLM to classify them by generating "questions"
 
 Now an important step in our pipeline is that there *should* **not** be duplicate questions. 
-Imagine we are uploading a part of another book about frontend, which also has a part that talks about HTML. Similar questions as those mentioned before will be generated, but we don't want to save two topics that talk about the same thing, so we added another step to the pipeline:
+Imagine we are uploading a part of another book about frontend development, which also has a part that talks about HTML. Similar questions as those mentioned before will be generated, but we don't want to save two topics that talk about the same thing, so we added another step to the pipeline:
 
 Once the questions are generated, we get a few existing similar questions (using similarity search) and we ask the AI "Out of those new questions, which are duplicated and which do not already exist?".
 

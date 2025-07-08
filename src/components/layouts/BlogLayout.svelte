@@ -258,7 +258,7 @@
       margin-left: 0rem;
     }
     .main-header {
-      font-size: 2.5rem;
+      font-size: 2.3rem;
     }
     .md-content {
       :global(h1) {

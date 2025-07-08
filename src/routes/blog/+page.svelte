@@ -107,4 +107,12 @@
         color: #dbdbdb;
         padding: 1rem;
     }
+
+  @media (max-width: 600px) {
+    .blog-post-title{
+        font-size: 1.8rem;
+
+    }
+
+}
 </style>
