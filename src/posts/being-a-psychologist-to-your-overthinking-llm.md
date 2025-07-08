@@ -192,6 +192,8 @@ I started debugging by looking at the thought chain of the LLM and noticed thing
 - "But wait actually, maybe the second question is actually asking for a more general explanation of what the HTML language does?"
 - "Yeah I think that's it, then they are not the same"
 
+<WaveText text="Are you overthinking????" style="font-size: 1.3rem; margin: 1rem 0" />
+
 Well yeah, just like me, reasoning LLMs overthink, and they do it *a lot*. 
 
 Uhhhh, let me try to add another rule to the prompt. 
