@@ -20,7 +20,6 @@
     <meta property="article:author" content="Specy"/>
     <meta property="article:section" content="Technology"/>
     <meta property="article:tag" content={tags.join(",")}/>
-    <meta name="keywords" content={tags.join(",")}/>
     <meta property="og:image" content="https://specy.app/images/og-image.png"/>
 </svelte:head>
 
