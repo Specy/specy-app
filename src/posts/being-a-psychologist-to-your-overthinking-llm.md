@@ -87,11 +87,11 @@ Here are the facts:
 
 Write your classification like this:
 <result>
- <classification>
- classification: true if the fact is true, else false
- ID: the id of the fact
- </classification>
- ... continue with the rest 
+    <classification>
+        classification: true if the fact is true, else false
+        ID: the id of the fact
+    </classification>
+    ... continue with the rest 
 </result>
 ```
 
@@ -102,8 +102,8 @@ One reason for this is that the "classification" property in our result comes *b
 So let's switch the order, let's write the ID **first**, _then_ the classification:
 ```xml
 <classification>
- ID: the id of the fact
- classification: true if the fact is true, else false
+    ID: the id of the fact
+    classification: true if the fact is true, else false
 </classification>
 ```
 
@@ -114,8 +114,8 @@ Let's ask the AI to *rewrite* the fact, write the ID, and then classify it:
 ```diff
 <classification>
 +   fact: the content of the fact
- ID: the id of the fact
- classification: true if the fact is true, else false
+    ID: the id of the fact
+    classification: true if the fact is true, else false
 </classification>
 ```
 When we parse the result, we will simply ignore the rewritten fact. It was only used to make it easier for the LLM to match the fact to the ID.
@@ -191,8 +191,6 @@ I started debugging by looking at the thought chain of the LLM and noticed thing
 - "Hm no I think they are the same"
 - "But wait actually, maybe the second question is actually asking for a more general explanation of what the HTML language does?"
 - "Yeah I think that's it, then they are not the same"
-
-<WaveText text="Are you overthinking????" style="font-size: 1.3rem; margin: 1rem 0" />
 
 Well yeah, just like me, reasoning LLMs overthink, and they do it *a lot*. 
 
