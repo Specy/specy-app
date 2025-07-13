@@ -1,7 +1,7 @@
 ---
     datePublished: '2025-07-13'
     title: 'Give context, not bias'
-    description: "The concept of bias in LLMs and why context pollution can kill creativity and give worse results"
+    description: "The concept of bias inside of context and why context pollution can kill the creativity of LLMs."
     tags: ['AI']
     relatedProjects: ["discerns"]
 ---
@@ -93,4 +93,4 @@ When prompting an LLM, imagine in the back of your mind how words, sentences, or
 
 # Further reading
 
-I wrote [another article](/blog/posts/being-a-psychologist-to-your-overthinking-llm) about how bias behaves in thinking models, and how prompting the LLM to write it's own bias can help it to solve tasks better.
+I wrote [another article](/blog/posts/being-a-psychologist-to-your-overthinking-llm) about how bias behaves in thinking models, and how prompting the LLM to write its own bias can help it to solve tasks better.
