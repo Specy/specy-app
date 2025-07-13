@@ -89,3 +89,8 @@ Examples are better than rules: Examples give a way higher bias compared to rule
 
 ## 5. Think in bias
 When prompting an LLM, imagine in the back of your mind how words, sentences, or examples that you wrote might involuntarily steer the thoughts of the model, and try to use more generic, less strict wording. 
+
+
+# Further reading
+
+I wrote [another article](/blog/posts/being-a-psychologist-to-your-overthinking-llm) about how bias behaves in thinking models, and how prompting the LLM to write it's own bias can help it to solve tasks better.
