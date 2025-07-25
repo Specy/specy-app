@@ -189,7 +189,7 @@
 
     :global(img){
       width: 100%;
-      max-width: 35rem;
+      max-width: 40rem;
       display: block;
       margin: 0 auto;
       border-radius: 0.5rem;
