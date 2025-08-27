@@ -21,6 +21,10 @@
 	})
 </script>
 
+<svelte:head>
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml" />
+</svelte:head>
+
 <ThemeProvider
 	theme={currentTheme}
 	style="color: var(--primary-text); flex: 1; background-color: var(--background);"
