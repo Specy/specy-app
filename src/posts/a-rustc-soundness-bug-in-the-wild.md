@@ -157,14 +157,14 @@ Hm, the only dependency of the crate is `sprs` which has *a ton* of unsafe code,
 > It is not clear it is a bug in sprs, try the following:
 > ```rust
 > order_simple(4, |c| {
->        match c {
->            0 => &[0, 1, 2, 3],
->            1 => &[2],
->            2 => &[0, 1],
->            3 => &[1, 2, 3],
->            _ => unreachable!(),
->        }
->    });
+>     match c {
+>         0 => &[0, 1, 2, 3],
+>         1 => &[2],
+>         2 => &[0, 1],
+>         3 => &[1, 2, 3],
+>         _ => unreachable!(),
+>     }
+> });
 > ```
 
 Which... still panics? *Ok, ok, ok*, let's recap:

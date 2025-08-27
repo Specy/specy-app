@@ -2,7 +2,7 @@
     datePublished: '2025-07-25'
     title: 'Learn and teach assembly with asm-editor'
     description: "A website to teach and learn assembly, with an IDE, courses and exams, all in one app."
-    tags: ['assembly']
+    tags: ['assembly', 'rust', 'web-dev', 'svelte']
     relatedProjects: ['asm-editor']
 ---
 
