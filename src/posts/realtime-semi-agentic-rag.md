@@ -101,7 +101,7 @@ The total latency is given by the embedding generation for the query (10-20ms) a
 
 # Level 2 - LLM to generate query
 
-We saw that the main issue with [Level 1](#level-1) is keeping context of the conversation for indirect questions.
+We saw that the main issue with Level 1 is keeping context of the conversation for indirect questions.
 Keeping multiple messages causes more issues, so instead of doing that, we can use another LLM (a simple, cheap, and fast one as we don't need much intelligence) to convert the conversation plus the latest message into a query that will be passed to the next step.
 
 We can ask the LLM something along the lines of:
