@@ -40,7 +40,7 @@
 <div class="container" style:height>
 	<pre
 		in:fade={{ delay: 1000, duration: 300 }}
-		class="mm"
+		class="mermaid mm"
 		style:height
 		id={`id_${id}`}
 		style:width>{source}</pre>
@@ -58,5 +58,9 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
+	}
+	
+	:global(.mermaid) {
+		/* noop*/
 	}
 </style>

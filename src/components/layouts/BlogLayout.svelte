@@ -165,7 +165,8 @@
   }
 
   .md-content {
-    :global(p), :global(li){
+    :global(p:not(.mermaid *)), 
+    :global(li:not(.mermaid *)) {
       font-size: 1.2rem;
       letter-spacing: 0.01em;
       line-height: 1.5;
@@ -174,6 +175,7 @@
       font-family: var(--paragraph-font), Rubik, sans-serif;
       font-weight: var(--paragraph-weight);
     }
+
 
 
     :global(h1) > :global(a),

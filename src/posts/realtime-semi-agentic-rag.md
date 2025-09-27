@@ -58,13 +58,45 @@ Dense embeddings are a list of numbers that represent the **semantics** of some 
 
 Imagine that each number in the vector represents some characteristics of the text, ranging from 0 to 1. For example, the first index could indicate how serious the text is, the second could indicate how likely the text is to be talking about happy things, etc... 
 
-An analogy is the way colors can be represented as [HCL](https://en.wikipedia.org/wiki/HCL_color_space) (Hue, Chroma, Luminance). You can see the vector `[h, c, l]` as a representation of the color, with each index representing a characteristic of the color.
+An analogy is the way colors can be represented as [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV) (Hue, Saturation, Luminance). You can see the vector `[h, s, l]` as a representation of the color, with each index representing a characteristic of the color.
+
+<Mermaid height="400px" width="min(100%, 600px)" source={`
+flowchart TD
+    A["Customer's Favorite Color H=120° S=60% L=50%"] --> B[Paint Store Database]
+    
+    B --> C["Paint A<br />H=120° S=67% L=55%"]
+    B --> D["Paint B<br />H=120° S=70% L=41%"]
+    B --> E["Paint C<br />H=201° S=59% L=64%"]
+    B --> F["Paint D<br />H=60° S=26% L=50%"]
+    
+    G[Similarity with Cosine Similarity] --> H["🏆 Paint A: Score 0.92"]
+    G --> I["Paint B: Score 0.89"]
+    G --> J["Paint C: Score 0.45"]
+    G --> K["Paint D: Score 0.21"]
+    
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    
+    style A fill:#40bf40,stroke:#2E7D32,stroke-width:3px,rx:15,ry:15,color:#ffffff
+    style B fill:#1E3A8A,stroke:#3B82F6,stroke-width:2px,rx:12,ry:12,color:#ffffff
+    style C fill:#40d940,stroke:#2E7D32,stroke-width:2px,rx:12,ry:12,color:#000000
+    style D fill:#1fb01f,stroke:#1B5E20,stroke-width:2px,rx:12,ry:12,color:#ffffff
+    style E fill:#6bb3d9,stroke:#1565C0,stroke-width:2px,rx:12,ry:12,color:#000000
+    style F fill:#a1a160,stroke:#7a7a48,stroke-width:2px,rx:12,ry:12,color:#000000
+    style G fill:#7C2D12,stroke:#F97316,stroke-width:2px,rx:12,ry:12,color:#ffffff
+    style H fill:#40d940,stroke:#ffd700,stroke-width:4px,rx:12,ry:12,color:#000000
+    style I fill:#1fb01f,stroke:#1B5E20,stroke-width:2px,rx:12,ry:12,color:#ffffff
+    style J fill:#6bb3d9,stroke:#1565C0,stroke-width:2px,rx:12,ry:12,color:#000000
+    style K fill:#a1a160,stroke:#7a7a48,stroke-width:2px,rx:12,ry:12,color:#000000
+`}/>
 
 You might say, "what do we do with this embedding", well, you can compare them!
 
-Let's use the color analogy again. Say a store has a database of paints they sell, with each paint saved as an HCL color. I want to paint my house with my favorite color, so I give the store the HCL values for it.
+Let's use the color analogy again. Say a store has a database of paints they sell, with each paint saved as an HSL color. I want to paint my house with my favorite color, so I give the store the HSL values for it.
 
-The store now has the job of finding a paint that is as close as possible to the one that I want. To do this, they need to compare the HCL values of their paints with the HCL values of my color. The one that has the most similar characteristics will be the most similar color. 
+The store now has the job of finding a paint that is as close as possible to the one that I want. To do this, they need to compare the HSL values of their paints with the HSL values of my color. The one that has the most similar characteristics will be the most similar color. 
 
 To do this, they can use something called a **ranking function**, like [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) or [dot product](https://en.wikipedia.org/wiki/Dot_product), which, given two vectors, returns how similar the two are. At this point, we can just compare my favorite color to the paints in the store and select the one with the **highest similarity score**.
 
