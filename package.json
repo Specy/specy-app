@@ -30,6 +30,7 @@
 		"axios-auth-refresh": "^3.3.6",
 		"clone-deep": "^4.0.1",
 		"email-validator": "^2.0.4",
+		"mermaid": "^11.12.0",
 		"reading-time": "^1.5.0",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-slug": "^6.0.0",
