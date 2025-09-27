@@ -60,6 +60,14 @@ Imagine that each number in the vector represents some characteristics of the te
 
 An analogy is the way colors can be represented as [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV) (Hue, Saturation, Luminance). You can see the vector `[h, s, l]` as a representation of the color, with each index representing a characteristic of the color.
 
+You might say, "what do we do with this embedding", well, you can compare them!
+
+Let's use the color analogy again. Say a store has a database of paints they sell, with each paint saved as an HSL color. I want to paint my house with my favorite color, so I give the store the HSL values for it.
+
+The store now has the job of finding a paint that is as close as possible to the one that I want. To do this, they need to compare the HSL values of their paints with the HSL values of my color. The one that has the most similar characteristics will be the most similar color. 
+
+To do this, they can use something called a **ranking function**, like [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) or [dot product](https://en.wikipedia.org/wiki/Dot_product), which, given two vectors, returns how similar the two are. At this point, we can just compare my favorite color to the paints in the store and select the one with the **highest similarity score**.
+
 <Mermaid height="400px" width="min(100%, 600px)" source={`
 flowchart TD
     A["Customer's Favorite Color H=120° S=60% L=50%"] --> B[Paint Store Database]
@@ -91,14 +99,6 @@ flowchart TD
     style J fill:#6bb3d9,stroke:#1565C0,stroke-width:2px,rx:12,ry:12,color:#000000
     style K fill:#a1a160,stroke:#7a7a48,stroke-width:2px,rx:12,ry:12,color:#000000
 `}/>
-
-You might say, "what do we do with this embedding", well, you can compare them!
-
-Let's use the color analogy again. Say a store has a database of paints they sell, with each paint saved as an HSL color. I want to paint my house with my favorite color, so I give the store the HSL values for it.
-
-The store now has the job of finding a paint that is as close as possible to the one that I want. To do this, they need to compare the HSL values of their paints with the HSL values of my color. The one that has the most similar characteristics will be the most similar color. 
-
-To do this, they can use something called a **ranking function**, like [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) or [dot product](https://en.wikipedia.org/wiki/Dot_product), which, given two vectors, returns how similar the two are. At this point, we can just compare my favorite color to the paints in the store and select the one with the **highest similarity score**.
 
 When using a vector database, you are the one to provide the embedding vector and whichever information you want to store alongside it, the combination of the two is called a **point**. The vector database's job is to search points using the ranking function that you prefer, and optionally filter points based on some criteria, for example you might want to search only the colors that the store has in stock. It will then return a list of points, together with the similarity score of each of them.
 
