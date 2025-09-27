@@ -208,6 +208,11 @@
       font-size: 2.2rem;
     }
 
+    :global(h2) {
+      font-size: 1.8rem;
+    }
+
+
     :global(video) {
       border-radius: 0.5rem;
       background-color: var(--bg);
