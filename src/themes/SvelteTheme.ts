@@ -131,6 +131,11 @@ export function createThemeStore<T extends SerializedTheme>(baseTheme: T) {
         if(!store) return undefined
         return get(store).color
     }
+    function getText(key: ThemeKey<T>): string | undefined {
+        const store = getColorStore(key)
+        if(!store) return undefined
+        return get(store).text
+    }
     function toArray(): SerializedColorStore[] {
         return Array.from(get({ subscribe }).colors.values()).map(c => c.serialize())
     }
@@ -154,6 +159,7 @@ export function createThemeStore<T extends SerializedTheme>(baseTheme: T) {
         setColor,
         getColorStore,
         getColor,
+        getText,
         layer,
         loadFrom,
         toArray
