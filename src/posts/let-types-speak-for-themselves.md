@@ -411,9 +411,49 @@ function deleteSong(data: { songId: number, userId: number })
 ```
 This applies also to non-adjacent parameters.
 
+## Use guards and don't nest ifs
+
+We mentioned that using discriminated unions is really helpful, but you might be tempted to nest if statements to narrow your types. This might be necessary at times, but 99% of your code can be defined as a "happy path" - the path of branches of logic that is most likely to execute. The other paths can be considered secondary and might just be there to handle exceptions or different logic.
+
+```ts
+//❌
+function getVal(data: LoadingState) {
+    if(data.status !== "loading"){
+        if(data.status === "error"){
+            throw new Error(data.error)
+        } else {
+            return data.value
+        }
+    }
+    return null
+}
+```
+This code above is hard to follow. Your happy path is an else branch nested inside two if statements. Instead, make your happy branch be the one that flows at the end of your code. You are aiming to have your last line of code be the most likely outcome of your function. If you have a branch you must execute at the end, then create functions that handle each case, and just return the result of those functions in your two branches.
+
+<Monaco height="16rem" language="typescript" code={`
+function getVal(data: LoadingState) {
+    if(data.status === "loading"){
+        return null
+    }\n
+    if(data.status === "error"){
+        throw new Error(data.error)
+    }\n
+    return data.value
+}
+`}/>
+
+Whenever there is a `return` or `throw` (in general when there is the type `never`), TypeScript narrows down the type, excluding the variant you just checked, making your code more and more specific as you go down.
+
+This has the added benefit that, if you add a new variant to `LoadingState`, then this function will error out, as the last `data.value` won't be narrowed down to the success variant, warning you that you have to update this function.
+
+In the first example, if we had added a new variant, no type errors would happen, and the default branch of returning null would be executed.
+
+This mimics a feature that Rust has but that TypeScript does not yet have (without some hacks): exhaustive match, where the compiler forces you to check every variant of a discriminated union so that you don't forget to update your code.
+
 ## Map object parameters in functions
 
-As you saw before, when assigning a value to a variable, TypeScript automatically does the `typeof` conversion, but by default, this does not use `as const`, so if you defined some concrete types inside of it, you will lose that information.
+
+As you saw before, when assigning a value to a variable, TypeScript automatically infers the type of the variable by doing a `typeof` inference, but by default, this does not use `as const`, so if you defined some concrete types inside of it, you will lose that information. 
 
 When you are calling a function, and you need to pass an object/array to it as a parameter that you first have to create, try to create it directly inside the function call instead of creating a new variable.
 
@@ -436,47 +476,32 @@ deleteSong({
 })
 ```
 
-## Use guards and don't nest ifs
+The other useful thing is that if you have the object inline, and you make a mistake on what type you pass the function, the type checker will warn you of what mistake you made, exactly where you made it, instead of giving you a "*Type A is wrong i expected B*"
 
-We mentioned that using discriminated unions is really helpful, but you might be tempted to nest if statements to narrow your types. This might be necessary at times, but 99% of your code can be defined as a "happy path" - the path of branches of logic that is most likely to execute. The other paths can be considered secondary and might just be there to handle exceptions or different logic.
+<Monaco height="18rem" language="typescript" code={`
+function deleteSong(data: { userId: number, songId: number }){}\n
+const toDelete = {
+    userId: 10,
+    songId: "20",
+}\n
+deleteSong(toDelete) //oh no, a non too helful error\n
+deleteSong({
+    userId: 10,
+    songId: "20", //right where i need it!
+})
+`} />
 
-```ts
-//❌
-function getVal(data: LoadingState) {
-    if(data.status !== "loading"){
-        if(data.status === "error"){
-            throw new Error(data.error)
-        } else {
-            return data.value
-        }
-    }
-    return null
-}
-```
-This code above is hard to follow. Your happy path is an else branch nested inside two if statements. Instead, make your happy branch be the one that flows at the end of your code. You are aiming to have your last line of code be the most likely outcome of your function. If you have a branch you must execute at the end, then create functions that handle each case, and just return the result of those functions in your two branches.
+But most importantly, assigning a concrete object to a variable widens the type (unless you use as const), just like we saw previously, which can be really bad:
 
-```ts
-//✅
-function getVal(data: LoadingState) {
-    if(data.status === "loading"){
-        return null
-    }
-
-    if(data.status === "error"){
-        throw new Error(data.error)
-    }
-
-    return data.value
-}
-```
-
-Whenever there is a `return` or `throw` (in general when there is the type `never`), TypeScript narrows down the type, excluding the variant you just checked, making your code more and more specific as you go down.
-
-This has the added benefit that, if you add a new variant to `LoadingState`, then this function will error out, as the last `data.value` won't be narrowed down to the success variant, warning you that you have to update this function.
-
-In the first example, if we had added a new variant, no type errors would happen, and the default branch of returning null would be executed.
-
-This mimics a feature that Rust has but that TypeScript does not yet have (without some hacks): exhaustive match, where the compiler forces you to check every variant of a discriminated union so that you don't forget to update your code.
+<Monaco height="13rem" language="typescript" code={`
+const keys = ["firstName", "nickname"]
+const person = makeDefault(keys, "unknown")
+//no type error even if lastName does not exist.
+person.nickname = \`\${person.firstName} \${person.lastName.toLowerCase()}\`\n\n
+const person2 = makeDefault(["firstName", "nickname"], "unknown")
+//we have an error now! The runtime logic is the same.
+person2.nickname = \`\${person2.firstName} \${person2.lastName.toLowerCase()}\`
+`} />
 
 ## The end, maybe?
 
