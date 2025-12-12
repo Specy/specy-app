@@ -3,33 +3,28 @@
     /** @type {{text: any, style?: string, animationDuration?: number, letterDelay?: number, verticalDistance?: number, skewAngle?: number}} */
     let {
         text,
-        style = "",
+        style = '',
         animationDuration = 1.2,
         letterDelay = 0.1,
         verticalDistance = 5,
-        skewAngle = 5
+        skewAngle = 5,
     } = $props();
 </script>
 
-<div
-        class="container"
-        style={style}
->
-    <div
-            class="wavy-text"
-    >
+<div class="container" {style}>
+    <div class="wavy-text">
         {#each text.split('') as letter, i}
-      <span
-              style="
+            <span
+                style="
           animation-duration: {animationDuration}s;
           animation-delay: {i * letterDelay}s;
           --wave-vertical: {verticalDistance}px;
           --wave-skew: {skewAngle}deg;
           {!letter.trim() ? 'width: 1ch' : ''}
         "
-      >
-        {letter}
-      </span>
+            >
+                {letter}
+            </span>
         {/each}
     </div>
 </div>
@@ -57,10 +52,12 @@
 
     @keyframes wave {
         from {
-            transform: translateY(calc(-1 * var(--wave-vertical))) skew(var(--wave-skew));
+            transform: translateY(calc(-1 * var(--wave-vertical)))
+                skew(var(--wave-skew));
         }
         to {
-            transform: translateY(var(--wave-vertical)) skew(calc(-1 * var(--wave-skew)));
+            transform: translateY(var(--wave-vertical))
+                skew(calc(-1 * var(--wave-skew)));
         }
     }
 

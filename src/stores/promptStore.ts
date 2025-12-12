@@ -1,16 +1,19 @@
-import { writable } from "svelte/store"
-export enum PromptType{
+import { writable } from 'svelte/store';
+
+export enum PromptType {
     Text,
-    Confirm
+    Confirm,
 }
+
 type Prompt = {
-    promise: Promise<string | boolean> | null
-    question: string
-    placeholder: string
-    type: PromptType
-    resolve: ((value: string | boolean) => void) | null
-    cancellable: boolean
-}
+    promise: Promise<string | boolean> | null;
+    question: string;
+    placeholder: string;
+    type: PromptType;
+    resolve: ((value: string | boolean) => void) | null;
+    cancellable: boolean;
+};
+
 function createPromptStore() {
     const { subscribe, set, update } = writable<Prompt>({
         promise: null,
@@ -19,46 +22,74 @@ function createPromptStore() {
         type: PromptType.Text,
         resolve: null,
         cancellable: true,
-    })
-    let current: Prompt
-    subscribe(value => current = value)
-    function ask(question: string, type: PromptType, cancellable = true, placeholder = ""): Promise<string | boolean> {
-        current.resolve?.(null)
+    });
+    let current: Prompt;
+    subscribe((value) => (current = value));
+    function ask(
+        question: string,
+        type: PromptType,
+        cancellable = true,
+        placeholder = '',
+    ): Promise<string | boolean> {
+        //internal cleanup in case the previous prompt was not answered
+        current.resolve?.(null!);
         const promise = new Promise<string | boolean>((resolve) => {
-            set({ promise: null, question, placeholder, type, resolve, cancellable })
-        })
-        update(s => {
-            s.promise = promise
-            return s
-        })
-        return promise
+            set({
+                promise: null,
+                question,
+                placeholder,
+                type,
+                resolve,
+                cancellable,
+            });
+        });
+        update((s) => {
+            s.promise = promise;
+            return s;
+        });
+        return promise;
     }
-    function confirm(question: string, cancellable = true): Promise<boolean>{
-        return ask(question, PromptType.Confirm, cancellable) as any as Promise<boolean>
+
+    function confirm(question: string, cancellable = true): Promise<boolean> {
+        return ask(
+            question,
+            PromptType.Confirm,
+            cancellable,
+        ) as any as Promise<boolean>;
     }
-    function askText(question: string, cancellable = true, placeholder = ""){
-        return ask(question, PromptType.Text, cancellable, placeholder) as any as Promise<string>
+
+    function askText(question: string, cancellable = true, placeholder = '') {
+        return ask(
+            question,
+            PromptType.Text,
+            cancellable,
+            placeholder,
+        ) as any as Promise<string>;
     }
+
     function answer(value: string | boolean) {
-        current.resolve?.(value)
-        cancel()
+        current.resolve?.(value);
+        cancel();
     }
+
     function cancel() {
-        update(s => {
-            s.promise = null
-            s.resolve = null
-            return s
-        })
-        reset()
+        update((s) => {
+            s.promise = null;
+            s.resolve = null;
+            return s;
+        });
+        reset();
     }
+
     function reset() {
-        update(s => {
-            s.question = ''
-            s.placeholder = ''
-            s.cancellable = true
-            return s
-        })
+        update((s) => {
+            s.question = '';
+            s.placeholder = '';
+            s.cancellable = true;
+            return s;
+        });
     }
+
     return {
         subscribe,
         confirm,
@@ -66,8 +97,8 @@ function createPromptStore() {
         ask,
         answer,
         cancel,
-        reset
-    }
+        reset,
+    };
 }
 
-export const Prompt = createPromptStore()
+export const Prompt = createPromptStore();

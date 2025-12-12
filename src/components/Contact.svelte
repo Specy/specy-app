@@ -17,44 +17,44 @@
 </div>
 
 <style lang="scss">
-  .wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-    margin-bottom: 5rem;
-    padding: 1rem;
-  }
+    .wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        margin-bottom: 5rem;
+        padding: 1rem;
+    }
 
-  .contact-grid {
-    display: grid;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    grid-template-columns: 4rem 1fr;
-  }
+    .contact-grid {
+        display: grid;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        grid-template-columns: 4rem 1fr;
+    }
 
-  .contact {
-    max-width: 50rem;
-    width: min(100%, 50rem);
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .contact {
+        max-width: 50rem;
+        width: min(100%, 50rem);
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-  .highlight {
-    color: var(--accent);
-    user-select: all;
-  }
+    .highlight {
+        color: var(--accent);
+        user-select: all;
+    }
 
-  .title {
-    font-size: 1.6rem;
-    font-weight: bold;
-  }
+    .title {
+        font-size: 1.6rem;
+        font-weight: bold;
+    }
 
-  .text {
-    line-height: 1.4;
-    font-size: 1.1rem;
-    color: #dbdbdb;
-  }
+    .text {
+        line-height: 1.4;
+        font-size: 1.1rem;
+        color: #dbdbdb;
+    }
 </style>

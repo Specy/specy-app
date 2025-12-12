@@ -1,10 +1,7 @@
 <script lang="ts">
-
-    let {
-        data
-    } = $props<{
-        data: import('./$types').PageData
-    }>()
+    let { data } = $props<{
+        data: import('./$types').PageData;
+    }>();
 </script>
 
 <svelte:head>
@@ -16,11 +13,8 @@
 
 <div class="content-wrapper">
     <div class="content">
-        <h1 class="main-title">
-            Specy's Blog
-        </h1>
+        <h1 class="main-title">Specy's Blog</h1>
         <div style="display: flex; flex-direction: column; gap: 1.5rem">
-
             {#each data.posts as post}
                 <a class="blog-post" href={post.url}>
                     <h1 class="blog-post-title">
@@ -31,11 +25,9 @@
                     </p>
                     <div class="badge-wrapper">
                         {#each post.tags as tag, i}
-                <span
-                        class="badge"
-                        style={`--index: ${i}`}
-
-                >{tag}</span>
+                            <span class="badge" style={`--index: ${i}`}
+                                >{tag}</span
+                            >
                         {/each}
                     </div>
                 </a>
@@ -78,7 +70,7 @@
         transition: all 0.2s;
         border-radius: 0.8rem;
     }
-    .blog-post:hover{
+    .blog-post:hover {
         background-color: rgba(31, 36, 43, 0.7);
         transform: translateY(-0.1rem);
     }
@@ -101,18 +93,15 @@
         background-color: hsl(calc(var(--index) * 26 + -26), 40%, 50%);
     }
 
-
     .blog-description {
         font-size: 1.1rem;
         color: #dbdbdb;
         padding: 1rem;
     }
 
-  @media (max-width: 600px) {
-    .blog-post-title{
-        font-size: 1.8rem;
-
+    @media (max-width: 600px) {
+        .blog-post-title {
+            font-size: 1.8rem;
+        }
     }
-
-}
 </style>

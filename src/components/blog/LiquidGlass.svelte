@@ -1,22 +1,22 @@
 <script lang="ts">
+    import type { LiquidGlass, PaintLayerCache } from '@specy/liquid-glass';
+    import { onMount, type Snippet } from 'svelte';
 
-    import type {LiquidGlass, PaintLayerCache} from '@specy/liquid-glass'
-    import {onMount, type Snippet} from 'svelte'
-
-    let glassEffect1: LiquidGlass | null = $state(null)
-    let glassEffect2: LiquidGlass | null = $state(null)
-    let row: HTMLAnchorElement | null = $state(null)
-    let visible = $state(false)
+    let glassEffect1: LiquidGlass | null = $state(null);
+    let glassEffect2: LiquidGlass | null = $state(null);
+    let row: HTMLAnchorElement | null = $state(null);
+    let visible = $state(false);
 
     onMount(() => {
-        import('@specy/liquid-glass').then(({LiquidGlass, PaintLayerCache}) => {
-            // Configure the paint cache for better performance
-            PaintLayerCache.useHtml2CanvasPro(false)
-            
-            // Create the container row
-            row = document.createElement('a')
-            row.href = 'https://github.com/Specy/liquid-glass'
-            row.style.cssText = `
+        import('@specy/liquid-glass').then(
+            ({ LiquidGlass, PaintLayerCache }) => {
+                // Configure the paint cache for better performance
+                PaintLayerCache.useHtml2CanvasPro(false);
+
+                // Create the container row
+                row = document.createElement('a');
+                row.href = 'https://github.com/Specy/liquid-glass';
+                row.style.cssText = `
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -29,81 +29,81 @@
                 gap: 0.5rem;
                 right: 0.5rem;
                 z-index: 10;
-            `
+            `;
 
-            // Left glass element (GitHub link)
-            glassEffect1 = new LiquidGlass(
-                document.body,
-                `
+                // Left glass element (GitHub link)
+                glassEffect1 = new LiquidGlass(
+                    document.body,
+                    `
                 padding: 0.8rem 3rem;
                 overflow: hidden;
                 font-size: 1.15rem;
                 color: white;
                 1px 1px 2px black;
                 `,
-                {
-                    radius: 24,
-                    depth: 22,  
-                    roughness: 0,
-                }
-            )
+                    {
+                        radius: 24,
+                        depth: 22,
+                        roughness: 0,
+                    },
+                );
 
-            const el = `Star it on Github!`
+                const el = `Star it on Github!`;
 
-            const element = document.createElement('div')
-            element.style.cssText = `text-shadow: rgb(0, 0, 0) 1px 1px 3px`
-            element.innerHTML = el
-            glassEffect1.content.appendChild(element)
+                const element = document.createElement('div');
+                element.style.cssText = `text-shadow: rgb(0, 0, 0) 1px 1px 3px`;
+                element.innerHTML = el;
+                glassEffect1.content.appendChild(element);
 
-            // Right glass element (small circular one)
-            glassEffect2 = new LiquidGlass(
-                document.body,
-                `
+                // Right glass element (small circular one)
+                glassEffect2 = new LiquidGlass(
+                    document.body,
+                    `
                 width: 3rem;
                 height: 3rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 `,
-                {
-                    radius: 24,
-                    depth: 24,
-                    roughness: 0,
-                }
-            )
+                    {
+                        radius: 24,
+                        depth: 24,
+                        roughness: 0,
+                    },
+                );
 
-            // Add icon/content to the circular glass element
-            const circleContent = document.createElement('div')
-            circleContent.innerHTML = '⭐'
-            circleContent.style.cssText = `
+                // Add icon/content to the circular glass element
+                const circleContent = document.createElement('div');
+                circleContent.innerHTML = '⭐';
+                circleContent.style.cssText = `
                 font-size: 18px;
-            `
-            glassEffect2.content.appendChild(circleContent)
+            `;
+                glassEffect2.content.appendChild(circleContent);
 
-            // Add both glass elements to the row
-            row.appendChild(glassEffect1.element)
-            row.appendChild(glassEffect2.element)
-        })
+                // Add both glass elements to the row
+                row.appendChild(glassEffect1.element);
+                row.appendChild(glassEffect2.element);
+            },
+        );
         function checkVisibility() {
-            visible = window.scrollY >= window.innerHeight
+            visible = window.scrollY >= window.innerHeight;
         }
-        window.addEventListener('scroll',checkVisibility)
+        window.addEventListener('scroll', checkVisibility);
         return () => {
-            window.removeEventListener('scroll', checkVisibility)
-        }
-    })
+            window.removeEventListener('scroll', checkVisibility);
+        };
+    });
 
     $effect(() => {
-        if (!row) return
-        document.body.appendChild(row)
+        if (!row) return;
+        document.body.appendChild(row);
         return () => {
-            row?.remove()
-            glassEffect1?.destroy()
-            glassEffect2?.destroy()
-        }
-    })
+            row?.remove();
+            glassEffect1?.destroy();
+            glassEffect2?.destroy();
+        };
+    });
     $effect(() => {
-        row?.style.setProperty('display', visible ? 'flex' : 'none')
-    })
-
+        row?.style.setProperty('display', visible ? 'flex' : 'none');
+    });
 </script>

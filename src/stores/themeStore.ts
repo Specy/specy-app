@@ -1,14 +1,18 @@
-import { createThemeStorage, LocalStorageThemePersistence, type SerializedTheme } from "../themes/SvelteTheme";
+import {
+    createThemeStorage,
+    LocalStorageThemePersistence,
+    type SerializedTheme,
+} from '../themes/SvelteTheme';
 
 const baseDarkTheme = {
     meta: {
         version: 1,
         id: 'dark',
-        name: 'dark'
+        name: 'dark',
     },
     colors: {
         background: {
-            hex: "#171A21",
+            hex: '#171A21',
             name: 'background',
             cssProp: 'background',
         },
@@ -20,60 +24,60 @@ const baseDarkTheme = {
         secondary: {
             hex: '#212630',
             name: 'secondary',
-            cssProp: 'secondary'
+            cssProp: 'secondary',
         },
         tertiary: {
             hex: '#2d3950',
             name: 'tertiary',
-            cssProp: 'tertiary'
+            cssProp: 'tertiary',
         },
         footer: {
             hex: '#1c2029',
             name: 'footer',
-            cssProp: 'footer'
+            cssProp: 'footer',
         },
         accent: {
             hex: '#a65ee0',
             name: 'accent',
-            cssProp: 'accent'
+            cssProp: 'accent',
         },
         accent2: {
             hex: '#38454f',
             name: 'accent2',
-            cssProp: 'accent2'
+            cssProp: 'accent2',
         },
         shadowColor: {
             hex: '#454559',
             name: 'shadowColor',
-            cssProp: 'shadow-color'
+            cssProp: 'shadow-color',
         },
         hint: {
             hex: '#939393',
             name: 'hint',
-            cssProp: 'hint'
+            cssProp: 'hint',
         },
         warn: {
             hex: '#ed4f4f',
             name: 'warn',
-            cssProp: 'warn'
+            cssProp: 'warn',
         },
         success: {
             hex: '#356a59',
             name: 'success',
-            cssProp: 'success'
-        }
-    }
-} satisfies SerializedTheme
+            cssProp: 'success',
+        },
+    },
+} satisfies SerializedTheme;
 
 const baseWhiteTheme = {
     meta: {
         version: 1,
         id: 'light',
-        name: 'light'
+        name: 'light',
     },
     colors: {
         background: {
-            hex: "#fafafa",
+            hex: '#fafafa',
             name: 'background',
             cssProp: 'background',
         },
@@ -85,50 +89,52 @@ const baseWhiteTheme = {
         secondary: {
             hex: '#f6f6f6',
             name: 'secondary',
-            cssProp: 'secondary'
+            cssProp: 'secondary',
         },
         tertiary: {
             hex: '#2d3950',
             name: 'tertiary',
-            cssProp: 'tertiary'
+            cssProp: 'tertiary',
         },
         footer: {
             hex: '#212121',
             name: 'footer',
-            cssProp: 'footer'
+            cssProp: 'footer',
         },
         accent: {
             hex: '#da0363',
             name: 'accent',
-            cssProp: 'accent'
+            cssProp: 'accent',
         },
         shadowColor: {
             hex: '#454559',
             name: 'shadowColor',
-            cssProp: 'shadow-color'
+            cssProp: 'shadow-color',
         },
         accent2: {
             hex: '#38454f',
             name: 'accent2',
-            cssProp: 'accent2'
+            cssProp: 'accent2',
         },
         hint: {
             hex: '#939393',
             name: 'hint',
-            cssProp: 'hint'
+            cssProp: 'hint',
         },
         warn: {
             hex: '#ed4f4f',
             name: 'warn',
-            cssProp: 'warn'
+            cssProp: 'warn',
         },
         success: {
             hex: '#356a59',
             name: 'success',
-            cssProp: 'success'
-        }
-    }
-} satisfies SerializedTheme
+            cssProp: 'success',
+        },
+    },
+} satisfies SerializedTheme;
 
-
-export const [themeStorage, currentTheme] = createThemeStorage(new LocalStorageThemePersistence("_app_themes_meta", "app_themes"), baseDarkTheme)
+export const [themeStorage, currentTheme] = createThemeStorage(
+    new LocalStorageThemePersistence('_app_themes_meta', 'app_themes'),
+    baseDarkTheme,
+);

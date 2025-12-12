@@ -2,23 +2,17 @@
     let {
         color = $bindable(),
         cssFunction,
-        style
+        style,
     } = $props<{
-        color: string,
-        cssFunction: string,
-        style: string
-    }>()
+        color: string;
+        cssFunction: string;
+        style: string;
+    }>();
 </script>
 
-
-<div class="container"
-     style="--bg: {color}; {style}"
->
-    <input type="color" bind:value={color}/>
-    <div
-            class="text-inner"
-            style="color: {cssFunction}"
-    >
+<div class="container" style="--bg: {color}; {style}">
+    <input type="color" bind:value={color} />
+    <div class="text-inner" style="color: {cssFunction}">
         Click to change color
     </div>
 </div>
