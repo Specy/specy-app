@@ -192,11 +192,11 @@ function view(style?: string) {
 
   return {
     element: el,
-    add(data: { element: ViewElement }) {
-      el.appendChild(data.element.element);
+    add(e: ViewElement) {
+      el.appendChild(e.element);
     },
-    remove(data: { element: ViewElement }) {
-      el.removeChild(data.element.element);
+    remove(e: ViewElement) {
+      el.removeChild(e.element);
     },
   };
 }
