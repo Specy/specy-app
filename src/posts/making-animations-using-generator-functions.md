@@ -1,6 +1,6 @@
 ---
     datePublished: '2025-12-12'
-    title: 'Making videos using generator functions'
+    title: 'Making animations using generator functions'
     description: 'Learn generator functions, the `using` keyword and Symbols in JavaScript by making a very simple animation library'
     tags: ['typescript', 'web-dev']
     relatedProjects: []
