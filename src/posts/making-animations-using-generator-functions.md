@@ -379,6 +379,8 @@ function el(view: View, style?: string): ViewElement {
 
 And in our animation we just need to replace `const` with `using` and that's it!
 
+(if you are on Safari, `using` is not available yet so the animation wont work)
+
 
 <iframe style="width: 100%; height: 25rem; border-radius: 0.8rem; margin-bottom: 1rem" 
 src="https://gen-animation.pages.dev/?code=E4UwLgrsB2AEBmFoGMwEsD20BUsCG0aAtnulgBQBuaIA7gJSwDeAULLAJ40A2AJrnm7dybdvkIkwIAMoBHCHlBUatADSwArAAZ1ARi07YAclC8j9VaPYFipGfMUhldPdr0H1RgEbcIIc5Zi4rZScgpK1C6wAExusPqGRgDmoCDQAaL0ANwsolwgfLi8BXgc5NFa2Xk8-LDcGBgADuXq5IwAvAB8wZL24U6RavFxCZ4cBfW05lUAvrmIKGQ4PXZhjs5D3CDwYOpgTerIGPXAjKzsEADOaNBJsJcOoLDtsAUb6uditGi8YAAWAC5YAAibSNAAewMCYj%2BIDQST%2BYCBoK0EKhVlgXjwyAA1ikMEheABhY4YYBAo4naHsRoYa5LZF4LyXY4QKTooJbHZAgAGABImFywDMITzqbB9o1eQLJSLwWLRDMqtUCrUHv0AHT7chMOrbJF6nawADU8Q8EoOsGAGDAdiBugAHFpYDN1ABmSo5dj5Qr3R4gLUYHWG3YWxrqa22qRAt0ANmdrtgHtmLCAA"> </iframe>
