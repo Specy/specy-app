@@ -63,7 +63,7 @@
         margin: 3rem 0 0 0;
     }
     .apps {
-        max-width: 50rem;
+        max-width: 60rem;
     }
     .projects-wrapper {
         display: grid;

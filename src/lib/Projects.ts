@@ -30,7 +30,7 @@ const projects = [
     },
     {
         title: 'ASM Editor',
-        description: 'An editor and interpreter for M68K assembly',
+        description: 'An IDE for assembly in the web. With M68K, MIPS, RISC-V and x86 support',
         image: '/images/asmEditor.png',
         url: 'https://asm-editor.specy.app',
         github: '',
@@ -55,7 +55,8 @@ const projects = [
         id: 'rooc',
         color: 'rgb(83, 87, 165)',
     },
-    {
+    /*
+        {
         title: 'Soundboard',
         description: 'An app to create soundboards that you can share',
         image: '/images/logo.png',
@@ -64,6 +65,7 @@ const projects = [
         id: 'soundboard',
         color: '#243B4A',
     },
+    */
     {
         title: 'Conway generator',
         description: "An app to create backgrounds with Conway's game of life",

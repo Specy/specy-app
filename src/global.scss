@@ -17,9 +17,6 @@
     flex-wrap: wrap;
 }
 
-html {
-    overflow-x: hidden;
-}
 body,
 html {
     min-height: 100%;
@@ -28,9 +25,6 @@ html {
     display: flex;
     font-family: Rubik;
     flex-direction: column;
-}
-html {
-    overflow-y: scroll;
 }
 .ellipsis {
     white-space: nowrap;

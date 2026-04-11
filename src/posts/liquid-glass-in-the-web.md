@@ -96,7 +96,7 @@ In a pure HTML/CSS way, you can create two svg elements, one for the map and the
 I've left a lot of the details out as it would be too long to explain here, but you can look at the 
 complete code [here](https://codepen.io/9am/pen/eYbaQBw).
 
-The cool is that what we have done just *defines* the filter. You can then use this filter by applying it with CSS:
+What we have done just *defines* the filter. You can then use this filter by applying it with CSS:
 ```css
 .your-element {
     filter: url(#my-filter);

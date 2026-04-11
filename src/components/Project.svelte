@@ -45,7 +45,7 @@
         justify-content: space-between;
         padding: 0.8rem;
         border-radius: 0.8rem;
-        min-width: 16rem;
+        min-width: 17rem;
         flex: 1;
     }
     .row {
