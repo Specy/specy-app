@@ -57,8 +57,7 @@ const projects = [
     },
     {
         title: 'Learn',
-        description:
-            'Browsable notes from my computer science university courses: analysis, physics, databases, networks, AI and more',
+        description: 'Notes for computer science courses: analysis, physics, databases, networks, AI and more',
         image: '/images/logo.png',
         url: 'https://learn.specy.app',
         github: 'https://github.com/Specy/notes',
