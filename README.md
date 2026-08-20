@@ -1,8 +1,13 @@
 # specy.app
 
-The main page and core of the <a href='https://specy.app'> specy.app </a> domain.
-The client side is made with sveltekit, while the auth server is made with nest.js
+My homepage where i host all of my projects and personal blog. 
 
-# How to run the client
+Visit it at [specy.app](https://specy.app)
 
-To run the client, firstly cd into the client folder and install the modules with `npm i`, once installed, you can run the development server by doing `npm run dev`
+
+# How to run 
+
+This is a sveltekit app so you just need to 
+
+- `npm i` to install the dependencies
+- `npm run dev` to start the development server
