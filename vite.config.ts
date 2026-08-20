@@ -1,4 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
@@ -7,7 +8,13 @@ export default defineConfig({
         port: 3000,
         allowedHosts: [],
     },
-    plugins: [sveltekit()],
+    plugins: [
+        sveltekit(),
+        Icons({
+            compiler: 'svelte',
+            defaultStyle: 'width: 100%; height: auto; max-height: 100%;',
+        }),
+    ],
     resolve: {
         alias: {
             $cmp: resolve('./src/components/'),

@@ -8,7 +8,7 @@
 <script>
     import LiquidGlass from "$cmp/blog/LiquidGlass.svelte";    
     import WaveText from "$cmp/blog/WaveText.svelte";
-	import FaStar from 'svelte-icons/fa/FaStar.svelte'
+	import FaStar from '~icons/fa-solid/star'
 
 </script>
 
@@ -156,5 +156,4 @@ We could do a shader for it, but I'll leave that to the next person that wants t
 
 The [code is available here on github](https://github.com/Specy/liquid-glass) and I've also published this silly react library to [npm](https://www.npmjs.com/package/@specy/liquid-glass-react)
 if you want to experiment with it. 
-
 

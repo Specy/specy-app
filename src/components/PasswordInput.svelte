@@ -2,10 +2,10 @@
     import { run } from 'svelte/legacy';
 
     type statusType = '' | 'correct' | 'wrong';
-    import FaExclamationCircle from 'svelte-icons/fa/FaExclamationCircle.svelte';
-    import FaCheckCircle from 'svelte-icons/fa/FaCheckCircle.svelte';
-    import FaEye from 'svelte-icons/fa/FaEye.svelte';
-    import FaEyeSlash from 'svelte-icons/fa/FaEyeSlash.svelte';
+    import FaExclamationCircle from '~icons/fa-solid/exclamation-circle';
+    import FaCheckCircle from '~icons/fa-solid/check-circle';
+    import FaEye from '~icons/fa-solid/eye';
+    import FaEyeSlash from '~icons/fa-solid/eye-slash';
     import checkStrenght from '../lib/checkPassword';
     interface Props {
         title?: string;

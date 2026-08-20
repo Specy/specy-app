@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { generateTheme } from './monacoTheme';
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import editorWorker from 'monaco-editor/editor/editor.worker?worker';
 import type monaco from 'monaco-editor';
 
 export type MonacoType = typeof monaco;
@@ -29,11 +29,11 @@ class MonacoLoader {
             getWorker: async function (_: unknown, label: string) {
                 if (label === 'typescript' || label === 'javascript') {
                     const worker =
-                        await import('monaco-editor/esm/vs/language/typescript/ts.worker?worker');
+                        await import('monaco-editor/language/typescript/ts.worker?worker');
                     return new worker.default();
                 }
                 const worker =
-                    await import('monaco-editor/esm/vs/editor/editor.worker?worker');
+                    await import('monaco-editor/editor/editor.worker?worker');
                 return new worker.default();
             },
         };
