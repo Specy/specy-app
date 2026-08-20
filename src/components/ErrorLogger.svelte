@@ -2,7 +2,7 @@
     import { toast } from '$cmp/toast';
     import { fly } from 'svelte/transition';
     import Icon from '$cmp/Icon.svelte';
-    import FaTimes from 'svelte-icons/fa/FaTimes.svelte';
+    import FaTimes from '~icons/fa-solid/times';
     interface Props {
         children?: import('svelte').Snippet;
     }

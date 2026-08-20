@@ -1,8 +1,8 @@
 <script lang="ts">
-    import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
-    import FaDiscord from 'svelte-icons/fa/FaDiscord.svelte';
-    import FaSun from 'svelte-icons/fa/FaSun.svelte';
-    import FaMoon from 'svelte-icons/fa/FaMoon.svelte';
+    import FaGithub from '~icons/fa-brands/github';
+    import FaDiscord from '~icons/fa-brands/discord';
+    import FaSun from '~icons/fa-solid/sun';
+    import FaMoon from '~icons/fa-solid/moon';
     import { themeStorage } from '$stores/themeStore';
     const current = $themeStorage.current;
 

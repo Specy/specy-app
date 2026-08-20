@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { ProjectData } from '$lib/Projects';
-    import MdOpenInNew from 'svelte-icons/md/MdOpenInNew.svelte';
+    import MdOpenInNew from '~icons/mdi/open-in-new';
     interface Props {
         data: ProjectData;
     }

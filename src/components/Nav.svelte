@@ -1,6 +1,6 @@
 <script lang="ts">
-    import MdClose from 'svelte-icons/md/MdClose.svelte';
-    import MdMenu from 'svelte-icons/md/MdMenu.svelte';
+    import MdClose from '~icons/mdi/close';
+    import MdMenu from '~icons/mdi/menu';
     import Logo from './logo.svelte';
     import { page } from '$app/stores';
     import { fromStore } from 'svelte/store';

@@ -2,9 +2,9 @@
     import { run } from 'svelte/legacy';
 
     type statusType = '' | 'correct' | 'wrong';
-    import FaExclamationCircle from 'svelte-icons/fa/FaExclamationCircle.svelte';
-    import FaCheckCircle from 'svelte-icons/fa/FaCheckCircle.svelte';
-    import FaRegCircle from 'svelte-icons/fa/FaRegCircle.svelte';
+    import FaExclamationCircle from '~icons/fa-solid/exclamation-circle';
+    import FaCheckCircle from '~icons/fa-solid/check-circle';
+    import FaRegCircle from '~icons/fa-regular/circle';
 
     interface Props {
         title?: string;
