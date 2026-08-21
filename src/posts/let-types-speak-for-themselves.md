@@ -7,7 +7,7 @@
 ---
 <script>
     import Monaco from "$cmp/blog/BlogMonaco.svelte"
-    import WaveText from "$cmp/blog/WaveText.svelte"
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte"
 </script>
 
 
@@ -32,7 +32,7 @@ I considered many languages, each of them with very different approaches to prog
 After thinking about it for a few days, I decided to go with Rust to code [an assembly interpreter](https://github.com/Specy/s68k) for my [assembly editor app](https://asm-editor.specy.app/) since I really liked the idea of the [match](https://doc.rust-lang.org/rust-by-example/flow_control/match.html) statement and the strictness of the language.
 
 
-# Rust types ✨flow✨
+# Rust types ✨<AnimatedText kind="shimmer" text="flow" trigger="loop" repeatDelay={2.5} style="font: inherit" />✨
 
 One thing that I really liked about Rust is its type inference.
 
@@ -91,7 +91,7 @@ But what happens if I do the same call again, where `loading` becomes true? Will
 
 Same thing with the error: what happens if I did the call twice and the library decided to keep both data and error?
 
-<WaveText text="So many scenarios" style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="wave" text="So many scenarios" style="font-size: 1.3rem; margin: -1rem 0" />
 
 You see that this is not nice? We have so many implicit things we need to remember as consumers of code (consumers as in developers that use code written and maintained by another developer) and most importantly, we assume that this "contract" that we once encoded in our code stays true even if the `LoadingState` implementation changes under the hood.
 
@@ -141,7 +141,7 @@ if (state.status === "success") {
 }
 `} />
 
-<WaveText text="Hell yeah" style="font-size: 1.3rem; margin-top: 1rem" />
+<AnimatedText kind="wave" text="Hell yeah" style="font-size: 1.3rem; margin-top: 1rem" />
 
 # Be concrete
 
@@ -509,4 +509,4 @@ There are so many more tips that I want to share on how to write better TypeScri
 
 And as we youngsters would say:
 
-<WaveText text="Let your types cook" style="font-size: 1.3rem;" />
+<AnimatedText kind="wave" text="Let your types cook" style="font-size: 1.3rem;" />

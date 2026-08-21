@@ -6,7 +6,8 @@
     relatedProjects: ['sky-music']
 ---
 <script>
-    import ColorAndPreview from "$cmp/blog/ColorAndPreview.svelte";    
+    import ColorAndPreview from "$cmp/blog/ColorAndPreview.svelte";
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
 </script>
 
 # Introduction
@@ -66,7 +67,9 @@ function getTextColor(color: string){
     }
 }
 ```
-But how can we do this in CSS? There clearly are no if statements, and neither functions that can return the lightness of a color... or are there?
+But how can we do this in CSS? There clearly are no if statements, and neither functions that can return the lightness of a color...
+
+<AnimatedText kind="rainbow" text="or are there?" style="font-size: 1.3rem; margin: -1rem 0" />
 
 # The CSS solution
 

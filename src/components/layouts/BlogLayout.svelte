@@ -4,8 +4,14 @@
     import { desktopProjects, projects } from '$lib/Projects';
     import Project from '$cmp/Project.svelte';
 
-    let { children, datePublished, title, description, tags, relatedProjects } =
-        $props<PostMetadata & { children: any }>();
+    let {
+        children,
+        datePublished,
+        title,
+        description,
+        tags,
+        relatedProjects = [],
+    } = $props<PostMetadata & { children: any }>();
 
     let relatedProjectsData = $derived(
         relatedProjects.map(getRelatedProject).filter(Boolean),
@@ -24,6 +30,62 @@
             projects.find((project) => project.id === id) ??
             desktopProjects.find((project) => project.id === id)
         );
+    }
+
+    function animateSidetracks(node: HTMLElement) {
+        const animations = new WeakMap<HTMLDetailsElement, Animation>();
+        const expandedStates = new WeakMap<HTMLDetailsElement, boolean>();
+
+        function handleClick(event: MouseEvent) {
+            if (!(event.target instanceof Element)) return;
+
+            const summary = event.target.closest('summary.sidetrack-title');
+            const details = summary?.parentElement;
+            if (!(details instanceof HTMLDetailsElement)) return;
+
+            event.preventDefault();
+
+            const isExpanded = expandedStates.get(details) ?? details.open;
+            const shouldExpand = !isExpanded;
+            const startHeight = details.getBoundingClientRect().height;
+
+            animations.get(details)?.cancel();
+            expandedStates.set(details, shouldExpand);
+            details.toggleAttribute('data-closing', !shouldExpand);
+
+            if (shouldExpand) details.open = true;
+
+            const endHeight = shouldExpand
+                ? details.scrollHeight
+                : summary.getBoundingClientRect().height;
+            const animation = details.animate(
+                {
+                    height: [`${startHeight}px`, `${endHeight}px`],
+                },
+                {
+                    duration: 200,
+                    easing: 'ease',
+                    fill: 'forwards',
+                },
+            );
+
+            animations.set(details, animation);
+            animation.onfinish = () => {
+                if (!shouldExpand) details.open = false;
+                details.removeAttribute('data-closing');
+                expandedStates.delete(details);
+                animations.delete(details);
+                animation.cancel();
+            };
+        }
+
+        node.addEventListener('click', handleClick);
+
+        return {
+            destroy() {
+                node.removeEventListener('click', handleClick);
+            },
+        };
     }
 </script>
 
@@ -54,7 +116,7 @@
             {/if}
         </div>
 
-        <section class="md-content">
+        <section class="md-content" use:animateSidetracks>
             {@render children?.()}
         </section>
     </div>
@@ -96,7 +158,7 @@
 
         --paragraph-font: 'Noto Serif';
         --paragraph-weight: 500;
-        --heading-font: 'Rubik'
+        --heading-font: 'Rubik';
         --heading-weight: 800;
         --code-font: 'Fira Code';
     }
@@ -181,13 +243,15 @@
             text-decoration: unset;
         }
 
-        :global(img) {
+        > :global(p) > :global(img),
+        > :global(a) > :global(p) > :global(img) {
             width: 100%;
             max-width: 40rem;
             display: block;
             margin: 0 auto;
             border-radius: 0.5rem;
         }
+
         :global(hr) {
             border: none;
             height: 2px;
@@ -237,7 +301,68 @@
             border-radius: 0.3rem 0.8rem 0.8rem 0.3rem;
             padding: 0.5rem;
             border-left: 0.3rem solid var(--accent);
-            background: #52537a1a;
+            background: color-mix(in srgb, #52537a1a, var(--accent) 5%);
+        }
+
+        :global(details.sidetrack) {
+            margin: 1.5rem 0;
+            border-radius: 0.8rem;
+            background: #52537a0e;
+            border: solid 2px color-mix(in srgb, #52537a1a, var(--accent) 5%);
+            overflow: hidden;
+
+            > :global(:not(summary)) {
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+
+            > :global(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
+
+        :global(summary.sidetrack-title) {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.8rem 1rem;
+            background: color-mix(in srgb, rgba(82, 83, 122, 0.1019607843), var(--accent) 5%);
+            font-family: var(--heading-font), Rubik, sans-serif;
+            font-weight: var(--heading-weight);
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            transition: background 0.2s ease;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &::before {
+                content: '';
+                width: 0.55rem;
+                height: 0.55rem;
+                border-right: 0.15rem solid currentColor;
+                border-bottom: 0.15rem solid currentColor;
+                transform: rotate(-45deg);
+                transition: transform 0.2s ease;
+            }
+
+            &:hover {
+                background: rgba(var(--RGB-accent), 0.08);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: -2px;
+            }
+        }
+
+        :global(
+            details.sidetrack[open]:not([data-closing])
+                > summary.sidetrack-title::before
+        ) {
+            transform: rotate(45deg) translate(-0.1rem, -0.1rem);
         }
     }
 
@@ -266,6 +391,10 @@
             :global(li) {
                 font-size: 1.1rem;
             }
+        }
+
+        .content {
+            margin-top: 0rem;
         }
     }
 </style>

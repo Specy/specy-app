@@ -2,6 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { markdownImagePreviews } from './scripts/markdown-images.js';
 
 export default defineConfig({
     server: {
@@ -9,6 +10,7 @@ export default defineConfig({
         allowedHosts: [],
     },
     plugins: [
+        markdownImagePreviews(),
         sveltekit(),
         Icons({
             compiler: 'svelte',

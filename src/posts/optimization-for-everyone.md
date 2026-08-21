@@ -6,7 +6,7 @@
     relatedProjects: ['rooc']
 ---
 <script>
-    import WaveText from "$cmp/blog/WaveText.svelte";    
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
 </script>
 
 
@@ -14,7 +14,7 @@
 
 Before diving deeper, imagine if there was a way to forget about algorithms, forget thinking "how should i solve this", but instead, the only thing you need to worry about is "what are my requirements?", "what is my goal?".
 
-Imagine all you had to do was write those things down, click a button, and have a magic algorithm automatically find the best solution.
+Imagine all you had to do was write those things down, click a button, and have <AnimatedText kind="shimmer" text="a magic algorithm" trigger="once" style="font: inherit" /> automatically find the best solution.
 
 This is what Operational Research, and more specifically, optimization modeling does. You write your requirements, write your goal, and the algorithm under the hood finds the best set of values that give you the best result, while still adhering to your requirements.
 
@@ -76,7 +76,7 @@ But my perfectionism took over, and this simple task spiraled into half a year o
 - _Ok but now I want to be able to add data from outside the language, like a CSV or something else_
 
 <br/>
-<WaveText text="And many many more" style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="wave" text="And many many more" style="font-size: 1.3rem; margin: -1rem 0" />
 
 
 # ROOC
@@ -84,4 +84,3 @@ But my perfectionism took over, and this simple task spiraled into half a year o
 After this clown parade of me saying "ok just this one more feature" for half a year came to an end, I considered [rooc](https://rooc.specy.app/) to be usable, and released it to the public.
 
 It's an editor + language + solver combo that allows you to write and solve optimization models on the web. If you want to learn how to use it, visit the [documentation](https://rooc.specy.app/docs/rooc) page!
-

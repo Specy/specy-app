@@ -6,7 +6,7 @@
     relatedProjects: ['discerns']
 ---
 <script>
-    import WaveText from "$cmp/blog/WaveText.svelte";    
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
 </script>
 
 # A little introduction
@@ -192,7 +192,7 @@ I started debugging by looking at the thought chain of the LLM and noticed thing
 - "But wait actually, maybe the second question is actually asking for a more general explanation of what the HTML language does?"
 - "Yeah I think that's it, then they are not the same"
 
-<WaveText text="Are you overthinking????" style="font-size: 1.3rem; margin: 1rem 0" />
+<AnimatedText kind="wave" text="Are you overthinking????" style="font-size: 1.3rem; margin: 1rem 0" />
 
 Well yeah, just like me, reasoning LLMs overthink, and they do it *a lot*. 
 
@@ -217,7 +217,9 @@ It always seems to want to think of something, even if it doesn't really need to
 
 If overthinking is such an issue, what could I do to fix it? 
 
-Very simple, numb it down.
+Very simple.
+
+<AnimatedText kind="blur-in" text="Numb it down." animationDuration={4.5} style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Reasoning is not always better
 
