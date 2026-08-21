@@ -1,7 +1,7 @@
 ---
     datePublished: '2026-08-21'
     title: 'Through the lens photography'
-    description: 'The pros of analog photography and a fixture to take photos through the viewport of the camera'
+    description: 'The pros of analog photography and a fixture to take photos through the viewport of the camera using your smartphone.'
     tags: ['photography', '3D printing']
 ---
 <script>
