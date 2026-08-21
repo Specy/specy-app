@@ -7,7 +7,7 @@
 ---
 <script>
     import Monaco from "$cmp/blog/BlogMonaco.svelte"
-    import WaveText from "$cmp/blog/WaveText.svelte"
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte"
 </script>
 
 Have you ever seen one of those really pretty videos on YouTube with fancy visuals to show programming and mathematics concepts? Chances are they were made using [Manim](https://www.manim.community/) or a more recent alternative called [Motion Canvas](https://motioncanvas.io/).
@@ -22,7 +22,7 @@ Luckily I'm also a huge [aarthificial](https://www.youtube.com/@aarthificial) fa
 
 It's a JavaScript editor and library to create videos *procedurally* using:
 
-<WaveText text="Generator functions" style="font-size: 1.3rem; margin: -1rem 0"  />
+<AnimatedText kind="wave" text="Generator functions" style="font-size: 1.3rem; margin: -1rem 0"  />
 
 Fancy right? Just look at this:
 

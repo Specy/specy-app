@@ -7,22 +7,9 @@
 
     const _page = fromStore(page);
     let path = $derived(_page.current.url.pathname);
-    let lastPosition = $state(10);
-    let navHidden = $state(false);
     let menuOpen = $state(false);
-
-    function handleScroll() {
-        const scrollY = window.scrollY;
-        if (!menuOpen && scrollY > 300) {
-            navHidden = scrollY > lastPosition;
-            lastPosition = scrollY;
-        } else {
-            navHidden = false;
-        }
-    }
 </script>
 
-<svelte:window onscroll={handleScroll} />
 <nav class="nav">
     <div class="desktop-menu">
         <Logo />
@@ -57,15 +44,15 @@
         -->
     </div>
 
-    <div class="mobile-menu html2canvas-ignore" class:navHidden>
+    <div class="mobile-menu html2canvas-ignore">
         <div class="mobile-row">
             <Logo logoToggled={menuOpen} />
             <div class="top-mobile-menu">
                 <div
+                    style="font-size: 2rem"
                     onclick={() => {
                         menuOpen = !menuOpen;
                     }}
-                    style="height:2rem"
                 >
                     {#if menuOpen}
                         <MdClose />
@@ -165,9 +152,6 @@
     }
 
     .mobile-menu {
-        position: absolute;
-        top: 0;
-        right: 0;
         padding-bottom: 0;
         background: linear-gradient(
             180deg,
@@ -180,13 +164,6 @@
         display: none;
         flex-direction: column;
         transition: all 0.2s ease-out;
-
-        transform: translateY(0);
-    }
-
-    .navHidden {
-        transform: translateY(-5rem);
-        transition: all 0.5s ease-out;
     }
 
     .top-mobile-menu {
@@ -221,13 +198,17 @@
     .links-mobile {
         width: 100%;
         flex-direction: column;
+        position: absolute;
+        top: 4.5rem;
+        left: 0;
         overflow: hidden;
         height: 0;
         display: flex;
         padding: 0;
-        transition: all 0.4s ease-out;
+        transition: all 0.3s ease-out;
+        backdrop-filter: blur(6px);
         justify-content: space-around;
-        background-color: rgba(var(--RGB-background), 0.7);
+        background-color: rgba(var(--RGB-background), 0.8);
 
         > a,
         button {
@@ -277,7 +258,6 @@
             padding: 0.3rem;
         }
         .nav {
-            position: fixed;
             width: 100%;
             margin: 0rem;
             margin-bottom: 2rem;

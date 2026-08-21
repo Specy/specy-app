@@ -24,7 +24,38 @@ const config = {
             extensions: ['.svx', '.mdx', '.md'],
             remarkPlugins: [
                 [remarkGithub, { repository: 'specy/specy-app' }],
-                remarkContainer,
+                [
+                    remarkContainer,
+                    {
+                        default: true,
+                        custom: [
+                            {
+                                type: 'sidetrack',
+                                element: 'details',
+                                transform(node) {
+                                    node.data.hProperties = {
+                                        className: 'sidetrack',
+                                    };
+                                    node.children.unshift({
+                                        type: 'paragraph',
+                                        data: {
+                                            hName: 'summary',
+                                            hProperties: {
+                                                className: 'sidetrack-title',
+                                            },
+                                        },
+                                        children: [
+                                            {
+                                                type: 'text',
+                                                value: 'Sidetrack',
+                                            },
+                                        ],
+                                    });
+                                },
+                            },
+                        ],
+                    },
+                ],
             ],
             rehypePlugins: [
                 rehypeSlug,

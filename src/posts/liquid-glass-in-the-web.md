@@ -7,7 +7,7 @@
 ---
 <script>
     import LiquidGlass from "$cmp/blog/LiquidGlass.svelte";    
-    import WaveText from "$cmp/blog/WaveText.svelte";
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
 	import FaStar from '~icons/fa-solid/star'
 
 </script>
@@ -113,7 +113,7 @@ We don't have access to the paint layer, nor in CSS or in JS, we cannot write a 
 
 *If only we could have access to the paint layer...*
 
-<WaveText text="Perhaps..." style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="wave" text="Perhaps..." style="font-size: 1.3rem; margin: -1rem 0" />
 
 # A huge trick
 
@@ -156,4 +156,3 @@ We could do a shader for it, but I'll leave that to the next person that wants t
 
 The [code is available here on github](https://github.com/Specy/liquid-glass) and I've also published this silly react library to [npm](https://www.npmjs.com/package/@specy/liquid-glass-react)
 if you want to experiment with it. 
-

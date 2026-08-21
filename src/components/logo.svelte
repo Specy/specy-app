@@ -62,7 +62,7 @@
             width: 30px;
             height: 2px;
             background-color: var(--accent);
-            transition: all 0.4s ease-in-out;
+            transition: all 0.2s ease-in-out;
         }
         > .logo-app {
             font-size: 0.8rem;

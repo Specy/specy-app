@@ -1,11 +1,11 @@
 ---
     datePublished: '2026-08-21'
     title: 'Through the lens photography'
-    description: 'A good mix of analog and digital photography'
-    tags: ['photography', '3d']
+    description: 'The pros of analog photography and a fixture to take photos through the viewport of the camera'
+    tags: ['photography', '3D printing']
 ---
 <script>
-    import WaveText from "$cmp/blog/WaveText.svelte";    
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
     import Slideshow from '$cmp/blog/Slideshow.svelte';
 </script>
 
@@ -23,17 +23,27 @@ If you get a DSLR/mirrorless camera you partially solve this problem. Instead of
 
 So to prevent *both* issues, what is bulky, expensive and hard to use properly?
 
-<WaveText text="An analog camera!" style="font-size: 1.3rem;" />
+<AnimatedText kind="wave" text="An analog camera!" style="font-size: 1.3rem;" />
 
 # The analog choice
 
 After weeks of indecision I decided to buy a Canon A-1 with a 70-210mm Vivitar series 1 lens and 400 iso Kodak ultramax. I chose the A-1 because it was the first camera to have both a fully automatic and fully manual mode, allowing my inexperienced self to take photos without too much experience in lighting, but also manual enough that it needs you to have a small checklist in your head before taking a photo.
 
+::: sidetrack
+Another reason to choose analog cameras is that if in the future you decide to buy a mirrorless camera, you can reuse all the lenses that you already have as they can be adapted.
+
+Or well, this is what i tell myself when i buy yet another lens. I really need to stop i got like 5 different lenses already. 
+
+I do also enjoy and hate the process of manual focusing, it gives you more creative freedom of dialing in exactly how you want it, but it is *sooo* slow to do properly
+:::
+
 # The good and the bad
 
-The good part is that I immediately felt excited about using it! Sometimes I decided to go out just to take photos. Whenever I went to some event or place that was photograph worthy I brought with me a small bag with the camera that i'd take out in case I wanted to photograph that moment. It felt like the camera was something that lived *alongside* the moment, not with it, and even when taking it out, the whole process felt more meaningful and *part* of the whole experience. Being limited to only 36 shots per film means you have to be careful not taking too many photos. I noticed that this made me wait for the *perfect shot* rather than just taking a bunch of them hoping that at least one would be good. 
+The good part is that I immediately felt excited about using it! Sometimes I decided to go out just to take photos. 
 
-And... most of the good reasons are because each time you press on that button, €0.70 goes <WaveText text="flying"/> out of your pocket and into the cost of the film + developing + scanning, so you **better take that photo and make it good**.
+Whenever I went to some event or place that was photograph worthy I brought with me a small bag with the camera that i'd take out in case I wanted to photograph that moment. It felt like the camera was something that lived *alongside* the moment, not with it, and even when taking it out, the whole process felt more meaningful and *part* of the whole experience. Being limited to only 36 shots per film means you have to be careful not taking too many photos. I noticed that this made me wait for the *perfect shot* rather than just taking a bunch of them hoping that at least one would be good. 
+
+And... most of the good reasons are because each time you press on that button, €0.70 goes <AnimatedText kind="wave" text="flying"/> out of your pocket and into the cost of the film + developing + scanning, so you **better take that photo and make it good**.
 
 # The eclipse
 
@@ -71,7 +81,7 @@ While doing tests I was surprised by the style of the photos you could take with
 
 If you hold down the metering button on the camera you can also show the current aperture and shutter speed to be used to take the analog photo.
 
-Let's look at some <WaveText text="examples" />. I took these while going on a hike. I had managed to finish the first prototype literally 5 minutes before leaving. (Yes that's my dog!)
+Let's look at some <AnimatedText kind="rainbow" text="examples" />. I took these while going on a hike. I had managed to finish the first prototype literally 5 minutes before leaving. (Yes that's my dog!)
 
 <Slideshow
     photos={[
@@ -112,3 +122,11 @@ After months of 0% cloud and full unbearable sunlight, **THE DAY** I needed it t
 I did notice that even with this super bulky, uncomfortable, hard to setup rig, I still find myself taking way more photos than I should. I managed to break the only inconveniences that analog photography brings you, and that unconciously made me take only 3 analog photos during those days of experimentation. 
 
 On the other hand! I feel like this style of "through the lens" photography is really cool and wanted to make it my signature style. Now that the prototype is complete, I can start using it to take photos properly, expect another blog post (or website with photos)!
+
+<Slideshow
+    photos={[
+        { src: '/images/blog/through-the-lens/fixture_5.jpg', alt: 'Finished fixture' },
+        { src: '/images/blog/through-the-lens/fixture_6.jpg', alt: 'Finished fixture' },
+        { src: '/images/blog/through-the-lens/fixture_7.jpg', alt: 'Finished fixture' },
+    ]}
+/>

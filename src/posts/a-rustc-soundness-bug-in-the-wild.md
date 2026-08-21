@@ -2,11 +2,11 @@
     datePublished: '2024-11-13'
     title: 'A rustc soundness bug in the wild'
     description: 'How a bug in the rustc compiler drove me to madness for two days'
-    tags: ['rust', 'rooc']
+    tags: ['rust']
     relatedProjects: ['rooc']
 ---
 <script>
-    import WaveText from "$cmp/blog/WaveText.svelte";    
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
 </script>
 
 
@@ -23,7 +23,7 @@ After many failed attempts at compiling for wasm, searching through the whole cr
 
 But wait... _"The project was archived 2 years ago, last commit 4 years ago"_, oh well, I heard that rust is a stable language, so it should be fine, right?
 
-<WaveText text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="wave" text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Implementation
 After discovering the library I immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
@@ -79,7 +79,7 @@ running 19 tests
 test result: ok. 19 passed; 0 failed; 0 measured; 0 filtered out; finished in 0.03s
 ```
 What??? The test passed? 
-<WaveText text="How??" style="font-size: 1.3rem; margin: -1rem 0" /> 
+<AnimatedText kind="wave" text="How??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 I just had this panic on me a *few seconds ago*?
 

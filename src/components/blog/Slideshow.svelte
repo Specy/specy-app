@@ -31,20 +31,32 @@
         label?: string;
     };
 
+    type PreloadedImage = {
+        image: HTMLImageElement;
+        status: 'loading' | 'loaded' | 'error';
+        promise: Promise<boolean>;
+    };
+
     const IMAGE_TRANSITION_NAME = 'slideshow-expanded-image';
 
     let { photos, label = 'Photo slideshow' }: Props = $props();
 
     let activeIndex = $state(0);
     let expandedPhoto = $state<NormalizedPhoto | null>(null);
+    let fullResolutionSrc = $state<string | null>(null);
     let fullResolutionLoaded = $state(false);
+    let fullResolutionFailed = $state(false);
+    let expandedFullImage = $state<HTMLImageElement>();
     let closeButton = $state<HTMLButtonElement>();
     let sourceTrigger: HTMLButtonElement | null = null;
     let sourceImage: HTMLImageElement | null = null;
     let transitionInProgress = false;
     let previousBodyOverflow: string | null = null;
+    let previousBodyPaddingRight: string | null = null;
     let touchStart: { x: number; y: number; pointerId: number } | null = null;
     let suppressNextImageClick = false;
+    let slideshowInViewport = $state(false);
+    const preloadedFullResolution = new Map<string, PreloadedImage>();
 
     let normalizedPhotos = $derived(
         photos
@@ -70,19 +82,33 @@
         if (activeIndex >= normalizedPhotos.length) activeIndex = 0;
     });
 
+    $effect(() => {
+        if (!slideshowInViewport) return;
+
+        const selectedPhoto = normalizedPhotos[activeIndex];
+        if (selectedPhoto) preloadFullResolution(selectedPhoto.src);
+    });
+
     function getRelativeOffset(index: number) {
         return index - activeIndex;
     }
 
+    function selectPhoto(index: number) {
+        const photo = normalizedPhotos[index];
+        if (!photo) return;
+
+        activeIndex = index;
+    }
+
     function showPrevious() {
         if (activeIndex === 0) return;
-        activeIndex -= 1;
+        selectPhoto(activeIndex - 1);
     }
 
     function showNext() {
         const count = normalizedPhotos.length;
         if (activeIndex >= count - 1) return;
-        activeIndex += 1;
+        selectPhoto(activeIndex + 1);
     }
 
     function handleSlideshowKeydown(event: KeyboardEvent) {
@@ -135,7 +161,7 @@
         }
 
         if (index !== activeIndex) {
-            activeIndex = index;
+            selectPhoto(index);
             return;
         }
 
@@ -158,6 +184,32 @@
         };
     }
 
+    function observeViewport(node: HTMLElement) {
+        if (!('IntersectionObserver' in window)) {
+            slideshowInViewport = true;
+            return {
+                destroy() {
+                    slideshowInViewport = false;
+                },
+            };
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                slideshowInViewport = entry?.isIntersecting ?? false;
+            },
+            { threshold: 0.01 },
+        );
+        observer.observe(node);
+
+        return {
+            destroy() {
+                observer.disconnect();
+                slideshowInViewport = false;
+            },
+        };
+    }
+
     function handleWindowKeydown(event: KeyboardEvent) {
         if (!expandedPhoto) return;
 
@@ -174,10 +226,15 @@
         const photo = normalizedPhotos[index];
         if (!photo || expandedPhoto || transitionInProgress) return;
 
+        const preloadedImage = preloadedFullResolution.get(photo.src);
+        const fullResolutionIsReady = preloadedImage?.status === 'loaded';
+
         transitionInProgress = true;
         sourceTrigger = trigger;
         sourceImage = trigger.querySelector('.slide-image');
-        fullResolutionLoaded = false;
+        fullResolutionSrc = fullResolutionIsReady ? photo.src : null;
+        fullResolutionLoaded = fullResolutionIsReady;
+        fullResolutionFailed = false;
         sourceImage?.style.setProperty(
             'view-transition-name',
             IMAGE_TRANSITION_NAME,
@@ -190,8 +247,70 @@
             await tick();
         });
 
+        if (!fullResolutionIsReady) void revealFullResolution(photo);
         closeButton?.focus({ preventScroll: true });
         transitionInProgress = false;
+    }
+
+    function preloadFullResolution(src: string) {
+        const existing = preloadedFullResolution.get(src);
+        if (existing) return existing;
+
+        const image = new Image();
+        const entry: PreloadedImage = {
+            image,
+            status: 'loading',
+            promise: Promise.resolve(false),
+        };
+
+        image.decoding = 'async';
+        image.fetchPriority = 'high';
+        image.src = src;
+        entry.promise = image.decode().then(
+            () => {
+                entry.status = 'loaded';
+                return true;
+            },
+            () => {
+                entry.status = 'error';
+                preloadedFullResolution.delete(src);
+                return false;
+            },
+        );
+        preloadedFullResolution.set(src, entry);
+        return entry;
+    }
+
+    async function revealFullResolution(photo: NormalizedPhoto) {
+        const decoded = await preloadFullResolution(photo.src).promise;
+        if (expandedPhoto?.src !== photo.src) return;
+
+        if (!decoded) {
+            fullResolutionFailed = true;
+            return;
+        }
+
+        fullResolutionSrc = photo.src;
+        await tick();
+
+        const image = expandedFullImage;
+        if (!image) return;
+
+        try {
+            await image.decode();
+        } catch {
+            if (expandedPhoto?.src === photo.src) {
+                fullResolutionFailed = true;
+            }
+            return;
+        }
+
+        await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        );
+        if (expandedPhoto?.src === photo.src && expandedFullImage === image) {
+            fullResolutionLoaded = true;
+        }
     }
 
     async function closeImage() {
@@ -203,6 +322,9 @@
 
         await runImageTransition(async () => {
             expandedPhoto = null;
+            fullResolutionSrc = null;
+            fullResolutionLoaded = false;
+            fullResolutionFailed = false;
             unlockBodyScroll();
             await tick();
 
@@ -239,18 +361,36 @@
 
     function lockBodyScroll() {
         if (previousBodyOverflow !== null) return;
-        previousBodyOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
+
+        const body = document.body;
+        const viewportWidthBefore = document.documentElement.clientWidth;
+        const bodyPaddingRight =
+            Number.parseFloat(getComputedStyle(body).paddingRight) || 0;
+
+        previousBodyOverflow = body.style.overflow;
+        previousBodyPaddingRight = body.style.paddingRight;
+        body.style.overflow = 'hidden';
+
+        const removedScrollbarWidth =
+            document.documentElement.clientWidth - viewportWidthBefore;
+
+        if (removedScrollbarWidth > 0) {
+            body.style.paddingRight = `${bodyPaddingRight + removedScrollbarWidth}px`;
+        }
     }
 
     function unlockBodyScroll() {
         if (previousBodyOverflow === null) return;
+
         document.body.style.overflow = previousBodyOverflow;
+        document.body.style.paddingRight = previousBodyPaddingRight ?? '';
         previousBodyOverflow = null;
+        previousBodyPaddingRight = null;
     }
 
     onDestroy(() => {
         sourceImage?.style.removeProperty('view-transition-name');
+        preloadedFullResolution.clear();
         unlockBodyScroll();
     });
 </script>
@@ -261,6 +401,7 @@
     <div
         class:single={normalizedPhotos.length === 1}
         class="slideshow"
+        use:observeViewport
         role="region"
         aria-roledescription="carousel"
         aria-label={label}
@@ -312,48 +453,51 @@
         </div>
 
         {#if normalizedPhotos.length > 1}
-            <button
-                class="slideshow-control previous-control"
-                type="button"
-                aria-label="Show previous photo"
-                disabled={activeIndex === 0}
-                onclick={showPrevious}
-                onkeydown={handleSlideshowKeydown}
-            >
-                <span class="control-icon" aria-hidden="true">
-                    <FaChevronLeft />
-                </span>
-            </button>
-            <button
-                class="slideshow-control next-control"
-                type="button"
-                aria-label="Show next photo"
-                disabled={activeIndex === normalizedPhotos.length - 1}
-                onclick={showNext}
-                onkeydown={handleSlideshowKeydown}
-            >
-                <span class="control-icon" aria-hidden="true">
-                    <FaChevronRight />
-                </span>
-            </button>
+            <div class="slideshow-controls">
+                <button
+                    class="slideshow-control previous-control"
+                    type="button"
+                    aria-label="Show previous photo"
+                    disabled={activeIndex === 0}
+                    onclick={showPrevious}
+                    onkeydown={handleSlideshowKeydown}
+                >
+                    <span class="control-icon" aria-hidden="true">
+                        <FaChevronLeft />
+                    </span>
+                </button>
 
-            <div
-                class="slideshow-pagination"
-                role="group"
-                aria-label="Choose a photo"
-            >
-                {#each normalizedPhotos as photo, index (`page-${photo.src}-${index}`)}
-                    <button
-                        class:active={index === activeIndex}
-                        type="button"
-                        aria-label={`Show photo ${index + 1}`}
-                        aria-current={index === activeIndex
-                            ? 'true'
-                            : undefined}
-                        onclick={() => (activeIndex = index)}
-                        onkeydown={handleSlideshowKeydown}
-                    ></button>
-                {/each}
+                <div
+                    class="slideshow-pagination"
+                    role="group"
+                    aria-label="Choose a photo"
+                >
+                    {#each normalizedPhotos as photo, index (`page-${photo.src}-${index}`)}
+                        <button
+                            class:active={index === activeIndex}
+                            type="button"
+                            aria-label={`Show photo ${index + 1}`}
+                            aria-current={index === activeIndex
+                                ? 'true'
+                                : undefined}
+                            onclick={() => selectPhoto(index)}
+                            onkeydown={handleSlideshowKeydown}
+                        ></button>
+                    {/each}
+                </div>
+
+                <button
+                    class="slideshow-control next-control"
+                    type="button"
+                    aria-label="Show next photo"
+                    disabled={activeIndex === normalizedPhotos.length - 1}
+                    onclick={showNext}
+                    onkeydown={handleSlideshowKeydown}
+                >
+                    <span class="control-icon" aria-hidden="true">
+                        <FaChevronRight />
+                    </span>
+                </button>
             </div>
 
             <div class="sr-only" aria-live="polite" aria-atomic="true">
@@ -389,14 +533,29 @@
                 alt=""
                 aria-hidden="true"
             />
-            <img
-                class:loaded={fullResolutionLoaded}
-                class="expanded-image-full"
-                src={expandedPhoto.src}
-                alt={expandedPhoto.alt}
-                onload={() => (fullResolutionLoaded = true)}
-            />
+            {#if fullResolutionSrc}
+                <img
+                    bind:this={expandedFullImage}
+                    class:loaded={fullResolutionLoaded}
+                    class="expanded-image-full"
+                    src={fullResolutionSrc}
+                    alt={expandedPhoto.alt}
+                />
+            {/if}
         </div>
+        {#if !fullResolutionLoaded && !fullResolutionFailed}
+            <div class="image-lightbox-status" role="status" aria-live="polite">
+                <span class="loading-spinner" aria-hidden="true"></span>
+                <span class="sr-only">Loading full-resolution image</span>
+            </div>
+        {:else if fullResolutionFailed}
+            <div
+                class="image-lightbox-status quality-unavailable"
+                role="status"
+            >
+                Preview only
+            </div>
+        {/if}
         <button
             bind:this={closeButton}
             class="image-lightbox-close"
@@ -424,6 +583,8 @@
 
     .slideshow {
         --slideshow-height: min(70vh, clamp(20rem, 56vw, 42rem));
+        --slideshow-controls-height: 4.5rem;
+        --slideshow-shadow-top-space: 1rem;
 
         position: relative;
         left: 50%;
@@ -435,8 +596,12 @@
 
     .slideshow-viewport {
         position: relative;
-        height: var(--slideshow-height);
+        height: calc(
+            var(--slideshow-height) + var(--slideshow-controls-height) +
+                var(--slideshow-shadow-top-space)
+        );
         overflow: hidden;
+        perspective: 80rem;
         -webkit-mask-image:
             linear-gradient(
                 to right,
@@ -468,22 +633,33 @@
     }
 
     .slide {
+        --slide-rotation: 0deg;
+
         position: absolute;
-        top: 0;
-        bottom: 0;
+        top: var(--slideshow-shadow-top-space);
+        bottom: var(--slideshow-controls-height);
         left: 50%;
         display: grid;
-        width: min(76%, 58rem);
+        width: min(65%, 58rem);
         place-items: center;
         padding-block: 1rem;
         opacity: 0.48;
         transform: translateX(calc(-50% + var(--slide-offset)))
-            scale(var(--slide-scale));
+            rotateY(var(--slide-rotation)) scale(var(--slide-scale));
         transition:
             transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
             opacity 320ms ease,
             filter 320ms ease;
         will-change: transform;
+        backface-visibility: hidden;
+
+        &.previous {
+            --slide-rotation: -16deg;
+        }
+
+        &.next {
+            --slide-rotation: 16deg;
+        }
 
         &.active {
             z-index: 2;
@@ -555,8 +731,16 @@
         object-fit: contain;
         box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 35%);
         opacity: 1;
-        transition: filter 160ms ease;
+        transition:
+            filter 160ms ease,
+            box-shadow 320ms ease;
         user-select: none;
+    }
+
+    .slide.active .slide-image {
+        box-shadow:
+            0 0.65rem 1.5rem rgb(0 0 0 / 42%),
+            0 1.5rem 3.5rem rgb(0 0 0 / 28%);
     }
 
     .slide:not(.active) .image-trigger {
@@ -572,22 +756,21 @@
     }
 
     .slideshow-control {
-        position: absolute;
-        top: 50%;
-        z-index: 3;
         display: grid;
         width: 3rem;
         height: 3rem;
         place-items: center;
-        border: 1px solid rgb(255 255 255 / 18%);
         border-radius: 999px;
-        color: white;
-        background: rgb(20 22 28 / 72%);
+        color: #d4d4d4;
+        background: color-mix(
+            in srgb,
+            rgba(20, 22, 28, 0.72),
+            var(--accent) 10%
+        );
         box-shadow: 0 0.4rem 1.5rem rgb(0 0 0 / 24%);
         font-size: 2.5rem;
         line-height: 1;
         cursor: pointer;
-        transform: translateY(-50%);
         transition:
             background-color 150ms ease,
             transform 150ms ease;
@@ -601,7 +784,7 @@
 
         &:hover {
             background: rgb(51 54 64 / 92%);
-            transform: translateY(-50%) scale(1.05);
+            transform: scale(1.05);
         }
 
         &:focus-visible {
@@ -616,16 +799,22 @@
 
         &:disabled:hover {
             background: rgb(20 22 28 / 72%);
-            transform: translateY(-50%);
+            transform: none;
         }
     }
 
-    .previous-control {
-        left: max(0.75rem, calc(12% - 1.5rem));
-    }
-
-    .next-control {
-        right: max(0.75rem, calc(12% - 1.5rem));
+    .slideshow-controls {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        z-index: 3;
+        display: grid;
+        width: min(32rem, calc(100% - 2rem));
+        height: var(--slideshow-controls-height);
+        grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+        align-items: center;
+        gap: 1rem;
+        transform: translateX(-50%);
     }
 
     .slideshow-pagination {
@@ -634,7 +823,6 @@
         align-items: center;
         justify-content: center;
         gap: 0.55rem;
-        margin-top: 0.5rem;
 
         button {
             width: 0.55rem;
@@ -716,6 +904,47 @@
         }
     }
 
+    .image-lightbox-status {
+        position: fixed;
+        top: max(1rem, env(safe-area-inset-top));
+        left: max(1rem, env(safe-area-inset-left));
+        z-index: 2;
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        place-items: center;
+        border-radius: 999px;
+        color: #d4d4d4;
+        background: color-mix(
+            in srgb,
+            rgba(20, 22, 28, 0.72),
+            var(--accent) 10%
+        );
+        box-shadow: 0 0.4rem 1.5rem rgb(0 0 0 / 24%);
+        pointer-events: none;
+
+        &.quality-unavailable {
+            width: auto;
+            padding-inline: 0.9rem;
+            font-size: 0.75rem;
+        }
+    }
+
+    .loading-spinner {
+        width: 1.15rem;
+        height: 1.15rem;
+        border: 0.15rem solid rgb(212 212 212 / 32%);
+        border-top-color: var(--accent);
+        border-radius: 999px;
+        animation: spin 700ms linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(1turn);
+        }
+    }
+
     .image-lightbox-close {
         position: fixed;
         top: max(1rem, env(safe-area-inset-top));
@@ -725,10 +954,13 @@
         width: 2.75rem;
         height: 2.75rem;
         place-items: center;
-        border: 1px solid rgb(255 255 255 / 22%);
         border-radius: 999px;
-        color: white;
-        background: rgb(20 22 28 / 78%);
+        color: #d4d4d4;
+        background: color-mix(
+            in srgb,
+            rgba(20, 22, 28, 0.72),
+            var(--accent) 10%
+        );
         font-size: 2rem;
         line-height: 1;
         cursor: pointer;
@@ -762,13 +994,22 @@
     @media (max-width: 600px) {
         .slideshow {
             --slideshow-height: min(70vh, clamp(18rem, 95vw, 28rem));
+            --slideshow-controls-height: 4rem;
 
             width: 100vw;
             margin: 1.75rem 0;
         }
 
+        .slide {
+            &.previous {
+                --slide-rotation: -0deg;
+            }
+
+            &.next {
+                --slide-rotation: 0deg;
+            }
+        }
         .slideshow-viewport {
-            height: var(--slideshow-height);
             -webkit-mask-image: none;
             mask-image: none;
         }
@@ -785,24 +1026,16 @@
             width: calc(100% - 2rem);
         }
 
-        .slide:not(.active) {
-            visibility: hidden;
-            opacity: 0;
-            pointer-events: none;
-        }
-
         .slideshow-control {
             width: 2.6rem;
             height: 2.6rem;
             font-size: 2.1rem;
         }
 
-        .previous-control {
-            left: 0.4rem;
-        }
-
-        .next-control {
-            right: 0.4rem;
+        .slideshow-controls {
+            width: min(24rem, calc(100% - 1.5rem));
+            grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
+            gap: 0.75rem;
         }
     }
 
@@ -819,6 +1052,10 @@
         .expanded-image-full,
         .image-lightbox-close {
             transition: none;
+        }
+
+        .loading-spinner {
+            animation: none;
         }
     }
 </style>
