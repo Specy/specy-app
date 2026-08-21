@@ -5,6 +5,9 @@
     tags: ['assembly', 'rust', 'web-dev', 'svelte']
     relatedProjects: ['asm-editor']
 ---
+<script>
+    import Slideshow from "$cmp/blog/Slideshow.svelte";
+</script>
 
 <a href="https://asm-editor.specy.app" style="cursor: pointer;" target="_blank">
 
@@ -22,7 +25,14 @@ It also allows professors and teachers to create their own interactive assembly 
 
 # Features (for learners)
 
-![Asm editor features](/images/blog/asm-editor/asm-editor-features-1.webp)
+<Slideshow
+    photos={[
+        {
+            src: "/images/blog/asm-editor/asm-editor-features-1.webp",
+            alt: "Asm editor features",
+        },
+    ]}
+/>
 
 The IDE has a lot of assembly specific features and learning tools:
 
@@ -31,7 +41,14 @@ The IDE has a lot of assembly specific features and learning tools:
 - (4) **Useful compiler errors**: When writing and compiling code, if there are errors, the compiler/assembler will provide helpful error messages pointing exactly at the problem so that it can be more easily understood.
 - (5) **Share code, settings, documentation**: You can share the project you are working on so that other people can instantly edit and run it on their device. There are also settings that you can change for both the editor and the assemblers for each language, or read the documentation for the language you are working on.
 
-![Asm editor features](/images/blog/asm-editor/asm-editor-features-2.webp)
+<Slideshow
+    photos={[
+        {
+            src: "/images/blog/asm-editor/asm-editor-features-2.webp",
+            alt: "Asm editor features",
+        },
+    ]}
+/>
 
 - (1) **Step, execution, and breakpoints**: You can run the whole code to completion, execute step by step, but most importantly, **Undo**, one of the most important features while learning, which allows you to step back through the execution to more easily figure out what each instruction did at a specific moment. 
 - (2, 4) **Function tracking and recursion tools**: Whenever a function (procedure or subroutine) is called, the function call will be tracked, and the function call frame will be shown in memory to make it easier to debug recursion.

@@ -29,10 +29,11 @@ const config = {
             rehypePlugins: [
                 rehypeSlug,
                 [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-                rehypeExternalLinks, {
+                rehypeExternalLinks,
+                {
                     target: '_blank',
                     rel: ['noopener', 'noreferrer'],
-                }
+                },
             ],
             layout: {
                 _: path_to_layout,

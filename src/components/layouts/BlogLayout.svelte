@@ -4,8 +4,14 @@
     import { desktopProjects, projects } from '$lib/Projects';
     import Project from '$cmp/Project.svelte';
 
-    let { children, datePublished, title, description, tags, relatedProjects } =
-        $props<PostMetadata & { children: any }>();
+    let {
+        children,
+        datePublished,
+        title,
+        description,
+        tags,
+        relatedProjects = [],
+    } = $props<PostMetadata & { children: any }>();
 
     let relatedProjectsData = $derived(
         relatedProjects.map(getRelatedProject).filter(Boolean),
@@ -96,7 +102,7 @@
 
         --paragraph-font: 'Noto Serif';
         --paragraph-weight: 500;
-        --heading-font: 'Rubik'
+        --heading-font: 'Rubik';
         --heading-weight: 800;
         --code-font: 'Fira Code';
     }
@@ -181,13 +187,15 @@
             text-decoration: unset;
         }
 
-        :global(img) {
+        > :global(p) > :global(img),
+        > :global(a) > :global(p) > :global(img) {
             width: 100%;
             max-width: 40rem;
             display: block;
             margin: 0 auto;
             border-radius: 0.5rem;
         }
+
         :global(hr) {
             border: none;
             height: 2px;

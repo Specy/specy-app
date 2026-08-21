@@ -3,6 +3,7 @@ node_modules
 /build
 /.svelte-kit
 /package
+/static/generated/markdown-images
 .env
 .env.*
 !.env.example
