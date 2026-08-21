@@ -14,7 +14,7 @@
 
 Before diving deeper, imagine if there was a way to forget about algorithms, forget thinking "how should i solve this", but instead, the only thing you need to worry about is "what are my requirements?", "what is my goal?".
 
-Imagine all you had to do was write those things down, click a button, and have a magic algorithm automatically find the best solution.
+Imagine all you had to do was write those things down, click a button, and have <AnimatedText kind="shimmer" text="a magic algorithm" trigger="once" style="font: inherit" /> automatically find the best solution.
 
 This is what Operational Research, and more specifically, optimization modeling does. You write your requirements, write your goal, and the algorithm under the hood finds the best set of values that give you the best result, while still adhering to your requirements.
 

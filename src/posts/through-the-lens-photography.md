@@ -61,7 +61,7 @@ Obviously, holding the phone precisely aligned to the back of the viewfinder is 
 
 I first started with some Kapton tape just to see if it was doable, then decided to create a 3D printed fixture to hold the phone in the right place and add some masking to prevent light leakage.
 
-The first 3D printed prototype was not very precise. I had to glue things together and the alignment was not the best, you can see it in the photos, but the ~~second, third, fourth~~ fifth attempt was much better!
+The first 3D printed prototype was not very precise. I had to glue things together and the alignment was not the best, you can see it in the photos, but the <AnimatedText kind="strike" text="second, third, fourth" trigger="loop" repeatDelay={2.5} style="font: inherit" /> fifth attempt was much better!
 
 <Slideshow
     photos={[
@@ -109,7 +109,7 @@ As you can see, they are a bit crooked because of alignment issues with the prot
 
 Oh right, we cannot forget the *whole* reason why I made this: to photograph the eclipse.
 
-After months of 0% cloud and full unbearable sunlight, **THE DAY** I needed it to be sunny was completely cloudy. I did not manage to take photos using the filter, but I managed to take some photos of the eclipse without it. I also tried to just take a random photo of the whole sun, and of the moon the day after the eclipse.
+After months of 0% cloud and full unbearable sunlight, <AnimatedText kind="shake" text="THE DAY" trigger="loop" repeatDelay={2} style="font: inherit; font-weight: bold" /> I needed it to be sunny was completely cloudy. I did not manage to take photos using the filter, but I managed to take some photos of the eclipse without it. I also tried to just take a random photo of the whole sun, and of the moon the day after the eclipse.
 
 <Slideshow
     photos={[

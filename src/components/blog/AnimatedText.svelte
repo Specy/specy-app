@@ -47,6 +47,8 @@
         charset?: ScrambleCharset;
         style?: string;
         animationDuration?: number;
+        delay?: number;
+        repeatDelay?: number;
         letterDelay?: number;
         rotateInterval?: number;
         verticalDistance?: number;
@@ -63,6 +65,13 @@
 
     /** kinds rendered as a single gradient-filled span */
     const GRADIENT_KINDS = new Set<TextAnimationKind>(['rainbow', 'shimmer']);
+    /** loop keyframes that run `alternate`, so they only rest on even iterations */
+    const ALTERNATING_KINDS = new Set<TextAnimationKind>([
+        'wave',
+        'float',
+        'blur-in',
+        'rainbow',
+    ]);
     /** kinds animated as one block rather than per letter or word */
     const WHOLE_TEXT_KINDS = new Set<TextAnimationKind>([
         'highlight',
@@ -82,6 +91,8 @@
         charset = 'alnum',
         style = '',
         animationDuration,
+        delay,
+        repeatDelay = 0,
         letterDelay = 0.1,
         rotateInterval = 2.4,
         verticalDistance = 5,
@@ -94,6 +105,7 @@
     let isHovered = $state(false);
     let prefersReducedMotion = $state(false);
     let rotationIndex = $state(0);
+    let isResting = $state(false);
     let scrollProgress = $state(0);
     let scrambledText = $state<string | null>(null);
 
@@ -112,6 +124,12 @@
     let resolvedAnimationDuration = $derived(
         animationDuration ?? getDefaultDuration(kind, trigger),
     );
+    // entering the frame and animating at the same instant reads as a glitch,
+    // so anything that fires on scroll waits a beat by default
+    let resolvedDelay = $derived(
+        delay ?? (trigger === 'viewport' || trigger === 'once' ? 0.5 : 0),
+    );
+    let usesRepeatDelay = $derived(trigger === 'loop' && repeatDelay > 0);
     let animationIsActive = $derived(
         !prefersReducedMotion &&
             (trigger === 'loop' ||
@@ -121,7 +139,7 @@
                 (trigger === 'hover' && isHovered)),
     );
     let sharedVariables = $derived(
-        `--animation-duration: ${resolvedAnimationDuration}s; --animation-delay: 0s; --stagger-index: 0;`,
+        `--animation-duration: ${resolvedAnimationDuration}s; --animation-delay: ${resolvedDelay}s; --stagger-index: 0;`,
     );
     let ariaLabel = $derived(texts?.length ? texts.join(', ') : (text ?? ''));
 
@@ -157,6 +175,50 @@
         );
 
         return () => clearInterval(timer);
+    });
+
+    /**
+     * `repeatDelay` cannot be expressed in CSS, since an infinite animation has
+     * no gap between iterations. Instead the animation is paused once it lands
+     * back on its starting frame, held there, and released again.
+     */
+    $effect(() => {
+        if (!usesRepeatDelay || prefersReducedMotion) {
+            isResting = false;
+            return;
+        }
+
+        const iterations = ALTERNATING_KINDS.has(kind) ? 2 : 1;
+        const longestStagger =
+            Math.max(0, baseSegments.length - 1) * letterDelay;
+        const playMs = Math.max(
+            120,
+            (resolvedDelay +
+                longestStagger +
+                iterations * resolvedAnimationDuration) *
+                1000,
+        );
+        const restMs = Math.max(60, repeatDelay * 1000);
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        let cancelled = false;
+
+        const play = () => {
+            if (cancelled) return;
+            isResting = false;
+            timer = setTimeout(() => {
+                if (cancelled) return;
+                isResting = true;
+                timer = setTimeout(play, restMs);
+            }, playMs);
+        };
+
+        play();
+
+        return () => {
+            cancelled = true;
+            if (timer) clearTimeout(timer);
+            isResting = false;
+        };
     });
 
     /** progress of the element through the viewport, for `trigger="scroll"` */
@@ -245,7 +307,7 @@
             timer = setTimeout(() => runFrame(frame + 1), frameDuration);
         };
 
-        runFrame(0);
+        timer = setTimeout(() => runFrame(0), resolvedDelay * 1000);
 
         return () => {
             cancelled = true;
@@ -327,8 +389,10 @@
 
     function segmentVariables(index: number) {
         const offset = staggerOffsets[index] ?? index;
-        const delay = Number((offset * letterDelay).toFixed(4));
-        return `--animation-duration: ${resolvedAnimationDuration}s; --animation-delay: ${delay}s; --stagger-index: ${offset}; --wave-vertical: ${verticalDistance}px; --wave-skew: ${skewAngle}deg;`;
+        const staggered = Number(
+            (resolvedDelay + offset * letterDelay).toFixed(4),
+        );
+        return `--animation-duration: ${resolvedAnimationDuration}s; --animation-delay: ${staggered}s; --stagger-index: ${offset}; --wave-vertical: ${verticalDistance}px; --wave-skew: ${skewAngle}deg;`;
     }
 
     function getDefaultDuration(
@@ -386,7 +450,7 @@
             },
             trigger === 'scroll'
                 ? { threshold: 0, rootMargin: '30% 0px 30% 0px' }
-                : { threshold: 0.15 },
+                : { threshold: 0, rootMargin: '-10% 0px -10% 0px' },
         );
         observer.observe(node);
 
@@ -418,6 +482,7 @@
 <span
     class:active={animationIsActive}
     class:loop={trigger === 'loop'}
+    class:resting={isResting}
     class="container"
     data-trigger={trigger}
     data-entrance={isEntranceTrigger}
@@ -532,12 +597,13 @@
     }
 
     .active.loop .rainbow {
-        animation: rainbow-shift var(--animation-duration) ease-in-out infinite
-            alternate;
+        animation: rainbow-shift var(--animation-duration) ease-in-out
+            var(--animation-delay) infinite alternate;
     }
 
     .active:not(.loop) .rainbow {
-        animation: rainbow-shift var(--animation-duration) ease-in-out both;
+        animation: rainbow-shift var(--animation-duration) ease-in-out
+            var(--animation-delay) both;
     }
 
     /* --------------------------------------------------------------- shimmer */
@@ -559,11 +625,13 @@
     }
 
     .active.loop .shimmer {
-        animation: shimmer-sweep var(--animation-duration) linear infinite;
+        animation: shimmer-sweep var(--animation-duration) linear
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .shimmer {
-        animation: shimmer-sweep var(--animation-duration) ease-out both;
+        animation: shimmer-sweep var(--animation-duration) ease-out
+            var(--animation-delay) both;
     }
 
     /* -------------------------------------------------------------- scramble */
@@ -626,18 +694,21 @@
     .active .glitch {
         animation-name: glitch-main;
         animation-duration: var(--animation-duration);
+        animation-delay: var(--animation-delay);
         animation-timing-function: steps(1, end);
     }
 
     .active .glitch::before {
         animation-name: glitch-before;
         animation-duration: var(--animation-duration);
+        animation-delay: var(--animation-delay);
         animation-timing-function: steps(1, end);
     }
 
     .active .glitch::after {
         animation-name: glitch-after;
         animation-duration: var(--animation-duration);
+        animation-delay: var(--animation-delay);
         animation-timing-function: steps(1, end);
     }
 
@@ -722,12 +793,13 @@
     }
 
     .active.loop .strike::after {
-        animation: strike-loop var(--animation-duration) ease-in-out infinite;
+        animation: strike-loop var(--animation-duration) ease-in-out
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .strike::after {
         animation: strike-draw var(--animation-duration)
-            cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            cubic-bezier(0.2, 0.8, 0.2, 1) var(--animation-delay) both;
     }
 
     /* ------------------------------------------------------------- highlight */
@@ -756,12 +828,13 @@
     }
 
     .active.loop .highlight::before {
-        animation: highlight-loop var(--animation-duration) ease-in-out infinite;
+        animation: highlight-loop var(--animation-duration) ease-in-out
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .highlight::before {
         animation: highlight-swipe var(--animation-duration)
-            cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            cubic-bezier(0.2, 0.8, 0.2, 1) var(--animation-delay) both;
     }
 
     /* -------------------------------------------------------- underline-draw */
@@ -788,12 +861,13 @@
     }
 
     .active.loop .underline-draw::after {
-        animation: underline-loop var(--animation-duration) ease-in-out infinite;
+        animation: underline-loop var(--animation-duration) ease-in-out
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .underline-draw::after {
         animation: underline-draw var(--animation-duration)
-            cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            cubic-bezier(0.2, 0.8, 0.2, 1) var(--animation-delay) both;
     }
 
     /* -------------------------------------------------------------- squiggle */
@@ -826,21 +900,25 @@
     }
 
     .active.loop .squiggle::after {
-        animation: squiggle-crawl var(--animation-duration) linear infinite;
+        animation: squiggle-crawl var(--animation-duration) linear
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .squiggle::after {
-        animation: squiggle-draw var(--animation-duration) ease-out both;
+        animation: squiggle-draw var(--animation-duration) ease-out
+            var(--animation-delay) both;
     }
 
     /* ----------------------------------------------------------------- shake */
 
     .active.loop .shake {
-        animation: shake-loop var(--animation-duration) ease-in-out infinite;
+        animation: shake-loop var(--animation-duration) ease-in-out
+            var(--animation-delay) infinite;
     }
 
     .active:not(.loop) .shake {
-        animation: shake-once var(--animation-duration) ease-in-out both;
+        animation: shake-once var(--animation-duration) ease-in-out
+            var(--animation-delay) both;
     }
 
     /* ------------------------------------------------------------------ drop */
@@ -1349,6 +1427,15 @@
                 0 0 0.35em currentcolor,
                 0 0 0.9em currentcolor;
         }
+    }
+
+    /* holds the animation on its starting frame for `repeatDelay` seconds,
+       rather than resetting it, so nothing snaps between cycles */
+    .container.resting .letter,
+    .container.resting .animated-text,
+    .container.resting .animated-text::before,
+    .container.resting .animated-text::after {
+        animation-play-state: paused;
     }
 
     /* --------------------------------------------- scroll-linked scrubbing */

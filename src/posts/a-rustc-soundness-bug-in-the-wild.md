@@ -23,7 +23,7 @@ After many failed attempts at compiling for wasm, searching through the whole cr
 
 But wait... _"The project was archived 2 years ago, last commit 4 years ago"_, oh well, I heard that rust is a stable language, so it should be fine, right?
 
-<AnimatedText kind="wave" text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="shake" text="Right??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Implementation
 After discovering the library I immediately added it as a solver to rooc, which was as easy as [adding an adapter](https://github.com/Specy/rooc/blob/main/src/solvers/milp_solver.rs#L66)
@@ -79,7 +79,7 @@ running 19 tests
 test result: ok. 19 passed; 0 failed; 0 measured; 0 filtered out; finished in 0.03s
 ```
 What??? The test passed? 
-<AnimatedText kind="wave" text="How??" style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="shake" text="How??" style="font-size: 1.3rem; margin: -1rem 0" />
 
 I just had this panic on me a *few seconds ago*?
 
@@ -173,7 +173,7 @@ Which... still panics? *Ok, ok, ok*, let's recap:
 - There is no unsafe code anywhere in the library
 - Miri does not report any issues
 - There are no dependencies which might cause issues
-- There is only 100% plain safe rust code
+- There is only <AnimatedText kind="squiggle" text="100% plain safe rust code" trigger="once" style="font: inherit" />
 
 So how can it be panicking? Isn't the whole purpose of rust to not have this kind of issues if you are not using unsafe code?
 
@@ -218,7 +218,7 @@ fn pop_min(mut score2head: Vec<Option<usize>>) -> Option<usize> {
     }
 }
 ```
-which turns out to have been an unsound mir optimization in the rustc compiler, affecting rust beta 1.83.0 and nightly 1.84.0. 
+which turns out to have been <AnimatedText kind="glitch" text="an unsound mir optimization" trigger="loop" repeatDelay={3} style="font: inherit" /> in the rustc compiler, affecting rust beta 1.83.0 and nightly 1.84.0. 
 The issue was given a `P-critical` priority, the bugged code fixed in a few days, and released a week later.
 
 # Conclusion

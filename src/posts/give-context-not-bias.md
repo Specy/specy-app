@@ -5,6 +5,9 @@
     tags: ['AI']
     relatedProjects: ["discerns"]
 ---
+<script>
+    import AnimatedText from "$cmp/blog/AnimatedText.svelte";
+</script>
 
 # Context bias is all that matters
 
@@ -71,7 +74,7 @@ You are trying to ask an LLM to follow a set of instructions that it needs to fo
 You think "I don't want it to do this, let me try to tell the LLM to avoid it", which yes, might work sometimes, but this inevitably gives bias to the model, which at some point might hallucinate and do *exactly* the opposite of what you told it not to do.
 
 
-# Give context, not bias
+# Give context, not <AnimatedText kind="strike" text="bias" trigger="once" style="font: inherit" />
 
 Here are some general rules when trying to solve tasks with an LLM:
 

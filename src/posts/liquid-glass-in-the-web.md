@@ -113,7 +113,7 @@ We don't have access to the paint layer, nor in CSS or in JS, we cannot write a 
 
 *If only we could have access to the paint layer...*
 
-<AnimatedText kind="wave" text="Perhaps..." style="font-size: 1.3rem; margin: -1rem 0" />
+<AnimatedText kind="shimmer" text="Perhaps..." style="font-size: 1.3rem; margin: -1rem 0" />
 
 # A huge trick
 

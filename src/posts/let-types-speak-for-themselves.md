@@ -32,7 +32,7 @@ I considered many languages, each of them with very different approaches to prog
 After thinking about it for a few days, I decided to go with Rust to code [an assembly interpreter](https://github.com/Specy/s68k) for my [assembly editor app](https://asm-editor.specy.app/) since I really liked the idea of the [match](https://doc.rust-lang.org/rust-by-example/flow_control/match.html) statement and the strictness of the language.
 
 
-# Rust types ✨flow✨
+# Rust types ✨<AnimatedText kind="shimmer" text="flow" trigger="loop" repeatDelay={2.5} style="font: inherit" />✨
 
 One thing that I really liked about Rust is its type inference.
 

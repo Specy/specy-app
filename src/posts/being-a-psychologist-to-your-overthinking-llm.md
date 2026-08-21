@@ -217,7 +217,9 @@ It always seems to want to think of something, even if it doesn't really need to
 
 If overthinking is such an issue, what could I do to fix it? 
 
-Very simple, numb it down.
+Very simple.
+
+<AnimatedText kind="blur-in" text="Numb it down." animationDuration={4.5} style="font-size: 1.3rem; margin: -1rem 0" />
 
 # Reasoning is not always better
 
