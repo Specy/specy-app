@@ -2,6 +2,7 @@
     import './prism-one-dark.css';
     import type { PostMetadata } from '$lib/post';
     import { desktopProjects, projects } from '$lib/Projects';
+    import { resolveImagePreviewUrl } from '$lib/imagePreviews.js';
     import Project from '$cmp/Project.svelte';
 
     let {
@@ -10,8 +11,13 @@
         title,
         description,
         tags,
+        image,
         relatedProjects = [],
     } = $props<PostMetadata & { children: any }>();
+
+    let heroImage = $derived(resolveImagePreviewUrl(image));
+    let articleElement = $state<HTMLElement | null>(null);
+    let postElement = $state<HTMLElement | null>(null);
 
     let relatedProjectsData = $derived(
         relatedProjects.map(getRelatedProject).filter(Boolean),
@@ -24,6 +30,50 @@
             year: 'numeric',
         }).format(new Date(datePublished)),
     );
+
+    /** Distance between the top of the document and an element, ignoring transforms */
+    function documentOffsetTop(element: HTMLElement) {
+        let offset = 0;
+        let current: HTMLElement | null = element;
+        while (current) {
+            offset += current.offsetTop;
+            current = current.offsetParent as HTMLElement | null;
+        }
+        return offset;
+    }
+
+    // The hero spans from the very top of the page (behind the navbar) down to
+    // where the post itself starts, so both edges have to be measured.
+    $effect(() => {
+        const article = articleElement;
+        const post = postElement;
+        if (!heroImage || !article || !post) return;
+
+        function measure() {
+            article!.style.setProperty(
+                '--hero-top',
+                `${documentOffsetTop(article!)}px`,
+            );
+            article!.style.setProperty(
+                '--hero-height',
+                `${documentOffsetTop(post!)}px`,
+            );
+            // Custom property rather than a class/attribute: Svelte prunes
+            // selectors it cannot see being used in the markup.
+            article!.style.setProperty('--hero-fade', '0.4');
+        }
+
+        measure();
+        const observer = new ResizeObserver(measure);
+        observer.observe(article);
+        observer.observe(document.body);
+        window.addEventListener('resize', measure);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('resize', measure);
+        };
+    });
 
     function getRelatedProject(id: string) {
         return (
@@ -89,7 +139,18 @@
     }
 </script>
 
-<article class="content-wrapper">
+<article
+    class="content-wrapper"
+    class:has-hero={!!heroImage}
+    bind:this={articleElement}
+>
+    {#if heroImage}
+        <div
+            class="post-hero"
+            style={`--hero-image: url('${heroImage}')`}
+            aria-hidden="true"
+        ></div>
+    {/if}
     <div class="content">
         <div class="post-introduction">
             <header
@@ -116,7 +177,11 @@
             {/if}
         </div>
 
-        <section class="md-content" use:animateSidetracks>
+        <section
+            class="md-content"
+            bind:this={postElement}
+            use:animateSidetracks
+        >
             {@render children?.()}
         </section>
     </div>
@@ -161,6 +226,33 @@
         --heading-font: 'Rubik';
         --heading-weight: 800;
         --code-font: 'Fira Code';
+    }
+
+    /* Anchors the hero, which is pulled up to the top of the page */
+    .content-wrapper.has-hero {
+        position: relative;
+    }
+
+    .post-hero {
+        position: absolute;
+        top: calc(-1 * var(--hero-top, 0px));
+        left: 0;
+        right: 0;
+        height: var(--hero-height, 0px);
+        z-index: -1;
+        pointer-events: none;
+        background-image: var(--hero-image);
+        background-size: cover;
+        background-position: center;
+        /* Only faded in once measured, so it does not pop in on hydration */
+        opacity: calc(0.8 * var(--hero-fade, 0));
+        transition: opacity 0.5s ease;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            #000 0%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
     }
 
     .content {

@@ -42,4 +42,16 @@ export function getImagePreviewUrl(source) {
     return `${PREVIEW_URL_PREFIX}${relativePath}.webp`;
 }
 
+/**
+ * Same as `getImagePreviewUrl`, but falls back to the original URL when no
+ * preview is generated for it (external images, unsupported extensions, ...).
+ *
+ * @param {string | undefined | null} source
+ * @returns {string | null}
+ */
+export function resolveImagePreviewUrl(source) {
+    if (!source) return null;
+    return getImagePreviewUrl(source) ?? source;
+}
+
 export { SUPPORTED_EXTENSIONS };
