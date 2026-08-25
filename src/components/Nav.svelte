@@ -44,7 +44,7 @@
         -->
     </div>
 
-    <div class="mobile-menu html2canvas-ignore">
+    <div class="mobile-menu html2canvas-ignore" class:menuOpen>
         <div class="mobile-row">
             <Logo logoToggled={menuOpen} />
             <div class="top-mobile-menu">
@@ -153,17 +153,21 @@
 
     .mobile-menu {
         padding-bottom: 0;
+        color: var(--primary-text);
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        transition: all 0.2s ease-out;
+    }
+
+    /* Backdrop only while open, so the page shows through an idle navbar */
+    .mobile-menu.menuOpen {
         background: linear-gradient(
             180deg,
             rgba(var(--RGB-background), 1) 0%,
             rgba(var(--RGB-background), 0.7) 100%
         );
         box-shadow: 0 0 1rem 1.5rem rgba(var(--RGB-background), 0.7);
-        color: var(--primary-text);
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        transition: all 0.2s ease-out;
     }
 
     .top-mobile-menu {
@@ -225,7 +229,7 @@
         }
     }
 
-    .menuOpen {
+    .links-mobile.menuOpen {
         opacity: 1;
         border-bottom: solid 2px var(--accent);
         height: 10rem;
@@ -241,6 +245,9 @@
         margin-top: 2rem;
         margin-bottom: 0;
         display: flex;
+        /* Needed for the z-index below to apply, so the nav stays above the
+           post hero image and the positioned post content */
+        position: relative;
         z-index: 10;
         justify-content: space-between;
         align-items: center;

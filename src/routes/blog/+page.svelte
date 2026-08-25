@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { resolveImagePreviewUrl } from '$lib/imagePreviews.js';
+
     let { data } = $props<{
         data: import('./$types').PageData;
     }>();
@@ -16,7 +18,12 @@
         <h1 class="main-title">Specy's Blog</h1>
         <div style="display: flex; flex-direction: column; gap: 1.5rem">
             {#each data.posts as post}
-                <a class="blog-post" href={post.url}>
+                {@const preview = resolveImagePreviewUrl(post.image)}
+                <a
+                    class="blog-post"
+                    href={post.url}
+                    style={preview ? `--post-preview: url('${preview}')` : ''}
+                >
                     <h1 class="blog-post-title">
                         {post.title}
                     </h1>
@@ -62,6 +69,8 @@
     }
 
     .blog-post {
+        position: relative;
+        isolation: isolate;
         background-color: rgba(31, 36, 43, 0.5);
         box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
         display: flex;
@@ -70,6 +79,27 @@
         transition: all 0.2s;
         border-radius: 0.8rem;
     }
+
+    /* Optional post image, fading from 80% at the top to 0% at the bottom */
+    .blog-post::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        pointer-events: none;
+        background-image: var(--post-preview);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.2;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            #000 0%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+    }
+
     .blog-post:hover {
         background-color: rgba(31, 36, 43, 0.7);
         transform: translateY(-0.1rem);
