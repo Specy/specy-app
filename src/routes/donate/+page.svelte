@@ -1,14 +1,12 @@
 <script lang="ts">
     import Support from '$cmp/Support.svelte';
+    import Seo from '$cmp/Seo.svelte';
 </script>
 
-<svelte:head>
-    <title>Donate</title>
-    <meta
-        name="description"
-        content="Help the funding of the development of my apps"
-    />
-</svelte:head>
+<Seo
+    title="Donate"
+    description="Help the funding of the development of my apps"
+/>
 
 <div class="center">
     <div class="support-wrapper">
