@@ -2,19 +2,14 @@
     import Main from '$cmp/MainContent.svelte';
     import Support from '$cmp/Support.svelte';
     import Contact from '$cmp/Contact.svelte';
+    import Seo from '$cmp/Seo.svelte';
 </script>
 
-<svelte:head>
-    <title>Specy Hub</title>
-    <meta
-        name="description"
-        content="Specy.app, the hub of all apps developed by specy"
-    />
-    <meta
-        name="keywords"
-        content="specy, specy.app, specy dev, specy hub, specy apps, specy projects, sky music nightly, sky music, genshin music, genshin music nightly, genshin impact, sky children of the light, sky music github, genshin music github"
-    />
-</svelte:head>
+<Seo
+    title="Specy Hub"
+    description="Specy.app, the hub of all apps developed by specy"
+    keywords="specy, specy.app, specy dev, specy hub, specy apps, specy projects, sky music nightly, sky music, genshin music, genshin music nightly, genshin impact, sky children of the light, sky music github, genshin music github"
+/>
 
 <Main />
 <Support style="margin-top:6rem;" />

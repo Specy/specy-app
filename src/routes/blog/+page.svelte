@@ -1,17 +1,13 @@
 <script lang="ts">
     import { resolveImagePreviewUrl } from '$lib/imagePreviews.js';
+    import Seo from '$cmp/Seo.svelte';
 
     let { data } = $props<{
         data: import('./$types').PageData;
     }>();
 </script>
 
-<svelte:head>
-    <title>Specy's Blog</title>
-    <meta name="description" content="Specy's Blog" />
-    <meta property="og:title" content="Specy's Blog" />
-    <meta property="og:description" content="Specy's Blog" />
-</svelte:head>
+<Seo title="Specy's Blog" description="Specy's Blog" />
 
 <div class="content-wrapper">
     <div class="content">

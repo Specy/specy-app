@@ -1,5 +1,8 @@
 <script>
+    import Seo from '$cmp/Seo.svelte';
 </script>
+
+<Seo title="Page not found" description="This page does not exist" />
 
 <div class="page">
     <div class="center-wrapper">
