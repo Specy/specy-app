@@ -38,6 +38,11 @@
     };
 
     const IMAGE_TRANSITION_NAME = 'slideshow-expanded-image';
+    const PHOTO_SWAP_DURATION = 280;
+    /** How far a photo travels on its way in or out, as a share of its width */
+    const PHOTO_SWAP_DISTANCE = 14;
+    const PHOTO_SWAP_SCALE = 0.94;
+    const PHOTO_SWAP_EASING = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
 
     let { photos, label = 'Photo slideshow' }: Props = $props();
 
@@ -48,6 +53,15 @@
     let fullResolutionFailed = $state(false);
     let expandedFullImage = $state<HTMLImageElement>();
     let closeButton = $state<HTMLButtonElement>();
+    let lightboxElement = $state<HTMLElement>();
+    let slideTriggers = $state<(HTMLButtonElement | undefined)[]>([]);
+    // The photo being animated out sticks around next to the new one so the
+    // two can cross over each other.
+    let outgoingPhoto = $state<NormalizedPhoto | null>(null);
+    let currentImageElement = $state<HTMLElement>();
+    let outgoingImageElement = $state<HTMLImageElement>();
+    let photoSwapAnimations: Animation[] = [];
+    let outgoingPhotoCleanup: ReturnType<typeof setTimeout> | null = null;
     let sourceTrigger: HTMLButtonElement | null = null;
     let sourceImage: HTMLImageElement | null = null;
     let transitionInProgress = false;
@@ -82,11 +96,24 @@
         if (activeIndex >= normalizedPhotos.length) activeIndex = 0;
     });
 
+    let canShowPrevious = $derived(activeIndex > 0);
+    let canShowNext = $derived(activeIndex < normalizedPhotos.length - 1);
+
     $effect(() => {
-        if (!slideshowInViewport) return;
+        if (!slideshowInViewport && !expandedPhoto) return;
 
         const selectedPhoto = normalizedPhotos[activeIndex];
         if (selectedPhoto) preloadFullResolution(selectedPhoto.src);
+
+        // Stepping through the lightbox should land on a sharp image right
+        // away, but never at the expense of the one being looked at.
+        if (!expandedPhoto) return;
+        for (const neighbour of [
+            normalizedPhotos[activeIndex - 1],
+            normalizedPhotos[activeIndex + 1],
+        ]) {
+            if (neighbour) preloadFullResolution(neighbour.src, 'low');
+        }
     });
 
     function getRelativeOffset(index: number) {
@@ -95,9 +122,90 @@
 
     function selectPhoto(index: number) {
         const photo = normalizedPhotos[index];
-        if (!photo) return;
+        if (!photo || index === activeIndex) return;
 
+        const direction = index > activeIndex ? 1 : -1;
         activeIndex = index;
+        if (expandedPhoto) void showExpanded(photo, direction);
+    }
+
+    /**
+     * Swaps the photo the lightbox shows. The slideshow underneath moves along
+     * with it, so closing animates back into whichever slide is now active.
+     */
+    async function showExpanded(photo: NormalizedPhoto, direction: 1 | -1) {
+        const previousPhoto = expandedPhoto;
+        const fullResolutionIsReady = resetFullResolution(photo);
+
+        expandedPhoto = photo;
+        sourceTrigger = slideTriggers[activeIndex] ?? sourceTrigger;
+        sourceImage = sourceTrigger?.querySelector('.slide-image') ?? null;
+
+        if (!fullResolutionIsReady) void revealFullResolution(photo);
+        if (!previousPhoto || prefersReducedMotion()) return;
+
+        outgoingPhoto = previousPhoto;
+        await tick();
+        animatePhotoSwap(direction);
+    }
+
+    /** Sends the old photo off one way and brings the new one in from the other */
+    function animatePhotoSwap(direction: 1 | -1) {
+        cancelPhotoSwap();
+
+        const away = `translateX(${-direction * PHOTO_SWAP_DISTANCE}%) scale(${PHOTO_SWAP_SCALE})`;
+        const towards = `translateX(${direction * PHOTO_SWAP_DISTANCE}%) scale(${PHOTO_SWAP_SCALE})`;
+        const settled = 'translateX(0%) scale(1)';
+        const timing = {
+            duration: PHOTO_SWAP_DURATION,
+            easing: PHOTO_SWAP_EASING,
+        };
+
+        photoSwapAnimations = [
+            outgoingImageElement?.animate(
+                [
+                    { opacity: 1, transform: settled },
+                    { opacity: 0, transform: away },
+                ],
+                { ...timing, fill: 'forwards' },
+            ),
+            currentImageElement?.animate(
+                [
+                    { opacity: 0, transform: towards },
+                    { opacity: 1, transform: settled },
+                ],
+                { ...timing, fill: 'backwards' },
+            ),
+        ].filter(
+            (animation): animation is Animation => animation !== undefined,
+        );
+
+        outgoingPhotoCleanup = setTimeout(() => {
+            outgoingPhoto = null;
+            outgoingPhotoCleanup = null;
+        }, PHOTO_SWAP_DURATION);
+    }
+
+    function cancelPhotoSwap() {
+        if (outgoingPhotoCleanup !== null) clearTimeout(outgoingPhotoCleanup);
+        outgoingPhotoCleanup = null;
+        for (const animation of photoSwapAnimations) animation.cancel();
+        photoSwapAnimations = [];
+    }
+
+    function prefersReducedMotion() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    /** Points the lightbox at a photo's full resolution, reporting if it is already decoded */
+    function resetFullResolution(photo: NormalizedPhoto) {
+        const preloadedImage = preloadedFullResolution.get(photo.src);
+        const fullResolutionIsReady = preloadedImage?.status === 'loaded';
+
+        fullResolutionSrc = fullResolutionIsReady ? photo.src : null;
+        fullResolutionLoaded = fullResolutionIsReady;
+        fullResolutionFailed = false;
+        return fullResolutionIsReady;
     }
 
     function showPrevious() {
@@ -216,25 +324,48 @@
         if (event.key === 'Escape') {
             event.preventDefault();
             void closeImage();
+        } else if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            showPrevious();
+        } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            showNext();
         } else if (event.key === 'Tab') {
             event.preventDefault();
-            closeButton?.focus({ preventScroll: true });
+            focusLightboxControl(event.shiftKey ? -1 : 1);
         }
+    }
+
+    /** Keeps Tab inside the dialog, cycling over whichever controls are enabled */
+    function focusLightboxControl(direction: 1 | -1) {
+        const controls = Array.from(
+            lightboxElement?.querySelectorAll<HTMLButtonElement>(
+                'button:not([disabled]):not([tabindex="-1"])',
+            ) ?? [],
+        );
+        if (controls.length === 0) return;
+
+        const current = controls.indexOf(
+            document.activeElement as HTMLButtonElement,
+        );
+        const next =
+            current === -1
+                ? 0
+                : (current + direction + controls.length) % controls.length;
+        controls[next]?.focus({ preventScroll: true });
     }
 
     async function openImage(index: number, trigger: HTMLButtonElement) {
         const photo = normalizedPhotos[index];
         if (!photo || expandedPhoto || transitionInProgress) return;
 
-        const preloadedImage = preloadedFullResolution.get(photo.src);
-        const fullResolutionIsReady = preloadedImage?.status === 'loaded';
+        const fullResolutionIsReady = resetFullResolution(photo);
 
         transitionInProgress = true;
+        cancelPhotoSwap();
+        outgoingPhoto = null;
         sourceTrigger = trigger;
         sourceImage = trigger.querySelector('.slide-image');
-        fullResolutionSrc = fullResolutionIsReady ? photo.src : null;
-        fullResolutionLoaded = fullResolutionIsReady;
-        fullResolutionFailed = false;
         sourceImage?.style.setProperty(
             'view-transition-name',
             IMAGE_TRANSITION_NAME,
@@ -252,7 +383,10 @@
         transitionInProgress = false;
     }
 
-    function preloadFullResolution(src: string) {
+    function preloadFullResolution(
+        src: string,
+        fetchPriority: 'high' | 'low' = 'high',
+    ) {
         const existing = preloadedFullResolution.get(src);
         if (existing) return existing;
 
@@ -264,7 +398,7 @@
         };
 
         image.decoding = 'async';
-        image.fetchPriority = 'high';
+        image.fetchPriority = fetchPriority;
         image.src = src;
         entry.promise = image.decode().then(
             () => {
@@ -320,7 +454,10 @@
         const trigger = sourceTrigger;
         const image = sourceImage;
 
+        cancelPhotoSwap();
+
         await runImageTransition(async () => {
+            outgoingPhoto = null;
             expandedPhoto = null;
             fullResolutionSrc = null;
             fullResolutionLoaded = false;
@@ -342,11 +479,8 @@
 
     async function runImageTransition(update: () => void | Promise<void>) {
         const transitionDocument = document as ViewTransitionDocument;
-        const reducedMotion = window.matchMedia(
-            '(prefers-reduced-motion: reduce)',
-        ).matches;
 
-        if (!transitionDocument.startViewTransition || reducedMotion) {
+        if (!transitionDocument.startViewTransition || prefersReducedMotion()) {
             await update();
             return;
         }
@@ -389,6 +523,7 @@
     }
 
     onDestroy(() => {
+        cancelPhotoSwap();
         sourceImage?.style.removeProperty('view-transition-name');
         preloadedFullResolution.clear();
         unlockBodyScroll();
@@ -423,6 +558,7 @@
                     style={`--slide-offset: ${offset * 72}%; --slide-scale: ${isActive ? 1 : 0.86};`}
                 >
                     <button
+                        bind:this={slideTriggers[index]}
                         class="image-trigger"
                         type="button"
                         tabindex={isActive ? 0 : -1}
@@ -509,6 +645,8 @@
 
 {#if expandedPhoto}
     <div
+        bind:this={lightboxElement}
+        class:has-controls={normalizedPhotos.length > 1}
         class="image-lightbox"
         role="dialog"
         aria-modal="true"
@@ -526,22 +664,34 @@
         <div
             class="expanded-image-frame"
             style={`view-transition-name: ${IMAGE_TRANSITION_NAME}`}
+            use:touchSwipe
         >
-            <img
-                class="expanded-image-preview"
-                src={expandedPhoto.preview}
-                alt=""
-                aria-hidden="true"
-            />
-            {#if fullResolutionSrc}
+            {#if outgoingPhoto}
                 <img
-                    bind:this={expandedFullImage}
-                    class:loaded={fullResolutionLoaded}
-                    class="expanded-image-full"
-                    src={fullResolutionSrc}
-                    alt={expandedPhoto.alt}
+                    bind:this={outgoingImageElement}
+                    class="expanded-image expanded-image-outgoing"
+                    src={outgoingPhoto.preview}
+                    alt=""
+                    aria-hidden="true"
                 />
             {/if}
+            <div bind:this={currentImageElement} class="expanded-image">
+                <img
+                    class="expanded-image-preview"
+                    src={expandedPhoto.preview}
+                    alt=""
+                    aria-hidden="true"
+                />
+                {#if fullResolutionSrc}
+                    <img
+                        bind:this={expandedFullImage}
+                        class:loaded={fullResolutionLoaded}
+                        class="expanded-image-full"
+                        src={fullResolutionSrc}
+                        alt={expandedPhoto.alt}
+                    />
+                {/if}
+            </div>
         </div>
         {#if !fullResolutionLoaded && !fullResolutionFailed}
             <div class="image-lightbox-status" role="status" aria-live="polite">
@@ -554,6 +704,55 @@
                 role="status"
             >
                 Preview only
+            </div>
+        {/if}
+        {#if normalizedPhotos.length > 1}
+            <div class="image-lightbox-controls">
+                <button
+                    class="slideshow-control"
+                    type="button"
+                    aria-label="Show previous photo"
+                    disabled={!canShowPrevious}
+                    onclick={showPrevious}
+                >
+                    <span class="control-icon" aria-hidden="true">
+                        <FaChevronLeft />
+                    </span>
+                </button>
+
+                <div
+                    class="slideshow-pagination"
+                    role="group"
+                    aria-label="Choose a photo"
+                >
+                    {#each normalizedPhotos as photo, index (`expanded-${photo.src}-${index}`)}
+                        <button
+                            class:active={index === activeIndex}
+                            type="button"
+                            aria-label={`Show photo ${index + 1}`}
+                            aria-current={index === activeIndex
+                                ? 'true'
+                                : undefined}
+                            onclick={() => selectPhoto(index)}
+                        ></button>
+                    {/each}
+                </div>
+
+                <button
+                    class="slideshow-control"
+                    type="button"
+                    aria-label="Show next photo"
+                    disabled={!canShowNext}
+                    onclick={showNext}
+                >
+                    <span class="control-icon" aria-hidden="true">
+                        <FaChevronRight />
+                    </span>
+                </button>
+            </div>
+
+            <div class="sr-only" aria-live="polite" aria-atomic="true">
+                Photo {activeIndex + 1} of {normalizedPhotos.length}
             </div>
         {/if}
         <button
@@ -849,13 +1048,20 @@
     }
 
     .image-lightbox {
+        --lightbox-bottom-space: 1rem;
+
         position: fixed;
         inset: 0;
         z-index: 10000;
         display: grid;
         place-items: center;
-        padding: 1rem;
+        padding: 1rem 1rem var(--lightbox-bottom-space);
         view-transition-name: slideshow-image-backdrop;
+
+        /* Keeps the photo clear of the control bar rather than behind it */
+        &.has-controls {
+            --lightbox-bottom-space: 5rem;
+        }
     }
 
     .image-lightbox-backdrop {
@@ -871,24 +1077,37 @@
     .expanded-image-frame {
         position: relative;
         z-index: 1;
-        display: block;
+        display: grid;
         width: fit-content;
         height: fit-content;
         max-width: calc(100vw - 2rem);
-        max-height: calc(100dvh - 2rem);
+        max-height: calc(100dvh - 1rem - var(--lightbox-bottom-space));
+        place-items: center;
         line-height: 0;
+        touch-action: pan-y;
 
         img {
             display: block;
             width: auto;
             height: auto;
             max-width: calc(100vw - 2rem);
-            max-height: calc(100dvh - 2rem);
+            max-height: calc(100dvh - 1rem - var(--lightbox-bottom-space));
             margin: 0;
             border-radius: 0.5rem;
             object-fit: contain;
             box-shadow: 0 1rem 4rem rgb(0 0 0 / 45%);
         }
+    }
+
+    /* Both photos share one cell so they can cross over without reflowing */
+    .expanded-image {
+        position: relative;
+        grid-area: 1 / 1;
+        line-height: 0;
+    }
+
+    .expanded-image-outgoing {
+        pointer-events: none;
     }
 
     .expanded-image-full {
@@ -902,6 +1121,20 @@
         &.loaded {
             opacity: 1;
         }
+    }
+
+    /* Same arrangement as the inline slideshow, pinned to the viewport */
+    .image-lightbox-controls {
+        position: fixed;
+        bottom: max(1rem, env(safe-area-inset-bottom));
+        left: 50%;
+        z-index: 2;
+        display: grid;
+        width: min(32rem, calc(100% - 2rem));
+        grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+        align-items: center;
+        gap: 1rem;
+        transform: translateX(-50%);
     }
 
     .image-lightbox-status {
@@ -1033,6 +1266,16 @@
         }
 
         .slideshow-controls {
+            width: min(24rem, calc(100% - 1.5rem));
+            grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
+            gap: 0.75rem;
+        }
+
+        .image-lightbox.has-controls {
+            --lightbox-bottom-space: 4.5rem;
+        }
+
+        .image-lightbox-controls {
             width: min(24rem, calc(100% - 1.5rem));
             grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
             gap: 0.75rem;
