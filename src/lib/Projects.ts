@@ -17,7 +17,7 @@ const projects = [
         url: 'https://sky-music.specy.app',
         github: 'https://github.com/Specy/genshin-music',
         id: 'sky-music',
-        color: 'rgb(186, 167, 128)',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'Genshin music Nightly',
@@ -26,7 +26,7 @@ const projects = [
         url: 'https://genshin-music.specy.app',
         github: 'https://github.com/Specy/genshin-music',
         id: 'genshin-music',
-        color: 'rgb(85, 143, 144)',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'ASM Editor',
@@ -35,7 +35,7 @@ const projects = [
         url: 'https://asm-editor.specy.app',
         github: 'https://github.com/Specy/asm-editor',
         id: 'asm-editor',
-        color: '#f2a65a',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'Tokeko',
@@ -44,7 +44,7 @@ const projects = [
         url: 'https://tokeko.specy.app',
         github: 'https://github.com/Specy/tokeko',
         id: 'tokeko',
-        color: 'rgb(100 78 117)',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'Rooc',
@@ -62,7 +62,7 @@ const projects = [
         url: 'https://learn.specy.app',
         github: 'https://github.com/Specy/notes',
         id: 'learn',
-        color: '#a65ee0',
+        color: 'rgb(83, 87, 165)',
     },
     /*
         {
@@ -82,7 +82,7 @@ const projects = [
         url: 'https://conway-generator.specy.app',
         github: '',
         id: 'conway-generator',
-        color: '#243B4A',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'Portfolio',
@@ -91,7 +91,7 @@ const projects = [
         url: 'https://portfolio.specy.app',
         github: '',
         id: 'portfolio',
-        color: 'rgb(219, 0, 97)',
+        color: 'rgb(83, 87, 165)',
     },
     {
         title: 'Discerns',
@@ -102,7 +102,7 @@ const projects = [
         github: '',
         id: 'discerns',
         hidden: true,
-        color: '#9a8bec',
+        color: 'rgb(83, 87, 165)',
     },
 ] satisfies ProjectData[];
 
@@ -115,7 +115,7 @@ const desktopProjects = [
         url: 'https://github.com/Specy/Scapix',
         github: '',
         id: 'scapix',
-        color: '#f2a65a',
+        color: 'rgb(83, 87, 165)',
     },
 ] satisfies ProjectData[];
 
