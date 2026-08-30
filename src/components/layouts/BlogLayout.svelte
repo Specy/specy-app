@@ -90,7 +90,8 @@
             if (!(event.target instanceof Element)) return;
 
             const summary = event.target.closest('summary.sidetrack-title');
-            const details = summary?.parentElement;
+            if (!summary) return;
+            const details = summary.parentElement;
             if (!(details instanceof HTMLDetailsElement)) return;
 
             event.preventDefault();
@@ -418,7 +419,11 @@
             align-items: center;
             gap: 0.7rem;
             padding: 0.8rem 1rem;
-            background: color-mix(in srgb, rgba(82, 83, 122, 0.1019607843), var(--accent) 5%);
+            background: color-mix(
+                in srgb,
+                rgba(82, 83, 122, 0.1019607843),
+                var(--accent) 5%
+            );
             font-family: var(--heading-font), Rubik, sans-serif;
             font-weight: var(--heading-weight);
             cursor: pointer;

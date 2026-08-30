@@ -21,7 +21,7 @@
             <div>
                 {$toast.title}
             </div>
-            <Icon on:click={toast.closeToast}>
+            <Icon label="Close notification" onclick={toast.closeToast}>
                 <FaTimes />
             </Icon>
         </div>
@@ -60,10 +60,6 @@
         padding: 0.6rem;
         padding-top: 0.1rem;
     }
-    .dark {
-        color: #bfbfbf;
-        background-color: rgba(29, 32, 33, 0.8);
-    }
     .toastVisible {
         transform: translateY(0);
     }
@@ -89,17 +85,6 @@
             transform: translateX(-100%);
         }
     }
-    .close-icon {
-        color: var(--textFlip);
-        width: 1.2rem;
-        padding-top: 0.2rem;
-        height: 1.2rem;
-        cursor: pointer;
-    }
-    .close-icon:hover {
-        color: var(--accent);
-    }
-
     .toast-title {
         width: 100%;
         display: flex;

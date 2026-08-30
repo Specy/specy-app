@@ -31,25 +31,17 @@
                 >Donate</a
             >
         </div>
-        <!--
-        {#if $user}
-                    <a href="/profile" class="profile">
-                        <FaUser />
-                    </a>
-                {:else}
-                    <button class="login" on:click={() => toast.error("Login is not yet available!", 5000)}>
-                        Login
-                    </button>
-                {/if}
-        -->
     </div>
 
     <div class="mobile-menu html2canvas-ignore" class:menuOpen>
         <div class="mobile-row">
             <Logo logoToggled={menuOpen} />
             <div class="top-mobile-menu">
-                <div
-                    style="font-size: 2rem"
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    aria-expanded={menuOpen}
                     onclick={() => {
                         menuOpen = !menuOpen;
                     }}
@@ -59,7 +51,7 @@
                     {:else}
                         <MdMenu />
                     {/if}
-                </div>
+                </button>
             </div>
         </div>
 
@@ -87,43 +79,11 @@
                 style={path === '/donate' ? 'color: var(--accent)' : ''}
                 >Donate</a
             >
-            <!--
-
-            <button
-                on:click={() => toast.error("Login is not yet available!", 5000)}
-                style={path === "/login" ? "color: var(--accent)" : ""}
-            >Login</button>
-            <button
-                on:click={() => toast.error("Registration is not yet available!", 5000)}
-                style={path === "/register" ? "color: var(--accent)" : ""}
-            >Register</button>
-            {#if $user}
-                <a
-                href="/profile"
-                on:click={() => menuOpen = false}
-                style={path === "/profile" ? "color: var(--accent)" : ""}
-                >Profile</a>
-            {/if}
-            -->
         </div>
     </div>
 </nav>
 
 <style lang="scss">
-    .login {
-        background-color: transparent;
-        border: solid 2px var(--accent);
-        color: var(--accent);
-        padding: 0.5rem 1.5rem;
-        border-radius: 2rem;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .login:hover {
-        background-color: var(--accent);
-        color: var(--accent-color) !important;
-    }
-
     .desktop-menu {
         width: 100%;
         display: flex;
@@ -138,17 +98,6 @@
 
         justify-content: space-between;
         align-items: center;
-    }
-
-    .profile {
-        display: flex;
-        align-items: center;
-        height: 2rem;
-        transition: all 0.3s;
-    }
-
-    .profile:hover {
-        color: var(--accent);
     }
 
     .mobile-menu {
@@ -177,25 +126,29 @@
         align-items: center;
     }
 
+    .menu-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        border: none;
+        background: none;
+        color: inherit;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
     .links {
         display: flex;
         flex-direction: row;
         align-items: center;
         margin-right: 3rem;
 
-        > a,
-        button {
+        > a {
             margin-left: 1.5rem;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             text-decoration: none;
-        }
-
-        > button {
-            background-color: transparent;
-            border: none;
-            text-align: start;
-            font-size: 1rem;
         }
     }
 
@@ -214,18 +167,9 @@
         justify-content: space-around;
         background-color: rgba(var(--RGB-background), 0.8);
 
-        > a,
-        button {
+        > a {
             padding: 0.2rem;
             margin-left: 2rem;
-        }
-
-        > button {
-            background-color: transparent;
-            border: none;
-            color: var(--primary-text);
-            text-align: start;
-            font-size: 1rem;
         }
     }
 
@@ -259,10 +203,6 @@
         }
         .desktop-menu {
             display: none;
-        }
-        .profile {
-            margin-right: 1rem;
-            padding: 0.3rem;
         }
         .nav {
             width: 100%;

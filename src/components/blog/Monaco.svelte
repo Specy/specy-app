@@ -8,7 +8,7 @@
 
     export let disabled = false;
     export let code: string;
-    export let highlightedLine: number;
+    export let highlightedLine = -1;
     export let hasError = false;
     export let language: 'typescript' | 'string';
     export let style = '';
@@ -121,7 +121,7 @@
     {#if !editor}
         <h1 class="loading">Loading editor...</h1>
     {/if}
-    <div bind:this={el} class="editor" />
+    <div bind:this={el} class="editor"></div>
 </div>
 
 <style lang="scss">

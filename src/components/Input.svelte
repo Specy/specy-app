@@ -21,7 +21,7 @@
         type = 'text',
         hideStatus = false,
     }: Props = $props();
-    const setType = (node) => {
+    const setType = (node: HTMLInputElement) => {
         node.type = type;
     };
     run(() => {

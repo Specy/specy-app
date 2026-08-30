@@ -1,6 +1,6 @@
 <script>
     import { fly } from 'svelte/transition';
-    import { sineOut } from 'svelte/easing';
+    import { afterNavigate, beforeNavigate } from '$app/navigation';
 
     /** @type {{refresh?: string, children?: import('svelte').Snippet}} */
     let { refresh = '', children } = $props();
@@ -8,6 +8,10 @@
     let status = $state('');
     let timeout = setTimeout(() => {}, 0);
 
+    beforeNavigate(() => handleProgress('started'));
+    afterNavigate(() => handleProgress('ended'));
+
+    /** @param {'started' | 'ended'} s */
     function handleProgress(s) {
         if (s === 'started') status = 'progress-70';
         if (s === 'ended') {
@@ -20,10 +24,6 @@
     }
 </script>
 
-<svelte:window
-    onsveltekit:navigation-start={() => handleProgress('started')}
-    onsveltekit:navigation-end={() => handleProgress('ended')}
-/>
 {#key refresh}
     <div class={`progress ${status}`}></div>
     <div in:fly={{ duration: 1000, opacity: 0, y: -10 }} class="page column">

@@ -1,18 +1,24 @@
 <script>
-    import { createBubbler } from 'svelte/legacy';
-
-    const bubble = createBubbler();
-    /** @type {{size?: number, style?: string, hoverable?: boolean, children?: import('svelte').Snippet}} */
-    let { size = 1.2, style = '', hoverable = false, children } = $props();
+    /** @type {{size?: number, style?: string, hoverable?: boolean, label?: string, onclick?: (event: MouseEvent) => void, children?: import('svelte').Snippet}} */
+    let {
+        size = 1.2,
+        style = '',
+        hoverable = false,
+        label,
+        onclick,
+        children,
+    } = $props();
 </script>
 
-<div
+<button
+    type="button"
     class="icon"
+    aria-label={label}
     style={`width:${size}rem; min-width: ${size}; height:${size}rem; ${style};`}
-    onclick={bubble('click')}
+    {onclick}
 >
     {@render children?.()}
-</div>
+</button>
 
 <style>
     .icon {
@@ -21,5 +27,10 @@
         align-items: center;
         justify-content: center;
         user-select: none;
+        padding: 0;
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
     }
 </style>

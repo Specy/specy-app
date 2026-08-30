@@ -15,9 +15,9 @@
     const blur = 8;
     const multiplier = hasFilter ? 5 : 2;
     let { children }: Props = $props();
-    let canvas: HTMLCanvasElement | null = $state(null);
+    let canvas = $state<HTMLCanvasElement | null>(null);
     let ctx: CanvasRenderingContext2D | null = $derived(
-        canvas?.getContext('2d'),
+        canvas?.getContext('2d') ?? null,
     );
     const offCanvas =
         typeof window !== 'undefined' ? document.createElement('canvas') : null;

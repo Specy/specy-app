@@ -40,9 +40,6 @@
     .logoToggled {
         width: 65px !important;
     }
-    .whiteText {
-        color: #bfbfbf;
-    }
     .name {
         font-size: 1.3rem;
         font-weight: bold;

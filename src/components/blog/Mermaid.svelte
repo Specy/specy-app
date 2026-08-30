@@ -59,8 +59,4 @@
         align-items: center;
         position: relative;
     }
-
-    :global(.mermaid) {
-        /* noop*/
-    }
 </style>

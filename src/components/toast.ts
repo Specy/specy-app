@@ -16,7 +16,7 @@ function Toast() {
         id: 0,
     });
     let id = 0;
-    let timeout;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
     function execute(
         message: string,
         duration: number,

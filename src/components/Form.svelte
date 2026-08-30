@@ -3,6 +3,7 @@
     /** @type {{children?: import('svelte').Snippet}} */
     let { children } = $props();
     const dispatch = createEventDispatcher();
+    /** @param {SubmitEvent} e */
     function submit(e) {
         e.preventDefault();
         dispatch('submit', e);

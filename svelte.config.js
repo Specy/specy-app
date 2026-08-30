@@ -76,6 +76,14 @@ const config = {
         adapter: adapter({
             fallback: '404.html',
         }),
+        //declared here rather than in vite.config.ts so that they reach both Vite and the
+        //tsconfig SvelteKit generates, otherwise svelte-check cannot resolve them
+        alias: {
+            $cmp: 'src/components',
+            $src: 'src',
+            $stores: 'src/stores',
+            $utils: 'src/utils',
+        },
     },
 
     extensions: ['.svelte', '.svx', '.md', '.mdx'],

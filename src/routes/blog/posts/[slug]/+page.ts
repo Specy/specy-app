@@ -1,4 +1,4 @@
-import { type Post } from '$lib/post';
+import { type Post, type PostModule } from '$lib/post';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad} */
@@ -15,17 +15,19 @@ export async function load({ params }) {
 }
 
 async function serverGetPost(name: string): Promise<Post> {
-    const files = import.meta.glob('/src/posts/*.md', { eager: true });
+    const files = import.meta.glob<PostModule>('/src/posts/*.md', {
+        eager: true,
+    });
     const file = files[`/src/posts/${name}.md`];
-    const { default: page, metadata } = file;
-    if (!page) {
+    if (!file?.default) {
         throw error(404, 'Post not found');
     }
+    const { default: page, metadata } = file;
     return {
         metadata: {
+            ...metadata,
             url: `/blog/posts/${name}`,
             slug: name,
-            ...(metadata ?? {}),
         },
         page,
     };

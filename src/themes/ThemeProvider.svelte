@@ -8,7 +8,7 @@
     }
 
     let { style = '', theme, children }: Props = $props();
-    let colors = createDerivedThemeColors(theme);
+    let colors = $derived(createDerivedThemeColors(theme));
 
     function toRgb(color: string) {
         return (new TinyColor(color)

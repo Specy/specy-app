@@ -27,6 +27,7 @@
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
         -webkit-appearance: none;
+        appearance: none;
         -webkit-border-radius: none;
         border-radius: none;
         outline: none;
