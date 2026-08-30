@@ -3,6 +3,7 @@
     import Support from '$cmp/Support.svelte';
     import Contact from '$cmp/Contact.svelte';
     import Seo from '$cmp/Seo.svelte';
+    import TeaCupHeart from '$cmp/TeaCupHeart.svelte';
 </script>
 
 <Seo
@@ -14,3 +15,4 @@
 <Main />
 <Support style="margin-top:6rem;" />
 <Contact />
+<TeaCupHeart />

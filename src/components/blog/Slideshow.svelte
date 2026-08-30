@@ -43,6 +43,12 @@
     const PHOTO_SWAP_DISTANCE = 14;
     const PHOTO_SWAP_SCALE = 0.94;
     const PHOTO_SWAP_EASING = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
+    /**
+     * How many slides either side of the active one stay mounted. The second
+     * neighbour waits off-screen so stepping across slides it into view
+     * instead of popping it in once it becomes the first neighbour.
+     */
+    const MOUNTED_NEIGHBOURS = 2;
 
     let { photos, label = 'Photo slideshow' }: Props = $props();
 
@@ -548,14 +554,14 @@
                 {@const isActive = index === activeIndex}
                 <div
                     class:active={isActive}
-                    class:previous={offset === -1}
-                    class:next={offset === 1}
-                    class:hidden={distance > 1}
+                    class:previous={offset < 0}
+                    class:next={offset > 0}
+                    class:hidden={distance > MOUNTED_NEIGHBOURS}
                     class="slide"
                     role="group"
                     aria-roledescription="slide"
                     aria-label={`${index + 1} of ${normalizedPhotos.length}`}
-                    style={`--slide-offset: ${offset * 72}%; --slide-scale: ${isActive ? 1 : 0.86};`}
+                    style={`--slide-offset: ${offset * 72}%; --slide-scale: ${isActive ? 1 : 0.86}; --slide-layer: ${MOUNTED_NEIGHBOURS - distance};`}
                 >
                     <button
                         bind:this={slideTriggers[index]}
@@ -579,7 +585,9 @@
                             class="slide-image"
                             src={photo.preview}
                             alt={photo.alt}
-                            loading={distance <= 1 ? 'eager' : 'lazy'}
+                            loading={distance <= MOUNTED_NEIGHBOURS
+                                ? 'eager'
+                                : 'lazy'}
                             decoding="async"
                             draggable="false"
                         />
@@ -838,6 +846,7 @@
         top: var(--slideshow-shadow-top-space);
         bottom: var(--slideshow-controls-height);
         left: 50%;
+        z-index: var(--slide-layer, 0);
         display: grid;
         width: min(65%, 58rem);
         place-items: center;
@@ -861,7 +870,6 @@
         }
 
         &.active {
-            z-index: 2;
             opacity: 1;
         }
 
