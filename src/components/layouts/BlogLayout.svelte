@@ -294,7 +294,7 @@
         padding: 0.3rem 0.7rem;
         border-radius: 1rem;
         color: white;
-        background-color: hsl(calc(var(--index) * 26 + -26), 40%, 50%);
+        background-color: hsl(calc(var(--index) * 47 + 263), 35%, 50%);
     }
 
     .main-header {
