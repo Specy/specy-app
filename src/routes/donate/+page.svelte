@@ -19,7 +19,7 @@
         background-color: rgba(31, 36, 43, 0.5);
         color: var(--secondary-text);
         box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
-        border-radius: 0.8rem;
+        border-radius: var(--radius-2xl);
         margin-top: 3rem;
         padding: 0.5rem;
     }

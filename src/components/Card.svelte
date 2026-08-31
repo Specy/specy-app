@@ -13,7 +13,7 @@
 <style lang="scss">
     .card {
         position: relative;
-        border-radius: 0.6rem;
+        border-radius: var(--radius-xl);
         transition: all 0.2s;
         background-color: #f9f9ff;
         box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.25);

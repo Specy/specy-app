@@ -138,7 +138,7 @@ Ok good, at least the bug happens now? *I guess?* But where is the `None on min_
 
 Let's add more prints!
 
-<video src=https://github.com/user-attachments/assets/2631f7bf-4363-4305-8950-03b94b018d61 style="width: 100%; border-radius: 0.5rem" controls></video>
+<video src=https://github.com/user-attachments/assets/2631f7bf-4363-4305-8950-03b94b018d61 style="width: 100%; border-radius: var(--radius-lg)" controls></video>
 
 *Yeeeeeeah*, no, this cannot be sound, there must be something wrong somewhere, I did see an [unsafe](https://github.com/ztlpn/minilp/blob/master/src/helpers.rs#L26)
 in the library, so maybe some memory corruption is happening?

@@ -23,7 +23,7 @@ Star it on Github!
 </LiquidGlass>
 
 
-<iframe src="https://liquid-glass.specy.app/" style="width: 100%; height: 30rem; border-radius: 1rem;"></iframe>
+<iframe src="https://liquid-glass.specy.app/" style="width: 100%; height: 30rem; border-radius: var(--radius-3xl);"></iframe>
 
 
 Recently, Apple came out with its latest design system called [liquid glass](https://www.youtube.com/watch?v=jGztGfRujSE).
@@ -52,7 +52,7 @@ Let's look at the effect itself:
 It differs from the traditional glassmorphism style that is easily achievable with a simple CSS `backdrop-filter: blur(...)` and a semi-transparent background color:
 
 <div style="position: relative; text-align: center">
-<button style="border: solid 1px #292c2e; color: lightgray; position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0, 0.2); backdrop-filter: blur(0.2rem); padding: 0.8rem 4rem; border-radius: 0.5rem">hi</button>
+<button style="border: solid 1px #292c2e; color: lightgray; position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0, 0.2); backdrop-filter: blur(0.2rem); padding: 0.8rem 4rem; border-radius: var(--radius-lg)">hi</button>
 Hello this is some text behind the button.
 </div>
 

@@ -242,7 +242,7 @@ for(const el of animation()){
 
 Let's now make a very simple animation!
 
-<iframe style="width: 100%; height: 17.5rem; border-radius: 0.8rem" src="https://gen-animation.pages.dev/?code=E4UwLgrsB2AEBmFoGMwEsD20BUsCG0aAtnulgBQBuaIA7gJSwDeAULLMlgM5ixcCOEPKFgBeWCAA2VGrQA0zNu1i00AEzAALAFywARAFYADAAcAHnrlL2mkGgDmmsLsOmLV5bABGeZAGt7YAwkNQBhDEkMYF0AclA1GI9lEwwuNDJoFzwvLgiIMBBLJQBfegBuFiUATxpJNVwBIVAAOjAMciZYSRB4Z1gANiNYYoVB8ura%2Br5BYRBW9s7u3t0hkYGjceKgA"></iframe>
+<iframe style="width: 100%; height: 17.5rem; border-radius: var(--radius-2xl)" src="https://gen-animation.pages.dev/?code=E4UwLgrsB2AEBmFoGMwEsD20BUsCG0aAtnulgBQBuaIA7gJSwDeAULLMlgM5ixcCOEPKFgBeWCAA2VGrQA0zNu1i00AEzAALAFywARAFYADAAcAHnrlL2mkGgDmmsLsOmLV5bABGeZAGt7YAwkNQBhDEkMYF0AclA1GI9lEwwuNDJoFzwvLgiIMBBLJQBfegBuFiUATxpJNVwBIVAAOjAMciZYSRB4Z1gANiNYYoVB8ura%2Br5BYRBW9s7u3t0hkYGjceKgA"></iframe>
 
 But what if we want to animate more than one element at a time? This is where the magic of generator functions really shines. Since they are *resumable*, we can create all sorts of utility functions to make animations easier to build.
 
@@ -295,7 +295,7 @@ export function* delay(frames: number){
 
 With this we can make animations procedural, as in, make functions that return animated elements:
 
-<iframe style="width: 100%; height: 25rem; border-radius: 0.8rem" 
+<iframe style="width: 100%; height: 25rem; border-radius: var(--radius-2xl)" 
 src="https://gen-animation.pages.dev/?code=E4UwLgrsB2AEBmFoGMwEsD20BUsCG0aAtnulgBQBuaIA7gJSwDeAULLAJ40A2AJrnm7dybdvkIkwIAMoBHCHlBUatADSwArAAZ1ARi07YAclC8j9VaPYFipGfMUhldPdr0H1RgEbcIIc5Zi4rZScgpK1C6wAExusPqGRgDmoCDQAaL0ANwsolwgfLi8BXgc5NFa2Xk8-LDcGBgADuXq5IwAvAB8wZL24U6RavFxCZ4cBfW05lUAvrmIKGQ4PXZhjs5D3CDwYOpgTerIGPXAjKzsR9AAzmCwVw6gsO2wBRvq52K0aLxgABYAXLAAETaRoADyBgTEvxAaCSvzAgJBWnBkKssC8eGQAGsUhgkLwAMLHDDAQFHE5Q9iNDBXNBLJF4LxXY4QKRooJbHaAgAGABImFywDNwTyqbB9o1eQLJSKwWLRDMqtUCrV7v0AHT7chMOrbRF6nawADU8Q8EoOsGAGDAdkBugAHFpYDN1ABmSo5dj5Qp3B4gLUYHWG3YWxrqa22qSAt0ANmdrtgHtmLCAA"
 ></iframe>
 
@@ -382,7 +382,7 @@ And in our animation we just need to replace `const` with `using` and that's it!
 (if you are on Safari, `using` is not available yet so the animation wont work)
 
 
-<iframe style="width: 100%; height: 25rem; border-radius: 0.8rem; margin-bottom: 1rem" 
+<iframe style="width: 100%; height: 25rem; border-radius: var(--radius-2xl); margin-bottom: 1rem" 
 src="https://gen-animation.pages.dev/?code=E4UwLgrsB2AEBmFoGMwEsD20BUsCG0aAtnulgBQBuaIA7gJSwDeAULLAJ40A2AJrnm7dybdvkIkwIAMoBHCHlBUatADSwArAAZ1ARi07YAclC8j9VaPYFipGfMUhldPdr0H1RgEbcIIc5Zi4rZScgpK1C6wAExusPqGRgDmoCDQAaL0ANwsolwgfLi8BXgc5NFa2Xk8-LDcGBgADuXq5IwAvAB8wZL24U6RavFxCZ4cBfW05lUAvrmIKGQ4PXZhjs5D3CDwYOpgTerIGPXAjKzsEADOaNBJsJcOoLDtsAUb6uditGi8YAAWAC5YAAibSNAAewMCYj%2BIDQST%2BYCBoK0EKhVlgXjwyAA1ikMEheABhY4YYBAo4naHsRoYa5LZF4LyXY4QKTooJbHZAgAGABImFywDMITzqbB9o1eQLJSLwWLRDMqtUCrUHv0AHT7chMOrbJF6nawADU8Q8EoOsGAGDAdiBugAHFpYDN1ABmSo5dj5Qr3R4gLUYHWG3YWxrqa22qRAt0ANmdrtgHtmLCAA"> </iframe>
 
 
@@ -401,5 +401,5 @@ If we were building a proper animation library, we'd use something like [pixi.js
 I hope this post helped you understand how generators, `using`, and symbols work! If you want to create your own animations, you can try the [animation editor](https://gen-animation.pages.dev/) or look at the complete source code [here](https://github.com/Specy/gen-animation).
 
 
-<iframe style="width: 100%; height: 20rem; border-radius: 0.8rem"
+<iframe style="width: 100%; height: 20rem; border-radius: var(--radius-2xl)"
 src="https://gen-animation.pages.dev/?autoplay=true&code=E4UwLgrsB2AEBmFoGMwEsD20BUsC2AhmtAILRqHpYAUAbmiAO4CUsA3gFCyzJYDOYBGlCMMwANZ8AwhiSCAvLACMABgDcXHv0G8ANmL6xFAbQDkoACamANLFPIAngWg27uiiFemHIXfsZehADmINBgBF5iziFejAAWaGCeALoa3PFouiCw1GDAECCsnNzcvNACsOF8kkawxqma3PBiOVmCaLXqsB0APEIiYpIycmrdANRjRY0lZRXAzhYYeAAatQCsKrBjsACyBGBxAHTz0It41Ky4AGwqXdOl2rAnZwCatQBM75vbewfHC0sLrBcAAOO73LTlQTPJYyfTAWp6AzGX5HeD6MTUVH-U6Ay5aeF8Q5ZaBBA7MBoQqqSQ4ABwgfDi1HgwiYgzoDEYthhK25ALwLz5uLwcLEzGYaRKAF9pg4GLoLLg%2BCAAI4FFAgahKNa2Q566l8CWaGUyjiIFBUHD9NkSDlMWwCAjAMDLB3hZ2Cgli9iaWaCdFoIJxMAACRAgeDtSUX1GAHpY7AAEogCwQZApyrzWi%2BWAWNCOjUIFp8Qh%2BEAI5DOWgEPgcTTFEoM4hBJ4YZDicC1Xx2rk%2BkolRhoCwHABcsAARFdaQAPce2OLhoNgMfj7UzuewABGBHbQWAslOouAY6RwGsENpGD4iUw0BXBE3fAwuggSQ3WXgy9gAAMACRsR1nWWKUZ2-WwwAwWkxz-AD3TAF4QOnMCIU3MQLHLRMCDzBkVwAFnXaYpSNft41gAAxXQHFgCBaUqDBKgXWAQGnWl9GvLBYEvYgwFleVFVbdtwEOCDqDYOioNgQD4NgABaBB3CXMMI0EKVbAAZhUWxTBAGsQAAeVfUxiNgKVYDrB4oR4VZFCk5ZJT9Hg3hsuC3jkgNFMXYNJU0UiAAUnXQZAskMPICGzXRWwgINKNgG4ZLBGdbBZMB0FJWBBwOYgGOyNSvhnSEBHmbja24OVfH4gg-GoaZaQCtAgs1eh7Ss2xkE9GSblsDrNK9YBmFsGq6oantWtdRzbB6%2BKetPfqSkG516qyEaWvG2LJs63rZrM-taoW4amt7ZAxrarqwQm1rnzFWxuHmwKloO0bWs9M7YGmy6%2Buum6dqG%2B7OUe1butsDaZuu27Fsav6VpO17bBekH%2BzB-bIaOp6gZ64H3q27bYCNU1zVQW9cF2u6Iea6dbAcWwLHJ3NKc2vtqOvNLaMUbsHoZ9Ih1HCcp1nedPK-Sd11sbdd33JALCPE93vPHarxvLB70fZ9XxAd8QE-aD-2nRCwPErW2AcXWRbQjCsLQHCJw2ABScdjWMzQyoVInhIwUTYA-L9py2XMaYgiSqO2Cw6cgndEgcMdNlU2BcJ67TdIMsAjI0KUgA">

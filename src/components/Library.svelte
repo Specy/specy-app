@@ -96,7 +96,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 0.8rem;
-        border-radius: 0.8rem;
+        border-radius: var(--radius-2xl);
         min-width: 17rem;
         flex: 1;
     }
@@ -141,7 +141,7 @@
         justify-content: center;
         width: 2.4rem;
         padding: 0.5rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
         color: #dbdbdb;
         background-color: rgb(255 255 255 / 8%);
         transition: all 0.2s;
@@ -159,8 +159,8 @@
         position: relative;
         flex: 1;
         padding: 0.5rem;
-        border-radius: 0.5rem;
-        color: white;
+        border-radius: var(--radius-lg);
+        color: #dbdbdb;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -44,7 +44,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 0.8rem;
-        border-radius: 0.8rem;
+        border-radius: var(--radius-2xl);
         min-width: 17rem;
         flex: 1;
     }
@@ -63,8 +63,8 @@
         width: 100%;
         padding: 0.5rem;
         margin-top: 0.5rem;
-        border-radius: 0.5rem;
-        color: white;
+        border-radius: var(--radius-lg);
+        color: #dbdbdb;
         text-align: center;
         display: flex;
         transition: all 0.2s;
@@ -86,11 +86,11 @@
         overflow-y: auto;
         padding: 0.5rem;
         color: #dbdbdb;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
     }
     ::-webkit-scrollbar {
         width: 3px;
-        border-radius: 2px;
+        border-radius: var(--radius-xs);
     }
 
     /* Handle */

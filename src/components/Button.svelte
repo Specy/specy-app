@@ -26,7 +26,7 @@
         width: 100%;
         padding: 0.5rem;
         margin-top: 0.5rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
         color: white;
         text-align: center;
         font-weight: bold;

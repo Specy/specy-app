@@ -293,7 +293,8 @@
 
     .badge {
         padding: 0.3rem 0.7rem;
-        border-radius: 1rem;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         color: white;
         background-color: hsl(calc(var(--index) * 47 + 263), 35%, 50%);
     }
@@ -342,7 +343,7 @@
             max-width: 40rem;
             display: block;
             margin: 0 auto;
-            border-radius: 0.5rem;
+            border-radius: var(--radius-lg);
         }
 
         :global(hr) {
@@ -362,7 +363,7 @@
         }
 
         :global(video) {
-            border-radius: 0.5rem;
+            border-radius: var(--radius-lg);
             background-color: var(--bg);
         }
 
@@ -391,7 +392,8 @@
                 margin-bottom: 0;
             }
 
-            border-radius: 0.3rem 0.8rem 0.8rem 0.3rem;
+            border-radius: var(--radius-sm) var(--radius-2xl) var(--radius-2xl)
+                var(--radius-sm);
             padding: 0.5rem;
             border-left: 0.3rem solid var(--accent);
             background: color-mix(in srgb, #52537a1a, var(--accent) 5%);
@@ -399,7 +401,7 @@
 
         :global(details.sidetrack) {
             margin: 1.5rem 0;
-            border-radius: 0.8rem;
+            border-radius: var(--radius-2xl);
             background: #52537a0e;
             border: solid 2px color-mix(in srgb, #52537a1a, var(--accent) 5%);
             overflow: hidden;

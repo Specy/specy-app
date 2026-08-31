@@ -132,18 +132,18 @@
 
     :global(.runtime-token-Constant, .runtime-token-Constant-alt) {
         background: rgba(100, 74, 72, 0.2);
-        border-radius: 2px;
+        border-radius: var(--radius-xs);
         border: solid 1px rgba(100, 74, 72, 1);
     }
 
     :global(.runtime-token-Regex, .runtime-token-Regex-alt) {
         background: rgb(78, 143, 121, 0.1);
-        border-radius: 2px;
+        border-radius: var(--radius-xs);
         border: solid 1px rgb(78, 143, 121, 0.8);
     }
 
     :global(.overflow-guard, .monaco-editor) {
-        border-radius: 0.4rem;
+        border-radius: var(--radius-md);
     }
 
     :global(.error-line) {
@@ -156,27 +156,27 @@
     }
 
     :global(.find-widget) {
-        border-radius: 0.3rem !important;
+        border-radius: var(--radius-sm) !important;
         top: 1rem !important;
         right: 1rem !important;
     }
 
     :global(.editor-widget.suggest-widget) {
-        border-radius: 0.3rem !important;
+        border-radius: var(--radius-sm) !important;
         overflow: hidden;
     }
 
     :global(.monaco-editor-overlaymessage .message) {
-        border-radius: 0.3rem !important;
+        border-radius: var(--radius-sm) !important;
         border-bottom-left-radius: 0 !important;
     }
 
     :global(.monaco-inputbox) {
-        border-radius: 0.2rem;
+        border-radius: var(--radius-sm);
     }
 
     :global(.monaco-hover) {
-        border-radius: 0.3rem;
+        border-radius: var(--radius-sm);
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         border: 1px solid var(--accent2) !important;
     }
@@ -209,7 +209,8 @@
         cursor: pointer;
         margin-left: 0.6rem;
         background-color: var(--accent);
-        border-radius: 1rem;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
     }
 
     :global(.hovered-glyph) {
@@ -231,7 +232,7 @@
         align-items: center;
         background-color: var(--secondary);
         color: var(--secondary-text);
-        border-radius: 0.4rem;
+        border-radius: var(--radius-md);
         animation: infinite 3s pulse ease-in-out;
         position: absolute;
     }

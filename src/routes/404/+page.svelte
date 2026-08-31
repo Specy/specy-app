@@ -25,7 +25,7 @@
         justify-content: center;
         align-items: center;
         padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
     }
     .go-back {
         font-size: 10rem;

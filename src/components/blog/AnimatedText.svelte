@@ -17,19 +17,12 @@
         | 'neon';
 
     export type TextAnimationTrigger =
-        | 'loop'
-        | 'viewport'
-        | 'once'
-        | 'hover'
-        | 'scroll';
+        'loop' | 'viewport' | 'once' | 'hover' | 'scroll';
 
     export type TextAnimationUnit = 'letter' | 'word';
 
     export type TextAnimationStagger =
-        | 'forward'
-        | 'reverse'
-        | 'center-out'
-        | 'random';
+        'forward' | 'reverse' | 'center-out' | 'random';
 
     export type ScrambleCharset = 'alnum' | 'binary' | 'hex' | 'katakana';
 </script>
@@ -781,7 +774,8 @@
         right: -0.05em;
         left: -0.05em;
         height: 0.075em;
-        border-radius: 1em;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         background: var(--strike-color, currentcolor);
         content: '';
         transform: scaleX(1);
@@ -817,6 +811,7 @@
         bottom: 2%;
         left: -0.2em;
         border-radius: 0.2em 0.55em 0.25em 0.45em;
+        corner-shape: var(--corner-shape-round, round);
         background: var(--highlight-color, rgb(255 214 92 / 45%));
         content: '';
         transform: skewX(-2.5deg) scaleX(1);
@@ -849,7 +844,8 @@
         bottom: -0.14em;
         left: 0;
         height: 0.08em;
-        border-radius: 1em;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         background: var(--underline-color, var(--accent, currentcolor));
         content: '';
         transform: scaleX(1);

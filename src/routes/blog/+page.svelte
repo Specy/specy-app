@@ -73,7 +73,7 @@
         flex-direction: column;
         padding: 1rem 1.2rem;
         transition: all 0.2s;
-        border-radius: 0.8rem;
+        border-radius: var(--radius-2xl);
     }
 
     /* Optional post image, fading from 80% at the top to 0% at the bottom */
@@ -114,7 +114,8 @@
 
     .badge {
         padding: 0.3rem 0.7rem;
-        border-radius: 1rem;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         color: white;
         background-color: hsl(calc(var(--index) * 47 + 263), 35%, 50%);
     }

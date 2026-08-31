@@ -61,7 +61,7 @@
     .input-row {
         display: flex;
         align-items: center;
-        border-radius: 0.4rem;
+        border-radius: var(--radius-md);
         background-color: rgba(var(--RGB-tertiary), 0.5);
         color: var(--tertiary-text);
         padding: 0.2rem;

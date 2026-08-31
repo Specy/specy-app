@@ -50,7 +50,7 @@
         width: 20rem;
         background-color: rgba(var(--RGB-secondary), 0.85);
         color: var(--secondary-text);
-        border-radius: 0.4rem;
+        border-radius: var(--radius-md);
         box-shadow: 0 3px 10px rgba(var(--RGB-shadow-color), 0.25);
         z-index: 20;
         transition: transform 0.3s ease-out;
@@ -66,7 +66,8 @@
     .toast-progress {
         width: 100%;
         height: 0.2rem;
-        border-radius: 1rem;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         overflow: hidden;
     }
     .toast-progress-bar {

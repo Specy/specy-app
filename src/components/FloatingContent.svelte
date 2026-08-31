@@ -21,7 +21,7 @@
         backdrop-filter: blur(4px);
         box-shadow: 1px 1px 5px rgba(var(--RGB-shadow-color), 0.25);
         padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
     }
     .center-wrapper {
         display: flex;

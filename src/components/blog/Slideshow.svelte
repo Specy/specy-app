@@ -934,7 +934,7 @@
         max-width: 100%;
         max-height: calc(var(--slideshow-height) - 2rem);
         margin: 0;
-        border-radius: 0.65rem;
+        border-radius: var(--radius-xl);
         object-fit: contain;
         box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 35%);
         opacity: 1;
@@ -951,7 +951,7 @@
     }
 
     .slide:not(.active) .image-trigger {
-        border-radius: 0.65rem;
+        border-radius: var(--radius-xl);
     }
 
     .image-trigger:hover .slide-image {
@@ -967,7 +967,8 @@
         width: 3rem;
         height: 3rem;
         place-items: center;
-        border-radius: 999px;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         color: #d4d4d4;
         background: color-mix(
             in srgb,
@@ -1036,7 +1037,8 @@
             height: 0.55rem;
             padding: 0;
             border: 0;
-            border-radius: 999px;
+            border-radius: var(--radius-full);
+            corner-shape: var(--corner-shape-round, round);
             background: rgb(255 255 255 / 30%);
             cursor: pointer;
             transition:
@@ -1101,7 +1103,7 @@
             max-width: calc(100vw - 2rem);
             max-height: calc(100dvh - 1rem - var(--lightbox-bottom-space));
             margin: 0;
-            border-radius: 0.5rem;
+            border-radius: var(--radius-lg);
             object-fit: contain;
             box-shadow: 0 1rem 4rem rgb(0 0 0 / 45%);
         }
@@ -1154,7 +1156,8 @@
         width: 2.75rem;
         height: 2.75rem;
         place-items: center;
-        border-radius: 999px;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         color: #d4d4d4;
         background: color-mix(
             in srgb,
@@ -1176,7 +1179,8 @@
         height: 1.15rem;
         border: 0.15rem solid rgb(212 212 212 / 32%);
         border-top-color: var(--accent);
-        border-radius: 999px;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         animation: spin 700ms linear infinite;
     }
 
@@ -1195,7 +1199,8 @@
         width: 2.75rem;
         height: 2.75rem;
         place-items: center;
-        border-radius: 999px;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
         color: #d4d4d4;
         background: color-mix(
             in srgb,
