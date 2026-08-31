@@ -1,7 +1,7 @@
 <script lang="ts">
     import Project from '$cmp/Project.svelte';
-    import type { ProjectData } from '$lib/Projects';
-    import { projects, desktopProjects } from '$lib/Projects';
+    import Library from '$cmp/Library.svelte';
+    import { projects, desktopProjects, libraries } from '$lib/Projects';
 </script>
 
 <main class="main">
@@ -22,6 +22,14 @@
         <div class="projects-wrapper">
             {#each desktopProjects as project (project.title)}
                 <Project data={project} />
+            {/each}
+        </div>
+    </div>
+    <div class="apps" id="libraries">
+        <div class="title project-title">Libraries</div>
+        <div class="projects-wrapper">
+            {#each libraries as library (library.id)}
+                <Library data={library} />
             {/each}
         </div>
     </div>
