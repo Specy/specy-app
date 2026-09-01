@@ -193,6 +193,17 @@ const libraries = [
         color: '#7e4baac8',
     },
     {
+        title: '@specy/z80',
+        description:
+            'Assemble, run and debug Z80 assembly, with step by step execution and full access to registers and memory',
+        languages: ['TypeScript'],
+        registry: 'npm',
+        url: 'https://www.npmjs.com/package/@specy/z80',
+        github: 'https://github.com/Specy/trs80',
+        id: 'specy-z80',
+        color: '#7e4baac8',
+    },
+    {
         title: '@specy/dotlr',
         description:
             'Generate LR(1) and LALR parsers and trace step by step how they parse an input',
