@@ -353,13 +353,14 @@
             margin: 2rem 0;
         }
 
-        :global(h1) {
+        :global(h2) {
             margin-top: 4rem;
             font-size: 2.2rem;
         }
 
-        :global(h2) {
+        :global(h3) {
             font-size: 1.8rem;
+            margin-top: 2rem;
         }
 
         :global(video) {
