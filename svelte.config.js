@@ -11,6 +11,25 @@ import rehypeExternalLinks from 'rehype-external-links';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+/**
+ * Posts write their body headings as `#`, which is ergonomic in markdown but leaves
+ * every post with a fistful of <h1>s alongside the one BlogLayout renders for the
+ * title. Shifting each heading down a level at build time keeps the markdown as it is
+ * and still gives the page a single <h1> with a real hierarchy underneath it.
+ */
+function rehypeDemoteHeadings() {
+    return (tree) => {
+        const walk = (node) => {
+            if (node.type === 'element') {
+                const level = /^h([1-5])$/.exec(node.tagName);
+                if (level) node.tagName = `h${Number(level[1]) + 1}`;
+            }
+            node.children?.forEach(walk);
+        };
+        walk(tree);
+    };
+}
+
 const path_to_layout = path.join(
     __dirname,
     './src/components/layouts/BlogLayout.svelte',
@@ -58,6 +77,8 @@ const config = {
                 ],
             ],
             rehypePlugins: [
+                // before rehypeSlug so the ids land on the final heading elements
+                rehypeDemoteHeadings,
                 rehypeSlug,
                 [rehypeAutolinkHeadings, { behavior: 'wrap' }],
                 rehypeExternalLinks,

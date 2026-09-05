@@ -10,7 +10,7 @@
 
 <div class="center">
     <div class="support-wrapper">
-        <Support />
+        <Support titleLevel="h1" />
     </div>
 </div>
 

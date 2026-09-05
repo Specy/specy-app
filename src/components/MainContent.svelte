@@ -6,11 +6,11 @@
 
 <main class="main">
     <div class="main-title">
-        <div>SPECY DEV</div>
+        <h1>SPECY DEV</h1>
         <div class="hub-name">The hub of all apps</div>
     </div>
     <div class="apps" id="web-apps" style="margin-top: 4rem;">
-        <div class="title project-title">Web Apps</div>
+        <h2 class="title project-title">Web Apps</h2>
         <div class="projects-wrapper">
             {#each projects.filter((p) => !p.hidden) as project (project.title)}
                 <Project data={project} />
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="apps" id="desktop-apps">
-        <div class="title project-title">Desktop apps</div>
+        <h2 class="title project-title">Desktop apps</h2>
         <div class="projects-wrapper">
             {#each desktopProjects as project (project.title)}
                 <Project data={project} />
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="apps" id="libraries">
-        <div class="title project-title">Libraries</div>
+        <h2 class="title project-title">Libraries</h2>
         <div class="projects-wrapper">
             {#each libraries as library (library.id)}
                 <Library data={library} />
@@ -57,6 +57,9 @@
         > :nth-child(1) {
             font-size: 5rem;
             font-family: Arial;
+            font-weight: bold;
+            line-height: 1.1;
+            margin: 0;
         }
         > :nth-child(2) {
             color: var(--accent);
@@ -66,6 +69,9 @@
     .title {
         font-size: 1.6rem;
         font-weight: bold;
+    }
+    h2.title {
+        line-height: inherit;
     }
     .project-title {
         margin: 3rem 0 0 0;

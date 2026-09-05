@@ -1,14 +1,23 @@
 <script lang="ts">
     interface Props {
         style?: string;
+        /** `h1` on /donate, where this block is the page's subject; `h2` elsewhere,
+         *  where it is one section under the page's own heading. */
+        titleLevel?: 'h1' | 'h2';
     }
 
-    let { style = '' }: Props = $props();
+    let { style = '', titleLevel = 'h2' }: Props = $props();
 </script>
 
 <div class="wrapper" {style}>
     <div class="support" id="donate">
-        <a class="title" href="/donate">Support Me</a>
+        <svelte:element this={titleLevel} class="title">
+            {#if titleLevel === 'h1'}
+                Support Me
+            {:else}
+                <a href="/donate">Support Me</a>
+            {/if}
+        </svelte:element>
         <div class="text">
             Each App I develop takes months of learning and development. Added
             to that are also the costs of hosting. With a higher budget I can
@@ -62,6 +71,8 @@
     .title {
         font-size: 1.6rem;
         font-weight: bold;
+        margin: 0;
+        line-height: inherit;
     }
     .donation-wrapper {
         display: flex;
