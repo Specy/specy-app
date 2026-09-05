@@ -169,7 +169,7 @@
                 {/each}
             </div>
             {#if relatedProjectsData.length > 0}
-                <h1>Related Projects</h1>
+                <h2>Related Projects</h2>
                 <div class="projects-wrapper">
                     {#each relatedProjectsData as project}
                         <Project data={project} />

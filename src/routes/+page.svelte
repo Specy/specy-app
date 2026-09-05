@@ -4,12 +4,13 @@
     import Contact from '$cmp/Contact.svelte';
     import Seo from '$cmp/Seo.svelte';
     import TeaCupHeart from '$cmp/TeaCupHeart.svelte';
+    import { homePageLd } from '$lib/jsonld';
 </script>
 
 <Seo
     title="Specy Hub"
     description="Specy.app, the hub of all apps developed by specy"
-    keywords="specy, specy.app, specy dev, specy hub, specy apps, specy projects, sky music nightly, sky music, genshin music, genshin music nightly, genshin impact, sky children of the light, sky music github, genshin music github"
+    jsonLd={homePageLd()}
 />
 
 <Main />

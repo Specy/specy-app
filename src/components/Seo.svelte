@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from '$app/state';
     import { resolveShareImage, toAbsoluteUrl } from '$lib/seo';
+    import { serializeJsonLd } from '$lib/jsonld';
 
     // Every page goes through here so the document ends up with exactly one
     // og:image. Crawlers disagree on what to do with more than one: some show
@@ -11,7 +12,7 @@
         description,
         image,
         type = 'website',
-        keywords,
+        jsonLd,
         children,
     } = $props<{
         title: string;
@@ -19,7 +20,8 @@
         /** Full resolution image of the page, resolved to its generated preview */
         image?: string | null;
         type?: string;
-        keywords?: string;
+        /** Schema.org graph for this page, serialized into a ld+json block */
+        jsonLd?: unknown;
         children?: any;
     }>();
 
@@ -30,9 +32,10 @@
 <svelte:head>
     <title>{title}</title>
     <meta name="description" content={description} />
-    {#if keywords}
-        <meta name="keywords" content={keywords} />
-    {/if}
+    <!-- Self referencing, so every page states which URL it wants to be ranked as.
+         Without it a crawler that reaches the same content by another route (or an
+         older copy of it on a different host) is free to pick that one instead. -->
+    <link rel="canonical" href={url} />
     <meta property="og:site_name" content="Specy" />
     <meta property="og:type" content={type} />
     <meta property="og:url" content={url} />
@@ -42,5 +45,8 @@
     <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={share.url} />
+    {#if jsonLd}
+        {@html `<script type="application/ld+json">${serializeJsonLd(jsonLd)}</script>`}
+    {/if}
     {@render children?.()}
 </svelte:head>

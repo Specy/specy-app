@@ -119,7 +119,7 @@
 
 <div bind:this={mockEditor} class="mock-editor" {style}>
     {#if !editor}
-        <h1 class="loading">Loading editor...</h1>
+        <div class="loading">Loading editor...</div>
     {/if}
     <div bind:this={el} class="editor"></div>
 </div>

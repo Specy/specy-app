@@ -30,9 +30,9 @@
 
 <div class="library">
     <div class="row">
-        <div class="library-title">
+        <h3 class="library-title">
             {data.title}
-        </div>
+        </h3>
         <div class="languages">
             {#each data.languages as language (language)}
                 {@const LanguageIcon = languageIcons[language]}
@@ -110,6 +110,8 @@
         font-size: 1rem;
         font-weight: bold;
         word-break: break-word;
+        margin: 0;
+        line-height: inherit;
     }
     .languages {
         display: flex;

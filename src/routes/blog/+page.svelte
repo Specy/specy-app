@@ -20,9 +20,9 @@
                     href={post.url}
                     style={preview ? `--post-preview: url('${preview}')` : ''}
                 >
-                    <h1 class="blog-post-title">
+                    <h2 class="blog-post-title">
                         {post.title}
-                    </h1>
+                    </h2>
                     <p class="blog-description">
                         {post.description}
                     </p>

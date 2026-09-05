@@ -15,9 +15,9 @@
             src={data.image}
             alt={data.title}
         />
-        <div class="app-title">
+        <h3 class="app-title">
             {data.title}
-        </div>
+        </h3>
     </div>
     <div class="description">
         {data.description}
@@ -27,7 +27,6 @@
         target="_blank"
         class="open-btn"
         style="background-color: {data.color}"
-        rel="canonical"
     >
         <div>Open</div>
         <div class="icon">
@@ -57,6 +56,8 @@
         > .app-title {
             font-size: 1rem;
             font-weight: bold;
+            margin: 0;
+            line-height: inherit;
         }
     }
     .open-btn {

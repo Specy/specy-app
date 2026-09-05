@@ -1,5 +1,6 @@
 <script>
     import Seo from '$cmp/Seo.svelte';
+    import { blogPostingLd } from '$lib/jsonld';
 
     /** @type {{data: import('./$types').PageData}} */
     let { data } = $props();
@@ -13,6 +14,7 @@
     description={metadata.description}
     image={metadata.image}
     type="article"
+    jsonLd={blogPostingLd(metadata)}
 >
     <meta property="article:published_time" content={metadata.datePublished} />
     <meta property="article:author" content="Specy" />
