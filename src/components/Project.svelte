@@ -28,7 +28,9 @@
         class="open-btn"
         style="background-color: {data.color}"
     >
-        <div>Open</div>
+        <div>
+            Open<span class="sr-only"> {data.title}</span>
+        </div>
         <div class="icon">
             <MdOpenInNew />
         </div>
@@ -76,6 +78,21 @@
             margin-left: 0.2rem;
             margin-top: 0.1rem;
         }
+    }
+    /* Visually hidden, but still part of the link text for crawlers and screen readers */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+    .open-btn {
+        position: relative;
     }
     .open-btn:hover {
         filter: brightness(1.1);

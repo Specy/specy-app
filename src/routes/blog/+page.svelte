@@ -7,7 +7,10 @@
     }>();
 </script>
 
-<Seo title="Specy's Blog" description="Specy's Blog" />
+<Seo
+    title="Specy's Blog"
+    description="Articles by Specy on web development, TypeScript and Rust, CSS tricks, assembly and compilers, optimization modeling, AI and RAG, and photography."
+/>
 
 <div class="content-wrapper">
     <div class="content">

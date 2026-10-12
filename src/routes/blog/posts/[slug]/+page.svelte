@@ -17,7 +17,7 @@
     jsonLd={blogPostingLd(metadata)}
 >
     <meta property="article:published_time" content={metadata.datePublished} />
-    <meta property="article:author" content="Specy" />
+    <meta property="article:author" content="https://specy.app" />
     <meta property="article:section" content="Technology" />
     <meta property="article:tag" content={metadata.tags.join(',')} />
 </Seo>

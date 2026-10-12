@@ -8,8 +8,8 @@
 </script>
 
 <Seo
-    title="Specy Hub"
-    description="Specy.app, the hub of all apps developed by specy"
+    title="Specy Hub: music, assembly and optimization apps by Specy"
+    description="Specy.app, the hub of apps by Specy: Sky and Genshin music tools, the ASM Editor assembly IDE and emulator, the ROOC optimization language, Tokeko parser playground and learning notes."
     jsonLd={homePageLd()}
 />
 
