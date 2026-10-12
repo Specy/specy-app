@@ -3,10 +3,13 @@ import { SITE_URL, toAbsoluteUrl, resolveShareImage } from './seo';
 import type { PostMetadata } from './post';
 
 /** Schema.org identity reused by every graph on the site, so the author of a post
- *  and the author of an app resolve to the same entity. */
+ *  and the author of an app resolve to the same entity. The `@id` makes the Person
+ *  one node across separate JSON-LD blocks. */
 const AUTHOR = {
     '@type': 'Person',
-    name: 'Specy',
+    '@id': `${SITE_URL}/#person`,
+    name: 'Enrico Menichelli',
+    alternateName: 'Specy',
     url: SITE_URL,
     sameAs: ['https://github.com/Specy'],
 } as const;
@@ -58,7 +61,7 @@ export function homePageLd() {
                 name: 'Specy',
                 publisher: { '@id': `${SITE_URL}/#person` },
             },
-            { ...AUTHOR, '@id': `${SITE_URL}/#person` },
+            AUTHOR,
             {
                 '@type': 'ItemList',
                 name: 'Apps by Specy',
