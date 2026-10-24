@@ -68,7 +68,8 @@ function softwareApplicationNode(project: ProjectData) {
 }
 
 /** An app's own page on the hub. The page is about the app, so the app is its main
- *  entity, with the features and screenshot the page shows. */
+ *  entity, with the features and screenshots the page shows. Each screenshot is the
+ *  same preview image the page displays, with its caption or alt text. */
 export function appPageLd(project: AppPageProject) {
     const { details } = project;
     return {
@@ -78,7 +79,11 @@ export function appPageLd(project: AppPageProject) {
                 ...softwareApplicationNode(project),
                 mainEntityOfPage: toAbsoluteUrl(`/apps/${project.id}`),
                 featureList: details.features.map((feature) => feature.title),
-                screenshot: resolveShareImage(details.screenshot.src).url,
+                screenshot: details.screenshots.map((screenshot) => ({
+                    '@type': 'ImageObject',
+                    url: resolveShareImage(screenshot.src).url,
+                    caption: screenshot.caption ?? screenshot.alt,
+                })),
             },
             AUTHOR,
         ],

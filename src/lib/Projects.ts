@@ -15,6 +15,17 @@ export type AppLink = {
     url: string;
 };
 
+/** A screenshot in the hero gallery, its size given so the frame does not shift */
+export type AppScreenshot = {
+    /** The full resolution file under /images, the page shows its generated preview */
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    /** A short line shown under the gallery while this screenshot is on screen */
+    caption?: string;
+};
+
 /**
  * The longer copy behind an app's `/apps/[id]` page. Only apps with a page carry it,
  * so its presence is what decides whether the page, the card's info button and the
@@ -38,13 +49,12 @@ export type AppDetails = {
     /** "Who it is for", one string per item */
     audience: string[];
     features: AppFeature[];
-    /** A full screenshot of the app, its size given so the hero does not shift */
-    screenshot: {
-        src: string;
-        alt: string;
-        width: number;
-        height: number;
-    };
+    /**
+     * Full screenshots of the app, shown in the hero. The first one is the cover:
+     * the gallery opens on it, it sets the frame's aspect ratio and it is the
+     * page's share image.
+     */
+    screenshots: [AppScreenshot, ...AppScreenshot[]];
     /** Docs, courses and the like, shown next to the source code link */
     links?: AppLink[];
     /** Fan apps say they are not affiliated with the company behind the game */
@@ -143,12 +153,14 @@ const projects = [
                         'Rebind the keys, connect a MIDI keyboard, pick or make a theme, and back up your songs.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/sky-music.webp',
-                alt: 'The Sky Music Nightly zen keyboard with the Sky Music theme',
-                width: 1280,
-                height: 720,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/sky-music.webp',
+                    alt: 'The Sky Music Nightly zen keyboard with the Sky Music theme',
+                    width: 1280,
+                    height: 720,
+                },
+            ],
             disclaimer:
                 'Sky Music Nightly is a fan made app, not affiliated with thatgamecompany.',
         },
@@ -213,12 +225,14 @@ const projects = [
                         'Rebind the keys, connect a MIDI keyboard, pick or make a theme, and back up your songs.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/genshin-music.webp',
-                alt: 'The Genshin Music Nightly composer, with four tracks above the 21 key lyre keyboard',
-                width: 1280,
-                height: 720,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/genshin-music.webp',
+                    alt: 'The Genshin Music Nightly composer, with four tracks above the 21 key lyre keyboard',
+                    width: 1280,
+                    height: 720,
+                },
+            ],
             disclaimer:
                 'Genshin Music Nightly is a fan made app, not affiliated with HoYoverse.',
         },
@@ -283,12 +297,14 @@ const projects = [
                         'Write test cases with starting registers, memory and expected output, lock the editor down for exams, or embed it in your own website.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/asm-editor.webp',
-                alt: 'ASM Editor running an M68K bubble sort, with registers, memory and the program output',
-                width: 1600,
-                height: 900,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/asm-editor.webp',
+                    alt: 'ASM Editor running an M68K bubble sort, with registers, memory and the program output',
+                    width: 1600,
+                    height: 900,
+                },
+            ],
             links: [
                 {
                     label: 'Documentation',
@@ -364,12 +380,14 @@ const projects = [
                         'Write grammars with completion and clear error messages, then use your parser from TypeScript code that runs in the app.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/tokeko.webp',
-                alt: 'Tokeko showing the FIRST and FOLLOW sets and the automaton graph of a grammar',
-                width: 1600,
-                height: 1036,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/tokeko.webp',
+                    alt: 'Tokeko showing the FIRST and FOLLOW sets and the automaton graph of a grammar',
+                    width: 1600,
+                    height: 1036,
+                },
+            ],
             links: [
                 {
                     label: 'Introduction to LR parsing',
@@ -437,12 +455,14 @@ const projects = [
                         'Build models in code with the type safe builders of the rooc crate and the @specy/rooc package.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/rooc.webp',
-                alt: 'A diet problem written in ROOC, next to the steps of its solving pipeline',
-                width: 1600,
-                height: 757,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/rooc.webp',
+                    alt: 'A diet problem written in ROOC, next to the steps of its solving pipeline',
+                    width: 1600,
+                    height: 757,
+                },
+            ],
             links: [
                 {
                     label: 'Language documentation',
@@ -516,12 +536,14 @@ const projects = [
                         'Code blocks are syntax highlighted, in both the light and the dark theme.',
                 },
             ],
-            screenshot: {
-                src: '/images/apps/learn.webp',
-                alt: 'A thermodynamics lecture on Learn, with its equations',
-                width: 1600,
-                height: 1067,
-            },
+            screenshots: [
+                {
+                    src: '/images/apps/learn.webp',
+                    alt: 'A thermodynamics lecture on Learn, with its equations',
+                    width: 1600,
+                    height: 1067,
+                },
+            ],
             links: [
                 {
                     label: 'The notes on GitHub',

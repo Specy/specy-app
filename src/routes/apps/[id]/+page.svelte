@@ -2,10 +2,10 @@
     import Seo from '$cmp/Seo.svelte';
     import PostCard from '$cmp/PostCard.svelte';
     import AppLinkCard from '$cmp/AppLinkCard.svelte';
+    import ScreenshotGallery from '$cmp/ScreenshotGallery.svelte';
     import { appPageProjects } from '$lib/Projects';
     import { appPageLd } from '$lib/jsonld';
     import { accentStyle } from '$lib/appAccent';
-    import { resolveImagePreviewUrl } from '$lib/imagePreviews.js';
     import MdOpenInNew from '~icons/mdi/open-in-new';
     import MdCheckCircleOutline from '~icons/mdi/check-circle-outline';
     import MdBookOpenVariant from '~icons/mdi/book-open-variant';
@@ -16,10 +16,6 @@
 
     let project = $derived(data.project);
     let details = $derived(project.details);
-    let screenshot = $derived(
-        resolveImagePreviewUrl(details.screenshot.src) ??
-            details.screenshot.src,
-    );
     let host = $derived(new URL(project.url).host);
     let repository = $derived(
         project.github.replace(/^https:\/\/github\.com\//, ''),
@@ -32,7 +28,7 @@
 <Seo
     title={details.metaTitle}
     description={details.metaDescription}
-    image={details.screenshot.src}
+    image={details.screenshots[0].src}
     jsonLd={appPageLd(project)}
 />
 
@@ -77,22 +73,13 @@
                 {/if}
             </div>
         </div>
-        <figure class="hero-shot">
-            <div class="window">
-                <div class="window-bar" aria-hidden="true">
-                    <span class="window-dots">
-                        <span></span><span></span><span></span>
-                    </span>
-                    <span class="window-url">{host}</span>
-                </div>
-                <img
-                    src={screenshot}
-                    alt={details.screenshot.alt}
-                    width={details.screenshot.width}
-                    height={details.screenshot.height}
-                />
-            </div>
-        </figure>
+        <div class="hero-shot">
+            <ScreenshotGallery
+                screenshots={details.screenshots}
+                {host}
+                label="Screenshots of {project.title}"
+            />
+        </div>
     </header>
 
     <section class="intro">
@@ -403,7 +390,6 @@
 
     .hero-shot {
         position: relative;
-        perspective: 1600px;
         animation: shot-in 0.9s backwards cubic-bezier(0.2, 0.7, 0.46, 1) 150ms;
     }
 
@@ -415,63 +401,6 @@
         background: radial-gradient(closest-side, var(--glow), transparent);
         filter: blur(2.5rem);
         z-index: -1;
-    }
-
-    .window {
-        border-radius: var(--radius-2xl);
-        overflow: hidden;
-        background-color: #1c2029;
-        border: solid 1px rgb(255 255 255 / 9%);
-        box-shadow:
-            0 2rem 4rem -1.5rem rgb(0 0 0 / 70%),
-            0 0 0 1px rgb(0 0 0 / 30%);
-        transform: rotateY(-7deg) rotateX(3deg);
-        transform-origin: left center;
-        transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.46, 1);
-        > img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-    }
-    .hero-shot:hover .window {
-        transform: none;
-    }
-
-    .window-bar {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.55rem 0.8rem;
-        background-color: #232833;
-        border-bottom: solid 1px rgb(255 255 255 / 6%);
-    }
-    .window-dots {
-        display: flex;
-        gap: 0.35rem;
-        > span {
-            width: 0.6rem;
-            height: 0.6rem;
-            border-radius: var(--radius-full);
-            corner-shape: var(--corner-shape-round, round);
-            background-color: rgb(255 255 255 / 18%);
-        }
-    }
-    .window-url {
-        flex: 1;
-        max-width: 18rem;
-        margin: 0 auto;
-        padding: 0.2rem 0.8rem;
-        border-radius: var(--radius-full);
-        corner-shape: var(--corner-shape-round, round);
-        background-color: rgb(0 0 0 / 25%);
-        color: #9a9aab;
-        font-family: 'Fira Code', monospace;
-        font-size: 0.75rem;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     /* ------------------------------------------------------------ sections -- */
@@ -733,9 +662,6 @@
         .feature {
             animation: none;
         }
-        .window {
-            transition: none;
-        }
     }
 
     @media (max-width: 1000px) {
@@ -749,9 +675,6 @@
         .hero {
             grid-template-columns: minmax(0, 1fr);
             gap: 2.5rem;
-        }
-        .window {
-            transform: none;
         }
         .intro,
         .links-card {
