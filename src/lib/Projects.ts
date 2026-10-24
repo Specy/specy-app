@@ -27,6 +27,12 @@ export type AppDetails = {
     metaDescription: string;
     /** One line under the app name in the hero */
     tagline: string;
+    /**
+     * The app's own brand color, which its page is themed with. The readable shades
+     * for buttons and text are derived from it in `appAccent.ts`. Separate from
+     * `color`, which the home cards keep sharing.
+     */
+    accent: string;
     /** "What it is", one string per paragraph */
     about: string[];
     /** "Who it is for", one string per item */
@@ -92,6 +98,9 @@ const projects = [
                 'Sky Music Nightly is a free web app to play, practice and compose songs for the Sky: Children of the Light instruments, with MIDI import and sheet export.',
             tagline:
                 'Play, practice and compose songs for the instruments of Sky: Children of the Light.',
+            // The gold of the note and the star in the icon. Both music apps share a
+            // teal theme color, which goes to Genshin Music, so the two stay apart.
+            accent: '#ebd29a',
             about: [
                 'Sky Music Nightly is a free web app for the in-game instruments of Sky: Children of the Light. Each instrument keeps its in-game layout, like the 15 keys of the piano, and you can play it with your computer keyboard, the mouse, a touch screen or a MIDI keyboard.',
                 'Around that keyboard there is a player to learn songs note by note, a composer to write songs with as many instruments as you want, a zen keyboard to play freely, and a rhythm game with its own chart editor.',
@@ -160,6 +169,8 @@ const projects = [
                 'Genshin Music Nightly is a free web app to play, practice and compose songs for the Windsong Lyre, Floral Zither and other Genshin Impact instruments.',
             tagline:
                 'Play, practice and compose songs for the Windsong Lyre, the Floral Zither and the other instruments of Genshin Impact.',
+            // The app's theme color, also the lyre strings in its icon
+            accent: '#63aea7',
             about: [
                 'Genshin Music Nightly is a free web app for the in-game instruments of Genshin Impact, like the Windsong Lyre, the Floral Zither and the Vintage Lyre. Each instrument keeps its in-game layout, like the 21 keys of the lyre, and you can play it with your computer keyboard, the mouse, a touch screen or a MIDI keyboard.',
                 'Around that keyboard there is a player to learn songs note by note, a composer to write songs with as many instruments as you want, a zen keyboard to play freely, and a rhythm game with its own chart editor.',
@@ -228,6 +239,8 @@ const projects = [
                 'ASM Editor is a free web IDE to write, run and debug M68K, MIPS, RISC-V, x86-64 and Z80 assembly, with backwards stepping, courses and exams.',
             tagline:
                 'Write, run and debug M68K, MIPS, RISC-V, x86-64 and Z80 assembly in your browser, and learn it along the way.',
+            // The app's theme color, also the A in its icon
+            accent: '#f2a65a',
             about: [
                 'ASM Editor is a web IDE for assembly, made for learning it. You write a program, run it or step through it one instruction at a time, and see every register and memory value it changes. You can also step backwards, undoing instructions to see what each one did.',
                 'It supports M68K, MIPS, RISC-V, x86-64 and Z80, with documentation for each instruction set, interactive courses, an exam mode for schools and an editor you can embed in your own website. On M68K, MIPS, RISC-V and Z80, programs can also draw on a screen, read the mouse and keyboard and use a terminal.',
@@ -307,6 +320,8 @@ const projects = [
                 'Tokeko is a free web app to learn parsers: write a grammar and see the LR(1) or LALR tables, automaton, parsing steps and parse tree it produces.',
             tagline:
                 'Write a grammar and watch an LR(1) or LALR parser build its tables and parse your input, step by step.',
+            // The nodes of the parse tree in the icon
+            accent: '#903162',
             about: [
                 'Tokeko is a web app for learning how parsers work. You write the grammar of a language, with terminals, non-terminals and regex tokens, and Tokeko builds an LR(1) or LALR parser for it.',
                 'Along the way it shows the FIRST and FOLLOW sets, the automaton as a table and as a graph, and the ACTION and GOTO tables. Give it an input string and it walks through every step the parser takes, then shows the parse tree.',
@@ -378,6 +393,8 @@ const projects = [
                 'ROOC is a modeling language and web platform to write and solve linear and mixed integer optimization models in the browser, also as a Rust and TypeScript library.',
             tagline:
                 'Write linear and mixed integer optimization models in a readable language, and solve them in your browser.',
+            // The accent of the app's own theme, the color of its buttons
+            accent: '#5256a4',
             about: [
                 'ROOC is a modeling language and web platform for linear and mixed integer optimization. You describe a problem by its objective, constraints and variables, and ROOC solves it in your browser with the HiGHS or microlp solvers.',
                 'Models can be built from data, with sets, graphs and iteration. Every step from your source to the solver is visible, which helps to learn how a model is solved and to debug it, and models can be exported in the CPLEX LP format.',
@@ -458,6 +475,8 @@ const projects = [
                 'Learn is a free website of university computer science notes in Italian, from analysis and physics to databases, networks, AI and data mining.',
             tagline:
                 'University computer science notes in Italian, free to read, with math, diagrams and code rendered on the page.',
+            // The accent of the site's own theme, the same as the hub's
+            accent: '#a65ee0',
             about: [
                 "Learn is a public website with Specy's university computer science notes. They are organised by course and by year, from first year analysis and physics to databases, networks, artificial intelligence and data mining, and anyone can read them without signing up.",
                 'The notes are written in Italian. They are kept as an Obsidian vault and published as a static site, with math, diagrams, callouts and code rendered on the page.',

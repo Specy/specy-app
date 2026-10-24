@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { AppPageProject } from '$lib/Projects';
+    import { accentStyle } from '$lib/appAccent';
     import MdArrowRight from '~icons/mdi/arrow-right';
 
     interface Props {
@@ -14,7 +15,7 @@
 <a
     class="app-link"
     href="/apps/{project.id}"
-    style="--app-color: {project.color}; --index: {index}"
+    style="{accentStyle(project.details.accent)}; --index: {index}"
 >
     <img
         src={project.image}
@@ -47,14 +48,21 @@
         animation: rise 0.5s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
         animation-delay: calc(var(--index) * 60ms);
     }
+    /* Each card takes the color of the app it links to, a preview of its page */
     .app-link:hover,
     .app-link:focus-visible {
-        background-color: rgb(31 36 43 / 75%);
-        border-color: var(--app-color);
+        background:
+            linear-gradient(
+                110deg,
+                color-mix(in srgb, var(--app-color) 14%, transparent),
+                transparent 70%
+            ),
+            rgb(31 36 43 / 75%);
+        border-color: color-mix(in srgb, var(--app-color) 70%, transparent);
         transform: translateY(-0.1rem);
     }
     .app-link:focus-visible {
-        outline: 2px solid var(--accent);
+        outline: 2px solid var(--app-color-text);
         outline-offset: 2px;
     }
     .app-link-icon {
@@ -93,7 +101,7 @@
     .app-link:hover .app-link-arrow,
     .app-link:focus-visible .app-link-arrow {
         transform: translateX(0.2rem);
-        color: var(--accent);
+        color: var(--app-color-text);
     }
     @keyframes rise {
         from {

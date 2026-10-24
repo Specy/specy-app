@@ -4,6 +4,7 @@
     import AppLinkCard from '$cmp/AppLinkCard.svelte';
     import { appPageProjects } from '$lib/Projects';
     import { appPageLd } from '$lib/jsonld';
+    import { accentStyle } from '$lib/appAccent';
     import { resolveImagePreviewUrl } from '$lib/imagePreviews.js';
     import MdOpenInNew from '~icons/mdi/open-in-new';
     import MdCheckCircleOutline from '~icons/mdi/check-circle-outline';
@@ -35,7 +36,7 @@
     jsonLd={appPageLd(project)}
 />
 
-<div class="app-page" style="--app-color: {project.color}">
+<div class="app-page" style={accentStyle(details.accent)}>
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/#web-apps">Apps</a>
         <span aria-hidden="true">/</span>
@@ -215,8 +216,15 @@
 </div>
 
 <style lang="scss">
+    /* The custom properties from `accentStyle` theme the whole page in the app's own
+       color: --app-color for glows, tints and lines, --app-color-fill and
+       --app-color-on-fill for buttons, --app-color-text for text and icons. */
     .app-page {
         --glow: color-mix(in srgb, var(--app-color) 55%, transparent);
+        /* Shared components on the page, like the post cards, follow the app too */
+        --accent: var(--app-color-text);
+        position: relative;
+        isolation: isolate;
         width: 100%;
         max-width: 72rem;
         margin: 0 auto;
@@ -224,6 +232,32 @@
         display: flex;
         flex-direction: column;
         gap: 4.5rem;
+    }
+
+    /* The app's color washing over the top of the page, behind the hero. The
+       gradients stop at the closest side so neither is cut off by the box. */
+    .app-page::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 52rem;
+        z-index: -1;
+        pointer-events: none;
+        background:
+            radial-gradient(
+                closest-side at 70% 42%,
+                color-mix(in srgb, var(--app-color) 30%, transparent),
+                transparent
+            ),
+            radial-gradient(
+                closest-side at 22% 30%,
+                color-mix(in srgb, var(--app-color) 16%, transparent),
+                transparent
+            );
+    }
+
+    .app-page ::selection {
+        background-color: color-mix(in srgb, var(--app-color) 45%, transparent);
     }
 
     .breadcrumb {
@@ -238,7 +272,7 @@
         }
         > a:hover,
         > a:focus-visible {
-            color: var(--accent);
+            color: var(--app-color-text);
         }
         > [aria-current] {
             color: #dbdbdb;
@@ -319,18 +353,23 @@
         gap: 0.6rem;
         padding: 0.85rem 1.4rem;
         border-radius: var(--radius-xl);
-        background-color: var(--app-color);
-        color: white;
+        background-color: var(--app-color-fill);
+        color: var(--app-color-on-fill);
         font-size: 1.1rem;
         font-weight: bold;
-        box-shadow: 0 0.8rem 2rem -0.8rem var(--glow);
+        box-shadow:
+            0 0.8rem 2rem -0.8rem var(--glow),
+            inset 0 1px 0 rgb(255 255 255 / 18%);
         transition: all 0.2s;
     }
+    /* Lifts and glows rather than brightening, which would change the contrast the
+       fill and its text were picked for */
     .open-btn:hover,
     .open-btn:focus-visible {
-        filter: brightness(1.15);
         transform: translateY(-0.1rem);
-        box-shadow: 0 1rem 2.4rem -0.6rem var(--glow);
+        box-shadow:
+            0 1rem 2.6rem -0.5rem var(--glow),
+            inset 0 1px 0 rgb(255 255 255 / 18%);
     }
 
     .secondary-btn {
@@ -346,7 +385,11 @@
     }
     .secondary-btn:hover,
     .secondary-btn:focus-visible {
-        background-color: rgb(255 255 255 / 16%);
+        background-color: color-mix(
+            in srgb,
+            var(--app-color) 22%,
+            rgb(255 255 255 / 10%)
+        );
         color: white;
     }
 
@@ -354,7 +397,7 @@
     .secondary-btn:focus-visible,
     .links-list a:focus-visible,
     .breadcrumb > a:focus-visible {
-        outline: 2px solid var(--accent);
+        outline: 2px solid var(--app-color-text);
         outline-offset: 2px;
     }
 
@@ -449,7 +492,11 @@
         height: 3px;
         border-radius: var(--radius-full);
         corner-shape: var(--corner-shape-round, round);
-        background: linear-gradient(90deg, var(--accent), var(--app-color));
+        background: linear-gradient(
+            90deg,
+            var(--app-color-text),
+            var(--app-color)
+        );
     }
 
     .intro {
@@ -479,7 +526,7 @@
             ),
             rgb(31 36 43 / 50%);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px rgb(255 255 255 / 6%);
+        border: solid 1px color-mix(in srgb, var(--app-color) 22%, transparent);
         > ul {
             list-style: none;
             display: flex;
@@ -499,7 +546,7 @@
         width: 1.25rem;
         flex-shrink: 0;
         margin-top: 0.1rem;
-        color: var(--accent);
+        color: var(--app-color-text);
     }
 
     .features {
@@ -512,7 +559,13 @@
         overflow: hidden;
         padding: 1.2rem 1.3rem 1.3rem 1.3rem;
         border-radius: var(--radius-2xl);
-        background-color: rgb(31 36 43 / 50%);
+        background:
+            radial-gradient(
+                circle at 0 0,
+                color-mix(in srgb, var(--app-color) 9%, transparent),
+                transparent 60%
+            ),
+            rgb(31 36 43 / 50%);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
         transition: all 0.2s;
         animation: rise 0.5s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
@@ -530,13 +583,17 @@
     }
     .feature:hover {
         background-color: rgb(31 36 43 / 75%);
+        box-shadow:
+            3px 3px 12px rgb(0 0 0 / 20%),
+            inset 0 0 0 1px
+                color-mix(in srgb, var(--app-color) 30%, transparent);
         transform: translateY(-0.15rem);
     }
     .feature-index {
         font-family: 'Fira Code', monospace;
         font-size: 0.85rem;
         font-weight: 600;
-        color: var(--accent);
+        color: var(--app-color-text);
         opacity: 0.9;
     }
     .feature-title {
@@ -573,7 +630,7 @@
             ),
             rgb(31 36 43 / 50%);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px rgb(255 255 255 / 6%);
+        border: solid 1px color-mix(in srgb, var(--app-color) 22%, transparent);
     }
     .links-list {
         list-style: none;
@@ -590,17 +647,21 @@
             transition: all 0.2s;
         }
         a:hover {
-            background-color: rgb(255 255 255 / 10%);
+            background-color: color-mix(
+                in srgb,
+                var(--app-color) 14%,
+                rgb(255 255 255 / 6%)
+            );
         }
         a:hover .link-external {
-            color: var(--accent);
+            color: var(--app-color-text);
         }
     }
     .link-icon {
         display: flex;
         width: 1.4rem;
         flex-shrink: 0;
-        color: #dbdbdb;
+        color: var(--app-color-text);
     }
     .link-label {
         display: block;
