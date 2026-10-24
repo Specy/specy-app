@@ -82,8 +82,9 @@ export function homePageLd() {
     };
 }
 
-/** A blog post. `datePublished` is the only date the frontmatter carries, so it stands
- *  in for `dateModified` too rather than inventing one. */
+/** A blog post. Most posts are never edited after publishing, so without a
+ *  `dateModified` in the frontmatter `datePublished` stands in for it rather than
+ *  inventing one. */
 export function blogPostingLd(metadata: PostMetadata) {
     const url = toAbsoluteUrl(metadata.url);
     return {
@@ -92,12 +93,14 @@ export function blogPostingLd(metadata: PostMetadata) {
         headline: metadata.title,
         description: metadata.description,
         datePublished: metadata.datePublished,
-        dateModified: metadata.datePublished,
+        dateModified: metadata.dateModified ?? metadata.datePublished,
         image: resolveShareImage(metadata.image).url,
         url,
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
         author: AUTHOR,
         publisher: AUTHOR,
-        ...(metadata.tags?.length ? { keywords: metadata.tags.join(', ') } : {}),
+        ...(metadata.tags?.length
+            ? { keywords: metadata.tags.join(', ') }
+            : {}),
     };
 }

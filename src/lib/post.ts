@@ -1,5 +1,8 @@
 export type PostMetadata = {
     datePublished: string;
+    /** Optional, only for posts edited after publishing. Feeds the sitemap's lastmod
+     *  and the post's JSON-LD; leave it out rather than setting it to datePublished. */
+    dateModified?: string;
     title: string;
     description: string;
     tags: string[];
