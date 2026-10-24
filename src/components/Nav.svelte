@@ -24,6 +24,10 @@
             >
                 Blog
             </a>
+            <a
+                href="/about"
+                style={path === '/about' ? 'color: var(--accent)' : ''}>About</a
+            >
 
             <a
                 href="/donate"
@@ -72,6 +76,11 @@
                 onclick={() => (menuOpen = false)}
                 style={path?.startsWith('/blog') ? 'color: var(--accent)' : ''}
                 >Blog</a
+            >
+            <a
+                href="/about"
+                onclick={() => (menuOpen = false)}
+                style={path === '/about' ? 'color: var(--accent)' : ''}>About</a
             >
             <a
                 href="/donate"
@@ -176,7 +185,7 @@
     .links-mobile.menuOpen {
         opacity: 1;
         border-bottom: solid 2px var(--accent);
-        height: 10rem;
+        height: 12rem;
     }
 
     .links a:hover {

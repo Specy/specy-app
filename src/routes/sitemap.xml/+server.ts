@@ -6,7 +6,7 @@ export const prerender = true;
 
 /** Routes that exist as files rather than as data. `/404` is deliberately absent:
  *  it is a real route in this app but has no business being in a sitemap. */
-const STATIC_PATHS = ['/', '/blog', '/donate'];
+const STATIC_PATHS = ['/', '/about', '/blog', '/donate'];
 
 /** The five characters that are not legal as-is in XML character data. URLs rarely
  *  contain them, but a slug with an `&` would otherwise produce an invalid document

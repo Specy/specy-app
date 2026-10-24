@@ -8,6 +8,7 @@ import { SITE_URL, toAbsoluteUrl, resolveShareImage } from './seo';
 import type { PostMetadata } from './post';
 
 export const PERSON_ID = `${SITE_URL}/#person`;
+const ABOUT_URL = `${SITE_URL}/about`;
 
 /** Schema.org identity reused by every graph on the site, so the author of a post
  *  and the author of an app resolve to the same entity. The `@id` makes the Person
@@ -19,7 +20,10 @@ const AUTHOR = {
     '@id': PERSON_ID,
     name: 'Enrico Menichelli',
     alternateName: 'Specy',
+    // The hub stays the Person's url, the same value every other site gives this
+    // @id; /about is the page that describes the person
     url: SITE_URL,
+    mainEntityOfPage: ABOUT_URL,
     sameAs: [
         'https://github.com/Specy',
         'https://www.npmjs.com/~specy.dev',
@@ -75,6 +79,25 @@ export function appPageLd(project: AppPageProject) {
                 mainEntityOfPage: toAbsoluteUrl(`/apps/${project.id}`),
                 featureList: details.features.map((feature) => feature.title),
                 screenshot: resolveShareImage(details.screenshot.src).url,
+            },
+            AUTHOR,
+        ],
+    };
+}
+
+/** The About page describes the Person, so it is a ProfilePage with the Person as
+ *  its main entity. */
+export function aboutPageLd() {
+    return {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'ProfilePage',
+                '@id': ABOUT_URL,
+                url: ABOUT_URL,
+                name: 'About Specy',
+                isPartOf: { '@id': `${SITE_URL}/#website` },
+                mainEntity: { '@id': PERSON_ID },
             },
             AUTHOR,
         ],
