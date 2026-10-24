@@ -4,14 +4,21 @@ import type { PostMetadata } from './post';
 
 /** Schema.org identity reused by every graph on the site, so the author of a post
  *  and the author of an app resolve to the same entity. The `@id` makes the Person
- *  one node across separate JSON-LD blocks. */
+ *  one node across separate JSON-LD blocks, and the other sites use the same one.
+ *  Every `sameAs` profile was checked to belong to this person: the npm user
+ *  maintains the @specy packages, the crates.io user owns rooc and microlp. */
 const AUTHOR = {
     '@type': 'Person',
     '@id': `${SITE_URL}/#person`,
     name: 'Enrico Menichelli',
     alternateName: 'Specy',
     url: SITE_URL,
-    sameAs: ['https://github.com/Specy'],
+    sameAs: [
+        'https://github.com/Specy',
+        'https://www.npmjs.com/~specy.dev',
+        'https://crates.io/users/Specy',
+        'https://portfolio.specy.app',
+    ],
 } as const;
 
 /**
