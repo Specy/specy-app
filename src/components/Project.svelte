@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { ProjectData } from '$lib/Projects';
     import MdOpenInNew from '~icons/mdi/open-in-new';
+    import MdInformationVariant from '~icons/mdi/information-variant';
     interface Props {
         data: ProjectData;
     }
@@ -18,6 +19,18 @@
         <h3 class="app-title">
             {data.title}
         </h3>
+        <!-- A sibling of the Open link rather than a wrapper around the card, so
+             neither link ends up nested inside the other -->
+        {#if data.details}
+            <a
+                href="/apps/{data.id}"
+                class="info-btn"
+                title="About {data.title}"
+                aria-label="About {data.title}"
+            >
+                <MdInformationVariant />
+            </a>
+        {/if}
     </div>
     <div class="description">
         {data.description}
@@ -52,15 +65,39 @@
     .row {
         display: flex;
         align-items: center;
-        > img {
-            margin-right: 1rem;
-        }
+        gap: 1rem;
         > .app-title {
             font-size: 1rem;
             font-weight: bold;
             margin: 0;
             line-height: inherit;
         }
+    }
+    .info-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        padding: 0.3rem;
+        margin-left: auto;
+        align-self: flex-start;
+        border-radius: var(--radius-full);
+        corner-shape: var(--corner-shape-round, round);
+        color: #dbdbdb;
+        background-color: rgb(255 255 255 / 8%);
+        transition: all 0.2s;
+    }
+    .info-btn:hover,
+    .info-btn:focus-visible {
+        background-color: rgb(255 255 255 / 16%);
+        color: white;
+    }
+    .info-btn:focus-visible,
+    .open-btn:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
     }
     .open-btn {
         width: 100%;

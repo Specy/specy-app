@@ -1,6 +1,13 @@
-import { projects, desktopProjects, type ProjectData } from './Projects';
+import {
+    projects,
+    desktopProjects,
+    type ProjectData,
+    type AppPageProject,
+} from './Projects';
 import { SITE_URL, toAbsoluteUrl, resolveShareImage } from './seo';
 import type { PostMetadata } from './post';
+
+export const PERSON_ID = `${SITE_URL}/#person`;
 
 /** Schema.org identity reused by every graph on the site, so the author of a post
  *  and the author of an app resolve to the same entity. The `@id` makes the Person
@@ -9,7 +16,7 @@ import type { PostMetadata } from './post';
  *  maintains the @specy packages, the crates.io user owns rooc and microlp. */
 const AUTHOR = {
     '@type': 'Person',
-    '@id': `${SITE_URL}/#person`,
+    '@id': PERSON_ID,
     name: 'Enrico Menichelli',
     alternateName: 'Specy',
     url: SITE_URL,
@@ -34,23 +41,43 @@ export function serializeJsonLd(value: unknown) {
 }
 
 /** A web app of mine, described so crawlers and answer engines can state what it is
- *  rather than infer it from the page copy. */
-export function softwareApplicationLd(project: ProjectData) {
+ *  rather than infer it from the page copy. A node meant for a graph that also holds
+ *  the Person, so the author is a reference to it. The repository is what the app is
+ *  built from, not another name for it, hence `isBasedOn` rather than `sameAs`: the
+ *  two music apps share one. */
+function softwareApplicationNode(project: ProjectData) {
     return {
-        '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
         name: project.title,
-        description: project.description,
+        description: project.details?.metaDescription ?? project.description,
         url: project.url,
-        applicationCategory: 'DeveloperApplication',
-        operatingSystem: 'Any (web browser)',
+        ...(project.category ? { applicationCategory: project.category } : {}),
+        operatingSystem: project.operatingSystem ?? 'Any (web browser)',
         offers: {
             '@type': 'Offer',
             price: 0,
             priceCurrency: 'USD',
         },
-        author: AUTHOR,
-        ...(project.github ? { sameAs: [project.github] } : {}),
+        author: { '@id': PERSON_ID },
+        ...(project.github ? { isBasedOn: project.github } : {}),
+    };
+}
+
+/** An app's own page on the hub. The page is about the app, so the app is its main
+ *  entity, with the features and screenshot the page shows. */
+export function appPageLd(project: AppPageProject) {
+    const { details } = project;
+    return {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                ...softwareApplicationNode(project),
+                mainEntityOfPage: toAbsoluteUrl(`/apps/${project.id}`),
+                featureList: details.features.map((feature) => feature.title),
+                screenshot: resolveShareImage(details.screenshot.src).url,
+            },
+            AUTHOR,
+        ],
     };
 }
 
@@ -66,7 +93,7 @@ export function homePageLd() {
                 '@id': `${SITE_URL}/#website`,
                 url: SITE_URL,
                 name: 'Specy',
-                publisher: { '@id': `${SITE_URL}/#person` },
+                publisher: { '@id': PERSON_ID },
             },
             AUTHOR,
             {
@@ -75,7 +102,7 @@ export function homePageLd() {
                 itemListElement: listed.map((project, index) => ({
                     '@type': 'ListItem',
                     position: index + 1,
-                    item: softwareApplicationLd(project),
+                    item: softwareApplicationNode(project),
                 })),
             },
         ],

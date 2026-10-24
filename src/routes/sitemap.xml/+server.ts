@@ -1,5 +1,6 @@
 import { serverGetPosts } from '../blog/postsUtils';
 import { SITE_URL } from '$lib/seo';
+import { appPageProjects } from '$lib/Projects';
 
 export const prerender = true;
 
@@ -37,6 +38,7 @@ export const GET = async () => {
     // crawlers learn to ignore a lastmod that is always new.
     const entries = [
         ...STATIC_PATHS.map((path) => urlEntry(path)),
+        ...appPageProjects.map((project) => urlEntry(`/apps/${project.id}`)),
         ...posts.map((post) =>
             urlEntry(
                 post.url,
