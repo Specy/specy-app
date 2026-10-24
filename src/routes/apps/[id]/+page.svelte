@@ -5,7 +5,6 @@
     import ScreenshotGallery from '$cmp/ScreenshotGallery.svelte';
     import { appPageProjects } from '$lib/Projects';
     import { appPageLd } from '$lib/jsonld';
-    import { accentStyle } from '$lib/appAccent';
     import MdOpenInNew from '~icons/mdi/open-in-new';
     import MdCheckCircleOutline from '~icons/mdi/check-circle-outline';
     import MdBookOpenVariant from '~icons/mdi/book-open-variant';
@@ -32,7 +31,7 @@
     jsonLd={appPageLd(project)}
 />
 
-<div class="app-page" style={accentStyle(details.accent)}>
+<div class="app-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/#web-apps">Apps</a>
         <span aria-hidden="true">/</span>
@@ -203,13 +202,13 @@
 </div>
 
 <style lang="scss">
-    /* The custom properties from `accentStyle` theme the whole page in the app's own
-       color: --app-color for glows, tints and lines, --app-color-fill and
-       --app-color-on-fill for buttons, --app-color-text for text and icons. */
+    /* The root layout's ThemeProvider recolors the whole site for the open app (see
+       `tintTheme`) and sets the `accentStyle` properties used here: --app-color for
+       glows, tints and lines, --app-color-fill and --app-color-on-fill for buttons,
+       --app-color-text for text and icons. --accent is already the app's, so shared
+       components like the post cards follow without help. */
     .app-page {
         --glow: color-mix(in srgb, var(--app-color) 55%, transparent);
-        /* Shared components on the page, like the post cards, follow the app too */
-        --accent: var(--app-color-text);
         position: relative;
         isolation: isolate;
         width: 100%;

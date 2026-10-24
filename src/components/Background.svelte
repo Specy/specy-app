@@ -4,6 +4,8 @@
     import { fromStore } from 'svelte/store';
 
     interface Props {
+        /** Draws the cells in this color instead of the theme's accent, for app pages */
+        color?: string;
         children?: import('svelte').Snippet;
     }
 
@@ -14,7 +16,7 @@
 
     const blur = 8;
     const multiplier = hasFilter ? 5 : 2;
-    let { children }: Props = $props();
+    let { color: tint, children }: Props = $props();
     let canvas = $state<HTMLCanvasElement | null>(null);
     let ctx: CanvasRenderingContext2D | null = $derived(
         canvas?.getContext('2d') ?? null,
@@ -222,7 +224,7 @@
         for (let i = 0; i < 20; i++) {
             matrix = calculateGeneration(matrix);
         }
-        drawCanvas(matrix, ctx!, color?.toHex()!, true);
+        drawCanvas(matrix, ctx!, tint ?? color?.toHex()!, true);
         canvas.animate(
             [
                 { opacity: firstTime ? 0 : hasFilter ? 0.5 : 0.2 },
