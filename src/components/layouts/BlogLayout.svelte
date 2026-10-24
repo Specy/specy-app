@@ -221,12 +221,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-        --paragraph-font: 'Noto Serif';
-        --paragraph-weight: 500;
-        --heading-font: 'Rubik';
-        --heading-weight: 800;
-        --code-font: 'Fira Code';
     }
 
     /* Anchors the hero, which is pulled up to the top of the page */

@@ -25,6 +25,13 @@
     --radius-2xl: calc(0.8rem * var(--radius-scale));
     --radius-3xl: calc(1rem * var(--radius-scale));
     --radius-full: 999px;
+
+    /* The blog's type, whose heading font the app pages share */
+    --paragraph-font: 'Noto Serif';
+    --paragraph-weight: 500;
+    --heading-font: 'Rubik';
+    --heading-weight: 800;
+    --code-font: 'Fira Code';
 }
 
 @supports (corner-shape: squircle) {

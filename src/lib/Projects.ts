@@ -44,9 +44,9 @@ export type AppDetails = {
      * `color`, which the home cards keep sharing.
      */
     accent: string;
-    /** "What it is", one string per paragraph */
+    /** App introduction, one string per paragraph */
     about: string[];
-    /** "Who it is for", one string per item */
+    /** "Who it's for", one string per item */
     audience: string[];
     features: AppFeature[];
     /**
@@ -94,7 +94,7 @@ const projects = [
     {
         title: 'Sky Music Nightly',
         description:
-            'Website to compose and practice music for sky children of the light',
+            'Compose and practice songs for Sky: Children of the Light',
         image: '/images/skyMusicNightly.webp',
         url: 'https://sky-music.specy.app',
         github: 'https://github.com/Specy/genshin-music',
@@ -105,52 +105,52 @@ const projects = [
             metaTitle:
                 'Sky Music Nightly - music app for Sky: Children of the Light | Specy',
             metaDescription:
-                'Sky Music Nightly is a free web app to play, practice and compose songs for the Sky: Children of the Light instruments, with MIDI import and sheet export.',
+                'A free browser app for Sky: Children of the Light instruments, with song practice, multitrack composition, MIDI import and sheet export.',
             tagline:
-                'Play, practice and compose songs for the instruments of Sky: Children of the Light.',
+                'A music player and composer for Sky: Children of the Light.',
             // The gold of the note and the star in the icon. Both music apps share a
             // teal theme color, which goes to Genshin Music, so the two stay apart.
             accent: '#ebd29a',
             about: [
-                'Sky Music Nightly is a free web app for the in-game instruments of Sky: Children of the Light. Each instrument keeps its in-game layout, like the 15 keys of the piano, and you can play it with your computer keyboard, the mouse, a touch screen or a MIDI keyboard.',
-                'Around that keyboard there is a player to learn songs note by note, a composer to write songs with as many instruments as you want, a zen keyboard to play freely, and a rhythm game with its own chart editor.',
-                'It installs as an app for fullscreen and offline use, and the interface is available in 12 languages.',
+                'Sky Music Nightly is a browser app for playing instruments from Sky: Children of the Light. It uses their in-game key layouts, including the 15-key piano. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
+                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor. The zen keyboard lets you play freely.',
+                'You can install the app for fullscreen and offline use. The interface is available in 12 languages.',
             ],
             audience: [
-                'Sky: Children of the Light players who want to learn and practice songs for the in-game instruments',
-                'Composers who write and arrange songs for the game, from scratch or starting from a MIDI file',
-                'Anyone who wants to play the Sky instruments on a computer, a phone or a MIDI keyboard',
+                'Sky players learning songs for the in-game instruments',
+                'Musicians arranging songs for Sky or adapting MIDI files',
+                'Players using a computer, phone or MIDI keyboard',
             ],
             features: [
                 {
                     title: 'Player and practice mode',
                     description:
-                        'Play songs, record your own, or learn one with practice mode, which waits for you to press each note before moving on, or with the approaching circles mode.',
+                        'Play and record songs. Practice mode waits for you to press each note; approaching circles mode uses rings to show when to play.',
                 },
                 {
                     title: 'Composer',
                     description:
-                        'Write songs with as many instruments as you want, each on its own track with its own pitch, and undo any edit. The PRO composer shows every note on a full pitch axis for complex songs.',
+                        'Arrange instruments on separate tracks, adjust their pitch and undo edits. The PRO composer places notes on a pitch grid.',
                 },
                 {
                     title: 'MIDI and audio',
                     description:
-                        'Turn a MIDI file into a song you can edit, export songs back to MIDI, or export them as WAV or MP3 audio.',
+                        'Import MIDI files to edit as songs. Export songs as MIDI, WAV or MP3.',
                 },
                 {
                     title: 'Rhythm game',
                     description:
-                        'Make rhythm game charts with tap and held notes in the VSRG composer, or generate them from your songs, then play them in the VSRG player.',
+                        'Create charts with tap and hold notes in the VSRG composer, or generate charts from songs and play them in the rhythm game.',
                 },
                 {
                     title: 'Zen keyboard and sheets',
                     description:
-                        'Play freely on the zen keyboard, and read or print any song as a sheet in the sheet visualizer.',
+                        'Use the zen keyboard to play freely, or view and print song sheets with the sheet visualizer.',
                 },
                 {
                     title: 'Keybinds, themes and backups',
                     description:
-                        'Rebind the keys, connect a MIDI keyboard, pick or make a theme, and back up your songs.',
+                        'Change key bindings, create or choose a theme, connect a MIDI keyboard and back up your songs.',
                 },
             ],
             screenshots: [
@@ -189,7 +189,7 @@ const projects = [
     },
     {
         title: 'Genshin Music Nightly',
-        description: 'A website to compose and practice music for genshin',
+        description: 'Compose and practice songs for Genshin Impact',
         image: '/images/genshinMusicNightly.png',
         url: 'https://genshin-music.specy.app',
         github: 'https://github.com/Specy/genshin-music',
@@ -200,51 +200,51 @@ const projects = [
             metaTitle:
                 'Genshin Music Nightly - music app for Genshin Impact | Specy',
             metaDescription:
-                'Genshin Music Nightly is a free web app to play, practice and compose songs for the Windsong Lyre, Floral Zither and other Genshin Impact instruments.',
+                'A free browser app for Genshin Impact instruments, including the Windsong Lyre and Floral Zither, with song practice, composition and MIDI import.',
             tagline:
-                'Play, practice and compose songs for the Windsong Lyre, the Floral Zither and the other instruments of Genshin Impact.',
+                'A music player and composer for Genshin Impact instruments.',
             // The app's theme color, also the lyre strings in its icon
             accent: '#63aea7',
             about: [
-                'Genshin Music Nightly is a free web app for the in-game instruments of Genshin Impact, like the Windsong Lyre, the Floral Zither and the Vintage Lyre. Each instrument keeps its in-game layout, like the 21 keys of the lyre, and you can play it with your computer keyboard, the mouse, a touch screen or a MIDI keyboard.',
-                'Around that keyboard there is a player to learn songs note by note, a composer to write songs with as many instruments as you want, a zen keyboard to play freely, and a rhythm game with its own chart editor.',
-                'It is built from the same code as Sky Music Nightly, so both apps get the same tools. It installs as an app for fullscreen and offline use, and the interface is available in 12 languages.',
+                'Genshin Music Nightly is a browser app for playing the Windsong Lyre, Floral Zither, Vintage Lyre and other Genshin Impact instruments. It uses their in-game key layouts, including the 21-key lyre. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
+                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor. The zen keyboard lets you play freely.',
+                'It shares its tools and code with Sky Music Nightly. You can install the app for fullscreen and offline use, and the interface is available in 12 languages.',
             ],
             audience: [
-                'Genshin Impact players who want to learn and practice songs for the lyre, the zither and the other in-game instruments',
-                'Composers who write and arrange songs for the game, from scratch or starting from a MIDI file',
-                'Anyone who wants to play the Genshin instruments on a computer, a phone or a MIDI keyboard',
+                'Genshin players learning songs for the lyre, zither and other instruments',
+                'Musicians arranging songs for Genshin or adapting MIDI files',
+                'Players using a computer, phone or MIDI keyboard',
             ],
             features: [
                 {
                     title: 'Player and practice mode',
                     description:
-                        'Play songs, record your own, or learn one with practice mode, which waits for you to press each note before moving on, or with the approaching circles mode.',
+                        'Play and record songs. Practice mode waits for you to press each note; approaching circles mode uses rings to show when to play.',
                 },
                 {
                     title: 'Composer',
                     description:
-                        'Write songs with as many instruments as you want, each on its own track with its own pitch, and undo any edit. The PRO composer shows every note on a full pitch axis for complex songs.',
+                        'Arrange instruments on separate tracks, adjust their pitch and undo edits. The PRO composer places notes on a pitch grid.',
                 },
                 {
                     title: 'MIDI and audio',
                     description:
-                        'Turn a MIDI file into a song you can edit, export songs back to MIDI, or export them as WAV or MP3 audio.',
+                        'Import MIDI files to edit as songs. Export songs as MIDI, WAV or MP3.',
                 },
                 {
                     title: 'Rhythm game',
                     description:
-                        'Make rhythm game charts with tap and held notes in the VSRG composer, or generate them from your songs, then play them in the VSRG player.',
+                        'Create charts with tap and hold notes in the VSRG composer, or generate charts from songs and play them in the rhythm game.',
                 },
                 {
                     title: 'Zen keyboard and sheets',
                     description:
-                        'Play freely on the zen keyboard, and read or print any song as a sheet in the sheet visualizer.',
+                        'Use the zen keyboard to play freely, or view and print song sheets with the sheet visualizer.',
                 },
                 {
                     title: 'Keybinds, themes and backups',
                     description:
-                        'Rebind the keys, connect a MIDI keyboard, pick or make a theme, and back up your songs.',
+                        'Change key bindings, create or choose a theme, connect a MIDI keyboard and back up your songs.',
                 },
             ],
             screenshots: [
@@ -284,7 +284,7 @@ const projects = [
     {
         title: 'ASM Editor',
         description:
-            'An IDE for assembly in the web. With M68K, MIPS, RISC-V, x86 and Z80 support',
+            'Write and debug M68K, MIPS, RISC-V, x86-64 and Z80 assembly in the browser',
         image: '/images/asmEditor.png',
         url: 'https://asm-editor.specy.app',
         github: 'https://github.com/Specy/asm-editor',
@@ -294,51 +294,51 @@ const projects = [
         details: {
             metaTitle: 'ASM Editor - web IDE for learning assembly | Specy',
             metaDescription:
-                'ASM Editor is a free web IDE to write, run and debug M68K, MIPS, RISC-V, x86-64 and Z80 assembly, with backwards stepping, courses and exams.',
+                'A free browser editor and debugger for M68K, MIPS, RISC-V, x86-64 and Z80 assembly, with backwards stepping, courses and exams.',
             tagline:
-                'Write, run and debug M68K, MIPS, RISC-V, x86-64 and Z80 assembly in your browser, and learn it along the way.',
+                'An editor and debugger for M68K, MIPS, RISC-V, x86-64 and Z80 assembly.',
             // The app's theme color, also the A in its icon
             accent: '#f2a65a',
             about: [
-                'ASM Editor is a web IDE for assembly, made for learning it. You write a program, run it or step through it one instruction at a time, and see every register and memory value it changes. You can also step backwards, undoing instructions to see what each one did.',
-                'It supports M68K, MIPS, RISC-V, x86-64 and Z80, with documentation for each instruction set, interactive courses, an exam mode for schools and an editor you can embed in your own website. On M68K, MIPS, RISC-V and Z80, programs can also draw on a screen, read the mouse and keyboard and use a terminal.',
-                'ASM Editor is described in the paper "ASM Editor: Understanding Language Abstractions Through Assembly Programming", presented at the 2026 IEEE Global Engineering Education Conference (EDUCON) in Cairo.',
+                'ASM Editor lets you write and run assembly in the browser. Step through a program one instruction at a time, inspect registers and memory, or step backwards to undo an instruction.',
+                'It supports M68K, MIPS, RISC-V, x86-64 and Z80, with instruction references and interactive courses. Teachers can create exams and embed the editor in other websites. On M68K, MIPS, RISC-V and Z80, programs can also draw on a screen, read the mouse and keyboard, and use a terminal.',
+                'The project is described in the paper "ASM Editor: Understanding Language Abstractions Through Assembly Programming", presented at the 2026 IEEE Global Engineering Education Conference (EDUCON) in Cairo.',
             ],
             audience: [
-                'Students taking a computer architecture or assembly course',
-                'Teachers and universities who want courses, exams with test cases, or an editor embedded in their own pages',
-                'Anyone curious about how C and C++ turn into assembly',
+                'Students learning computer architecture and assembly',
+                'Teachers preparing lessons, exams or embedded exercises',
+                'Programmers studying the assembly generated from C and C++',
             ],
             features: [
                 {
                     title: 'Step forward and back',
                     description:
-                        'Run the program, step through it, set breakpoints, and undo the execution one instruction at a time to see what each step did.',
+                        'Run a program, set breakpoints or step through instructions. Step backwards to inspect the state before an instruction ran.',
                 },
                 {
                     title: 'Registers, memory and stack',
                     description:
-                        'Changed values are highlighted next to their old ones, function calls build a call stack, and the stack is colored by function frame. Values convert between hex, decimal, signed and unsigned.',
+                        'Register and memory views highlight changes alongside previous values. Inspect the call stack and stack frames, with colors marking each frame. View values as hexadecimal, decimal, signed or unsigned.',
                 },
                 {
                     title: 'Documentation and completion',
                     description:
-                        'Code completion suggests instructions and their valid addressing modes, the documentation explains each instruction with examples, and errors point at the exact problem.',
+                        'Completion suggests instructions and valid addressing modes. The instruction reference includes examples, and errors point to the relevant code.',
                 },
                 {
                     title: 'From C and C++ to assembly',
                     description:
-                        'Compile C or C++ to MIPS or RISC-V assembly with Clang or GCC, and see which assembly each line of C became.',
+                        'Compile C or C++ to MIPS or RISC-V assembly with Clang or GCC. Source mapping shows which instructions came from each line.',
                 },
                 {
                     title: 'Courses',
                     description:
-                        'Interactive courses start from the basics every assembly language shares, then go deeper with one course each for M68K, MIPS, RISC-V, x86-64 and Z80.',
+                        'Start with assembly fundamentals, then follow a course for M68K, MIPS, RISC-V, x86-64 or Z80. Lessons include interactive examples.',
                 },
                 {
                     title: 'Exams, test cases and embeds',
                     description:
-                        'Write test cases with starting registers, memory and expected output, lock the editor down for exams, or embed it in your own website.',
+                        'Define test cases with initial registers, memory and expected output. Restrict editor features for exams or embed the editor in your website.',
                 },
             ],
             screenshots: [
@@ -396,7 +396,7 @@ const projects = [
     },
     {
         title: 'Tokeko',
-        description: 'Interactive LR parsers visualization to learn compilers',
+        description: 'Build LR parsers and inspect how they read an input',
         image: '/images/tokeko.png',
         url: 'https://tokeko.specy.app',
         github: 'https://github.com/Specy/tokeko',
@@ -406,51 +406,50 @@ const projects = [
         details: {
             metaTitle: 'Tokeko - learn LR(1) and LALR parsers | Specy',
             metaDescription:
-                'Tokeko is a free web app to learn parsers: write a grammar and see the LR(1) or LALR tables, automaton, parsing steps and parse tree it produces.',
-            tagline:
-                'Write a grammar and watch an LR(1) or LALR parser build its tables and parse your input, step by step.',
+                'A free LR(1) and LALR parser visualizer. Write a grammar and inspect its automaton, parsing tables, parse trace and resulting tree.',
+            tagline: 'An LR(1) and LALR parser visualizer.',
             // The nodes of the parse tree in the icon
             accent: '#903162',
             about: [
-                'Tokeko is a web app for learning how parsers work. You write the grammar of a language, with terminals, non-terminals and regex tokens, and Tokeko builds an LR(1) or LALR parser for it.',
-                'Along the way it shows the FIRST and FOLLOW sets, the automaton as a table and as a graph, and the ACTION and GOTO tables. Give it an input string and it walks through every step the parser takes, then shows the parse tree.',
-                'Tokeko runs on dotlr, a Rust library for LR(1) and LALR parsers, published on npm as @specy/dotlr.',
+                'Tokeko builds an LR(1) or LALR parser from a grammar you write in the browser. Grammars can include terminals, non-terminals and tokens defined with regular expressions.',
+                'You can inspect the FIRST and FOLLOW sets, automaton states and transitions, and ACTION and GOTO tables. Enter an input string to follow the parse one step at a time and see the resulting tree.',
+                'The parser generator is dotlr, a Rust library also available on npm as @specy/dotlr.',
             ],
             audience: [
-                'Students of a compilers or formal languages course who want to see how parse tables are built',
-                'Teachers who want to show a parser at work, one step at a time',
-                'Anyone designing a small grammar who wants to try it on real input',
+                'Students studying compilers and formal languages',
+                'Teachers demonstrating parser construction and execution',
+                'Developers testing a grammar against sample input',
             ],
             features: [
                 {
                     title: 'LR(1) and LALR parsers',
                     description:
-                        'Build either kind of parser from the same grammar.',
+                        'Build either parser from the same grammar and compare the results.',
                 },
                 {
                     title: 'FIRST and FOLLOW sets',
                     description:
-                        'See the FIRST and FOLLOW set of every symbol in your grammar.',
+                        'Inspect the FIRST and FOLLOW sets for the symbols in your grammar.',
                 },
                 {
                     title: 'Automaton',
                     description:
-                        "Inspect the parser's states and transitions as a table or as a graph.",
+                        'View parser states and transitions in a table or graph.',
                 },
                 {
                     title: 'ACTION and GOTO tables',
                     description:
-                        'The full table the parser follows to decide every move.',
+                        'Inspect the actions and state transitions the parser uses for each input symbol.',
                 },
                 {
                     title: 'Parsing steps and parse tree',
                     description:
-                        'Step through how an input is parsed, click any step for its details, and view the resulting parse tree.',
+                        'Follow the state stack, symbol stack and remaining input at each step. Select a step for details, or inspect the final parse tree.',
                 },
                 {
                     title: 'Editor and TypeScript runner',
                     description:
-                        'Write grammars with completion and clear error messages, then use your parser from TypeScript code that runs in the app.',
+                        'The grammar editor includes completion and error messages. Run TypeScript code in the app to work with the parser and its output.',
                 },
             ],
             screenshots: [
@@ -500,7 +499,8 @@ const projects = [
     },
     {
         title: 'ROOC',
-        description: 'Modeling language to solve MILP problems in the browser',
+        description:
+            'Write and solve linear and mixed integer optimization models',
         image: '/images/rooc.png',
         url: 'https://rooc.specy.app',
         github: 'https://github.com/Specy/rooc',
@@ -510,51 +510,51 @@ const projects = [
         details: {
             metaTitle: 'ROOC - optimization modeling language | Specy',
             metaDescription:
-                'ROOC is a modeling language and web platform to write and solve linear and mixed integer optimization models in the browser, also as a Rust and TypeScript library.',
+                'A language and browser editor for linear and mixed integer optimization, with HiGHS and microlp solvers and libraries for Rust and TypeScript.',
             tagline:
-                'Write linear and mixed integer optimization models in a readable language, and solve them in your browser.',
+                'A language and browser editor for linear and mixed integer optimization.',
             // The accent of the app's own theme, the color of its buttons
             accent: '#5256a4',
             about: [
-                'ROOC is a modeling language and web platform for linear and mixed integer optimization. You describe a problem by its objective, constraints and variables, and ROOC solves it in your browser with the HiGHS or microlp solvers.',
-                'Models can be built from data, with sets, graphs and iteration. Every step from your source to the solver is visible, which helps to learn how a model is solved and to debug it, and models can be exported in the CPLEX LP format.',
-                'The same engine is a Rust crate, rooc, and an npm package, @specy/rooc, both with a type safe builder to write models in code.',
+                'In ROOC, you describe an optimization problem with an objective, constraints and variables. The web editor solves the model in your browser using HiGHS or microlp.',
+                'Models can include data, sets, graphs and iteration. You can inspect each stage of compilation, see the linear model passed to the solver, and export it in CPLEX LP format.',
+                'ROOC is also available as the rooc Rust crate and the @specy/rooc npm package. Both have type safe builders for defining models in code.',
             ],
             audience: [
-                'Students of operations research and combinatorial optimization courses',
-                'Anyone with an optimization problem who would rather describe the goal and the requirements than write an algorithm',
-                'Developers who want to build and solve models from Rust or TypeScript',
+                'Students studying operations research and combinatorial optimization',
+                'People working with linear or mixed integer optimization problems',
+                'Developers building optimization models in Rust or TypeScript',
             ],
             features: [
                 {
-                    title: 'A language for models',
+                    title: 'Modeling language',
                     description:
-                        'Write objectives and constraints with sums, indexed constraints, boolean logic and the abs, min and max blocks.',
+                        'Define objectives and constraints using sums, indexed constraints, boolean logic, abs, min and max.',
                 },
                 {
                     title: 'Data, sets and graphs',
                     description:
-                        'Define the data inside the model and iterate over arrays, sets, and the nodes and edges of graphs.',
+                        'Keep data in the model and iterate over arrays, sets, graph nodes and edges.',
                 },
                 {
                     title: 'Solvers in the browser',
                     description:
-                        'Solve models with HiGHS or microlp without installing anything.',
+                        'Run HiGHS or microlp in the browser, without a local installation.',
                 },
                 {
-                    title: 'A visible pipeline',
+                    title: 'Compilation steps',
                     description:
-                        'Follow the model through each step, from the compiler to the linear model, and see the result of every one.',
+                        'Inspect the output of each stage, from source code to the linear model sent to the solver.',
                 },
                 {
                     title: 'CPLEX LP export',
                     description:
-                        'Export a model in the CPLEX LP format to use it with other tools.',
+                        'Export the linear model in CPLEX LP format for use with other solvers and tools.',
                 },
                 {
-                    title: 'Rust and TypeScript library',
+                    title: 'Rust and TypeScript libraries',
                     description:
-                        'Build models in code with the type safe builders of the rooc crate and the @specy/rooc package.',
+                        'Define and solve models in code with the type safe builders in rooc and @specy/rooc.',
                 },
             ],
             screenshots: [
@@ -623,18 +623,18 @@ const projects = [
         details: {
             metaTitle: 'Learn - university computer science notes | Specy',
             metaDescription:
-                'Learn is a free website of university computer science notes in Italian, from analysis and physics to databases, networks, AI and data mining.',
+                'My university computer science notes in Italian, covering calculus, physics, databases, networks, AI and data mining. Free to read without an account.',
             tagline:
-                'University computer science notes in Italian, free to read, with math, diagrams and code rendered on the page.',
+                'My computer science notes from university, written in Italian.',
             // The accent of the site's own theme, the same as the hub's
             accent: '#a65ee0',
             about: [
-                "Learn is a public website with Specy's university computer science notes. They are organised by course and by year, from first year analysis and physics to databases, networks, artificial intelligence and data mining, and anyone can read them without signing up.",
-                'The notes are written in Italian. They are kept as an Obsidian vault and published as a static site, with math, diagrams, callouts and code rendered on the page.',
+                'Learn is where I publish the notes I took while studying computer science. They are in Italian and organized by course and year, covering subjects from first year calculus and physics to databases, networks, artificial intelligence and data mining. You can read them without an account.',
+                'Alongside lecture notes, there are formula sheets, summaries and exam exercises, with equations, diagrams, callouts and code examples. I keep the notes in an Obsidian vault and publish them as a static site.',
             ],
             audience: [
-                'Computer science students who read Italian and are studying the same subjects',
-                'Anyone who wants to review one of these topics, with formula sheets and exam exercises included',
+                'Computer science students who read Italian',
+                'Readers reviewing these subjects with notes, formula sheets and exam exercises',
             ],
             features: [
                 {
@@ -645,26 +645,26 @@ const projects = [
                 {
                     title: 'Lectures in order',
                     description:
-                        'Each course lists its lectures in the order they were taught, together with formula sheets, summaries and exam exercises.',
+                        'Read lectures in teaching order, with formula sheets, summaries and exam exercises for each course.',
                 },
                 {
-                    title: 'Math',
+                    title: 'Equations',
                     description:
-                        'Formulas are typeset with KaTeX, both inline and as display equations.',
+                        'Inline and display equations are typeset with KaTeX.',
                 },
                 {
                     title: 'Diagrams',
                     description:
-                        'Drawings and diagrams sit next to the text they explain, like the sketches of the physics problems.',
+                        'Diagrams accompany the notes and worked physics problems.',
                 },
                 {
                     title: 'Search',
-                    description: 'Search every note from any page with Ctrl K.',
+                    description: 'Search all notes from any page with Ctrl+K.',
                 },
                 {
                     title: 'Code and themes',
                     description:
-                        'Code blocks are syntax highlighted, in both the light and the dark theme.',
+                        'Code blocks have syntax highlighting. Both light and dark themes are available.',
                 },
             ],
             screenshots: [
@@ -680,7 +680,7 @@ const projects = [
                     alt: 'A light-theme calculus lecture on integration by parts with large typeset integral equations between short explanations.',
                     width: 1440,
                     height: 900,
-                    caption: 'Crisp equations, light theme',
+                    caption: 'Equations in the light theme',
                 },
                 {
                     src: '/images/apps/learn/03-courses.webp',
@@ -694,7 +694,7 @@ const projects = [
                     alt: 'The search dialog opened over the Reti di Calcolatori course page, with the query "routing" and a list of matching lectures and sections with the term highlighted.',
                     width: 1440,
                     height: 900,
-                    caption: 'Instant Ctrl K search',
+                    caption: 'Search with Ctrl+K',
                 },
                 {
                     src: '/images/apps/learn/05-code-light.webp',

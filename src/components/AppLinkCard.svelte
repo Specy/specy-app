@@ -41,9 +41,11 @@
         gap: 0.9rem;
         padding: 0.8rem 1rem;
         border-radius: var(--radius-2xl);
-        background-color: rgb(31 36 43 / 50%);
+        /* The page around can restyle the card through --card-background,
+           --card-background-hover (which replaces the hover tint) and --card-border */
+        background-color: var(--card-background, rgb(31 36 43 / 50%));
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px transparent;
+        border: solid 1px var(--card-border, transparent);
         transition: all 0.2s;
         animation: rise 0.5s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
         animation-delay: calc(var(--index) * 60ms);
@@ -51,13 +53,15 @@
     /* Each card takes the color of the app it links to, a preview of its page */
     .app-link:hover,
     .app-link:focus-visible {
-        background:
+        background: var(
+            --card-background-hover,
             linear-gradient(
                 110deg,
                 color-mix(in srgb, var(--app-color) 14%, transparent),
                 transparent 70%
             ),
-            rgb(31 36 43 / 75%);
+            rgb(31 36 43 / 75%)
+        );
         border-color: color-mix(in srgb, var(--app-color) 70%, transparent);
         transform: translateY(-0.1rem);
     }

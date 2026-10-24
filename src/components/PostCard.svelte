@@ -39,13 +39,20 @@
     .blog-post {
         position: relative;
         isolation: isolate;
-        background-color: rgba(31, 36, 43, 0.5);
+        /* The page around can restyle the card through --card-background,
+           --card-background-hover and --card-border */
+        background-color: var(--card-background, rgba(31, 36, 43, 0.5));
         box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
         padding: 1rem 1.2rem;
         transition: all 0.2s;
         border-radius: var(--radius-2xl);
+        border: solid 1px
+            var(
+                --card-border,
+                color-mix(in srgb, var(--accent) 12%, transparent)
+            );
     }
 
     /* Optional post image, fading from 80% at the top to 0% at the bottom */
@@ -69,7 +76,7 @@
     }
 
     .blog-post:hover {
-        background-color: rgba(31, 36, 43, 0.7);
+        background-color: var(--card-background-hover, rgba(31, 36, 43, 0.7));
         transform: translateY(-0.1rem);
     }
 

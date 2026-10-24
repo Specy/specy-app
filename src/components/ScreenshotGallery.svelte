@@ -375,10 +375,6 @@
 
 <style lang="scss">
     /* Reads the accent custom properties of the app page around it */
-    .gallery {
-        perspective: 1600px;
-    }
-
     .window {
         border-radius: var(--radius-2xl);
         overflow: hidden;
@@ -387,14 +383,6 @@
         box-shadow:
             0 2rem 4rem -1.5rem rgb(0 0 0 / 70%),
             0 0 0 1px rgb(0 0 0 / 30%);
-        transform: rotateY(-7deg) rotateX(3deg);
-        transform-origin: left center;
-        transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.46, 1);
-    }
-    /* :focus-visible rather than :focus-within, so a click does not hold it flat */
-    .gallery:hover .window,
-    .gallery:has(:focus-visible) .window {
-        transform: none;
     }
 
     .window-bar {
@@ -719,12 +707,6 @@
         }
     }
 
-    @media (max-width: 900px) {
-        .window {
-            transform: none;
-        }
-    }
-
     @media (max-width: 650px) {
         .thumbs {
             gap: 0.45rem;
@@ -732,7 +714,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .window,
         .control,
         .thumb,
         .caption {

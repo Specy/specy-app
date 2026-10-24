@@ -28,7 +28,7 @@
 
 <Seo
     title="About Specy - Enrico Menichelli"
-    description="Specy is the online name of Enrico Menichelli, an Italian developer who builds free web apps for learning and music, like ASM Editor, ROOC, Tokeko and the Sky and Genshin music apps."
+    description="Enrico Menichelli, known online as Specy. I build web apps for music and computer science, including ASM Editor, ROOC and Tokeko."
     jsonLd={aboutPageLd()}
 />
 
@@ -38,12 +38,10 @@
             <img src="/images/logo.png" alt="" width="160" height="160" />
         </div>
         <div class="hero-text">
-            <p class="eyebrow">Enrico Menichelli</p>
             <h1 class="hero-title">About Specy</h1>
             <p class="lead">
-                Specy is the online name of Enrico Menichelli, an Italian
-                developer who loves creating apps that help people learn and
-                improve themselves.
+                I'm Enrico Menichelli, an Italian developer. I go by Specy
+                online. I build web apps for music and computer science.
             </p>
             <ul class="profiles">
                 {#each profiles as profile (profile.url)}
@@ -66,8 +64,8 @@
     <section>
         <h2 class="section-title">Apps</h2>
         <p class="text">
-            The apps on specy.app are free to use and run in the browser. Each
-            one has a page with what it does and who it is for.
+            These are the apps I work on. They're free to use and run in the
+            browser.
         </p>
         <div class="apps">
             {#each appPageProjects as project, i (project.id)}
@@ -78,19 +76,19 @@
 
     <section class="university">
         <div>
-            <h2 class="section-title">From university courses to apps</h2>
+            <h2 class="section-title">University projects</h2>
             <p class="text">
-                While studying computer science at the University of L'Aquila,
-                Specy worked with professors on tools that make it easier for
-                students to learn. <a href="/apps/asm-editor">ASM Editor</a>
-                was used to teach the computer architecture course,
-                <a href="/apps/rooc">ROOC</a> was made to help students of the
-                operations research and combinatorial optimization course, and
-                <a href="/apps/tokeko">Tokeko</a> teaches compilers and language theory
-                by letting you write a grammar and watch a parser read it.
+                While studying computer science at the University of L'Aquila, I
+                worked with professors on teaching tools.
+                <a href="/apps/asm-editor">ASM Editor</a> was used in the
+                computer architecture course. I made
+                <a href="/apps/rooc">ROOC</a>
+                for operations research and combinatorial optimization, and
+                <a href="/apps/tokeko">Tokeko</a> for exploring grammars and parsers
+                in compilers and language theory.
             </p>
             <p class="text">
-                Specy's own university notes are published on
+                I publish my own university notes on
                 <a href="/apps/learn">Learn</a>.
             </p>
         </div>
@@ -123,27 +121,26 @@
     <section>
         <h2 class="section-title">Work</h2>
         <p class="text">
-            Specy is co-founder and CPTO at
+            I'm co-founder and CPTO at
             <a href="https://discerns.ai" target="_blank" rel="noreferrer"
                 >Discerns</a
-            >. The blog posts about LLMs and RAG are related to that work.
+            >. Some of my posts about LLMs and RAG come from that work.
         </p>
     </section>
 
     <section>
-        <h2 class="section-title">How the apps are built</h2>
+        <h2 class="section-title">Code and libraries</h2>
         <p class="text">
-            Most of the apps are built with SvelteKit and TypeScript, and ASM
-            Editor and ROOC also run Rust compiled to WebAssembly in the
-            browser. Specy enjoys experimenting with the less common features of
-            the web, like WebAssembly, the Web Audio and Web MIDI APIs, workers
-            and installable web apps.
+            I use SvelteKit and TypeScript for most of these apps. ASM Editor
+            and ROOC also use Rust compiled to WebAssembly. I like working with
+            browser APIs such as Web Audio, Web MIDI and workers, and making
+            apps that can be installed and used offline.
         </p>
         <p class="text">
-            The engines behind the apps are published as libraries: the M68K,
-            MIPS, RISC-V, x86-64 and Z80 emulators that run in ASM Editor, the
-            dotlr parser generator behind Tokeko, and the rooc modeling language
-            and the microlp solver behind ROOC.
+            I publish the emulators used by ASM Editor as libraries for M68K,
+            MIPS, RISC-V, x86-64 and Z80. Other libraries include dotlr, the
+            parser generator used by Tokeko, and rooc and microlp, the modeling
+            language and solver used by ROOC.
         </p>
         <ul class="libraries">
             {#each libraries as library (library.id)}
@@ -162,23 +159,23 @@
             {/each}
         </ul>
         <p class="text">
-            While adding a solver to ROOC, Specy found a soundness bug in the
-            Rust compiler and reported it as
+            While adding a solver to ROOC, I found a soundness bug in the Rust
+            compiler and reported it as
             <a
                 href="https://github.com/rust-lang/rust/issues/132353"
                 target="_blank"
                 rel="noreferrer">rust-lang/rust#132353</a
-            >. The post
+            >. I wrote about it in
             <a href="/blog/posts/a-rustc-soundness-bug-in-the-wild"
                 >A rustc soundness bug in the wild</a
-            > tells the story.
+            >.
         </p>
     </section>
 
     <section>
         <h2 class="section-title">Writing</h2>
         <p class="text">
-            On the <a href="/blog">blog</a>, Specy writes about web development,
+            On my <a href="/blog">blog</a>, I write about web development,
             TypeScript, Rust, CSS, assembly, optimization, AI, analog
             photography and 3D printing.
         </p>
@@ -197,6 +194,10 @@
         display: flex;
         flex-direction: column;
         gap: 4rem;
+        /* Translucent cards, read by this page's cards and by the app cards */
+        --card-background: rgb(255 255 255 / 4%);
+        --card-background-hover: rgb(255 255 255 / 7%);
+        --card-border: color-mix(in srgb, var(--accent) 22%, transparent);
     }
 
     /* ---------------------------------------------------------------- hero -- */
@@ -208,39 +209,20 @@
     }
 
     .hero-logo {
-        position: relative;
         flex-shrink: 0;
         width: 10rem;
         height: 10rem;
         animation: rise 0.7s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
+        /* Round like the logo's own corners, so the outline follows them */
         > img {
-            position: relative;
             width: 100%;
             height: 100%;
-            border-radius: var(--radius-3xl);
+            border-radius: 29%;
+            corner-shape: var(--corner-shape-round, round);
             box-shadow:
                 0 1.5rem 3rem -1rem rgb(0 0 0 / 70%),
                 0 0 0 1px rgb(255 255 255 / 8%);
         }
-    }
-
-    /* A slow turning halo in the site's accent behind the logo */
-    .hero-logo::before {
-        content: '';
-        position: absolute;
-        inset: -1.5rem;
-        border-radius: var(--radius-full);
-        corner-shape: var(--corner-shape-round, round);
-        background: conic-gradient(
-            from 0deg,
-            rgba(var(--RGB-accent), 0.65),
-            transparent 30%,
-            rgba(219, 0, 97, 0.45) 55%,
-            transparent 80%,
-            rgba(var(--RGB-accent), 0.65)
-        );
-        filter: blur(2rem);
-        animation: spin 14s linear infinite;
     }
 
     .hero-text {
@@ -256,20 +238,10 @@
         > :nth-child(3) {
             animation-delay: 160ms;
         }
-        > :nth-child(4) {
-            animation-delay: 240ms;
-        }
-    }
-
-    .eyebrow {
-        font-family: 'Fira Code', monospace;
-        font-size: 0.9rem;
-        letter-spacing: 0.04em;
-        color: var(--accent);
     }
 
     .hero-title {
-        margin-top: 0.4rem;
+        font-family: var(--heading-font), Rubik, sans-serif;
         font-size: 3.6rem;
         font-weight: bold;
         line-height: 1.05;
@@ -315,23 +287,11 @@
 
     /* ------------------------------------------------------------ sections -- */
     .section-title {
-        position: relative;
-        font-size: 1.7rem;
-        font-weight: bold;
+        font-family: var(--heading-font), Rubik, sans-serif;
+        font-size: 2rem;
+        font-weight: var(--heading-weight);
         line-height: 1.2;
         margin-bottom: 1.4rem;
-        padding-bottom: 0.6rem;
-    }
-    .section-title::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 2.5rem;
-        height: 3px;
-        border-radius: var(--radius-full);
-        corner-shape: var(--corner-shape-round, round);
-        background: linear-gradient(90deg, var(--accent), rgb(219, 0, 97));
     }
 
     .text {
@@ -369,15 +329,9 @@
         overflow: hidden;
         padding: 1.4rem 1.5rem;
         border-radius: var(--radius-2xl);
-        background:
-            linear-gradient(
-                160deg,
-                rgba(var(--RGB-accent), 0.18),
-                transparent 60%
-            ),
-            rgb(31 36 43 / 50%);
+        background-color: var(--card-background);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px rgb(255 255 255 / 6%);
+        border: solid 1px var(--card-border);
     }
     .paper-kind {
         display: flex;
@@ -415,7 +369,6 @@
         padding: 0.55rem 0.9rem;
         border-radius: var(--radius-lg);
         background-color: rgb(255 255 255 / 8%);
-        font-weight: bold;
         transition: all 0.2s;
     }
     .paper-link:hover,
@@ -480,15 +433,9 @@
             transform: translateY(0.8rem);
         }
     }
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
 
     @media (prefers-reduced-motion: reduce) {
         .hero-logo,
-        .hero-logo::before,
         .hero-text > * {
             animation: none;
         }
@@ -514,7 +461,6 @@
         .hero-logo {
             width: 6.5rem;
             height: 6.5rem;
-            margin-left: 1rem;
         }
         .hero-title {
             font-size: 2.6rem;

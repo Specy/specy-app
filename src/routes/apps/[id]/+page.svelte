@@ -6,7 +6,6 @@
     import { appPageProjects } from '$lib/Projects';
     import { appPageLd } from '$lib/jsonld';
     import MdOpenInNew from '~icons/mdi/open-in-new';
-    import MdCheckCircleOutline from '~icons/mdi/check-circle-outline';
     import MdBookOpenVariant from '~icons/mdi/book-open-variant';
     import FaGithub from '~icons/fa-brands/github';
     import type { PageData } from './$types';
@@ -32,14 +31,13 @@
 />
 
 <div class="app-page">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/#web-apps">Apps</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{project.title}</span>
-    </nav>
-
     <header class="hero">
         <div class="hero-text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/#web-apps">Apps</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{project.title}</span>
+            </nav>
             <img
                 class="hero-icon"
                 src={project.image}
@@ -83,21 +81,16 @@
 
     <section class="intro">
         <div class="about">
-            <h2 class="section-title">What it is</h2>
+            <h2 class="section-title">About {project.title}</h2>
             {#each details.about as paragraph}
                 <p>{paragraph}</p>
             {/each}
         </div>
         <aside class="audience">
-            <h2 class="section-title">Who it is for</h2>
+            <h2 class="section-title">Who it's for</h2>
             <ul>
                 {#each details.audience as item}
-                    <li>
-                        <span class="audience-icon" aria-hidden="true">
-                            <MdCheckCircleOutline />
-                        </span>
-                        {item}
-                    </li>
+                    <li>{item}</li>
                 {/each}
             </ul>
         </aside>
@@ -108,9 +101,6 @@
         <div class="features">
             {#each details.features as feature, i (feature.title)}
                 <div class="feature" style="--index: {i}">
-                    <span class="feature-index" aria-hidden="true">
-                        {String(i + 1).padStart(2, '0')}
-                    </span>
                     <h3 class="feature-title">{feature.title}</h3>
                     <p class="feature-description">{feature.description}</p>
                 </div>
@@ -209,6 +199,11 @@
        components like the post cards follow without help. */
     .app-page {
         --glow: color-mix(in srgb, var(--app-color) 55%, transparent);
+        /* Translucent cards, read by this page's cards and by the post and app
+           cards it shows */
+        --card-background: rgb(255 255 255 / 4%);
+        --card-background-hover: rgb(255 255 255 / 7%);
+        --card-border: color-mix(in srgb, var(--app-color) 22%, transparent);
         position: relative;
         isolation: isolate;
         width: 100%;
@@ -246,13 +241,20 @@
         background-color: color-mix(in srgb, var(--app-color) 45%, transparent);
     }
 
+    /* The blog's heading font */
+    .hero-title,
+    .section-title,
+    .feature-title {
+        font-family: var(--heading-font), Rubik, sans-serif;
+    }
+
     .breadcrumb {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.95rem;
         color: #9a9aab;
-        margin-bottom: -3rem;
+        margin-bottom: 1.4rem;
         > a {
             transition: color 0.2s;
         }
@@ -291,15 +293,16 @@
         > :nth-child(4) {
             animation-delay: 240ms;
         }
+        > :nth-child(5) {
+            animation-delay: 320ms;
+        }
     }
 
     .hero-icon {
         width: 5rem;
         height: 5rem;
         border-radius: var(--radius-2xl);
-        box-shadow:
-            0 0.6rem 2rem -0.4rem var(--glow),
-            0 0 0 1px rgb(255 255 255 / 8%);
+        box-shadow: 0 0 0 1px rgb(255 255 255 / 8%);
     }
 
     .hero-title {
@@ -342,7 +345,6 @@
         background-color: var(--app-color-fill);
         color: var(--app-color-on-fill);
         font-size: 1.1rem;
-        font-weight: bold;
         box-shadow:
             0 0.8rem 2rem -0.8rem var(--glow),
             inset 0 1px 0 rgb(255 255 255 / 18%);
@@ -404,27 +406,10 @@
 
     /* ------------------------------------------------------------ sections -- */
     .section-title {
-        position: relative;
-        font-size: 1.7rem;
-        font-weight: bold;
+        font-size: 2rem;
+        font-weight: var(--heading-weight);
         line-height: 1.2;
         margin-bottom: 1.4rem;
-        padding-bottom: 0.6rem;
-    }
-    .section-title::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 2.5rem;
-        height: 3px;
-        border-radius: var(--radius-full);
-        corner-shape: var(--corner-shape-round, round);
-        background: linear-gradient(
-            90deg,
-            var(--app-color-text),
-            var(--app-color)
-        );
     }
 
     .intro {
@@ -446,15 +431,9 @@
     .audience {
         padding: 1.4rem 1.5rem;
         border-radius: var(--radius-2xl);
-        background:
-            linear-gradient(
-                160deg,
-                color-mix(in srgb, var(--app-color) 22%, transparent),
-                transparent 60%
-            ),
-            rgb(31 36 43 / 50%);
+        background-color: var(--card-background);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px color-mix(in srgb, var(--app-color) 22%, transparent);
+        border: solid 1px var(--card-border);
         > ul {
             list-style: none;
             display: flex;
@@ -462,19 +441,10 @@
             gap: 0.9rem;
         }
         li {
-            display: flex;
-            gap: 0.7rem;
             font-size: 1.05rem;
             line-height: 1.45;
             color: #dbdbdb;
         }
-    }
-    .audience-icon {
-        display: flex;
-        width: 1.25rem;
-        flex-shrink: 0;
-        margin-top: 0.1rem;
-        color: var(--app-color-text);
     }
 
     .features {
@@ -483,55 +453,21 @@
         gap: 1rem;
     }
     .feature {
-        position: relative;
-        overflow: hidden;
         padding: 1.2rem 1.3rem 1.3rem 1.3rem;
         border-radius: var(--radius-2xl);
-        background:
-            radial-gradient(
-                circle at 0 0,
-                color-mix(in srgb, var(--app-color) 9%, transparent),
-                transparent 60%
-            ),
-            rgb(31 36 43 / 50%);
+        background-color: var(--card-background);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        transition: all 0.2s;
+        border: solid 1px var(--card-border);
         animation: rise 0.5s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
         animation-delay: calc(var(--index) * 70ms);
     }
-    .feature::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--app-color), transparent 80%);
-        opacity: 0.8;
-    }
-    .feature:hover {
-        background-color: rgb(31 36 43 / 75%);
-        box-shadow:
-            3px 3px 12px rgb(0 0 0 / 20%),
-            inset 0 0 0 1px
-                color-mix(in srgb, var(--app-color) 30%, transparent);
-        transform: translateY(-0.15rem);
-    }
-    .feature-index {
-        font-family: 'Fira Code', monospace;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--app-color-text);
-        opacity: 0.9;
-    }
     .feature-title {
-        margin-top: 0.5rem;
-        font-size: 1.15rem;
-        font-weight: bold;
-        line-height: 1.3;
+        font-size: 1.4rem;
+        font-weight: var(--heading-weight);
+        line-height: 1.25;
     }
     .feature-description {
-        margin-top: 0.5rem;
+        margin-top: 0.6rem;
         font-size: 0.98rem;
         line-height: 1.55;
         color: #c9c9d2;
@@ -550,15 +486,13 @@
         gap: 2rem;
         padding: 1.6rem;
         border-radius: var(--radius-3xl);
-        background:
-            radial-gradient(
-                circle at 100% 100%,
-                color-mix(in srgb, var(--app-color) 30%, transparent),
-                transparent 55%
-            ),
-            rgb(31 36 43 / 50%);
+        background: radial-gradient(
+            circle at 100% 100%,
+            color-mix(in srgb, var(--app-color) 30%, transparent),
+            transparent 55%
+        );
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
-        border: solid 1px color-mix(in srgb, var(--app-color) 22%, transparent);
+        border: solid 1px var(--card-border);
     }
     .links-list {
         list-style: none;
@@ -621,7 +555,6 @@
         width: 4rem;
         height: 4rem;
         border-radius: var(--radius-xl);
-        box-shadow: 0 0.6rem 2rem -0.4rem var(--glow);
     }
     .links-cta-host {
         font-family: 'Fira Code', monospace;
@@ -687,7 +620,7 @@
             gap: 3.5rem;
         }
         .breadcrumb {
-            margin-bottom: -2.5rem;
+            margin-bottom: 1.1rem;
         }
         .hero {
             margin-top: 0.5rem;

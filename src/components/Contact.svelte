@@ -3,8 +3,8 @@
     <div class="contact" id="contact">
         <a href="#contact" class="title">Contact me</a>
         <div class="text">
-            If you have any questions, bug reports, suggestions, work proposal,
-            anything, you can contact me at:
+            For questions, bug reports, suggestions or work proposals, you can
+            reach me here:
             <div class="contact-grid">
                 <div>Email:</div>
                 <div class="highlight">specy.dev@gmail.com</div>

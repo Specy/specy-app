@@ -54,6 +54,7 @@
     .project {
         background-color: rgb(31 36 43 / 50%);
         box-shadow: 3px 3px 12px rgb(0 0 0 / 20%);
+        border: solid 1px color-mix(in srgb, var(--accent) 12%, transparent);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
