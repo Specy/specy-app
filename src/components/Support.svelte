@@ -1,49 +1,37 @@
 <script lang="ts">
+    import BeatingHeart from './BeatingHeart.svelte';
+    import DonateButtons from './DonateButtons.svelte';
+
     interface Props {
         style?: string;
-        /** `h1` on /donate, where this block is the page's subject; `h2` elsewhere,
-         *  where it is one section under the page's own heading. */
-        titleLevel?: 'h1' | 'h2';
     }
 
-    let { style = '', titleLevel = 'h2' }: Props = $props();
+    let { style = '' }: Props = $props();
+    // The heart beats while a donate button is hovered or focused, as on /donate
+    let heartBeating = $state(false);
 </script>
 
 <div class="wrapper" {style}>
     <div class="support" id="donate">
-        <svelte:element this={titleLevel} class="title">
-            {#if titleLevel === 'h1'}
-                Support Me
-            {:else}
-                <a href="/donate">Support Me</a>
-            {/if}
-        </svelte:element>
+        <h2 class="title">
+            <a href="/donate">Support my apps</a>
+            <span class="title-heart"
+                ><BeatingHeart beating={heartBeating} /></span
+            >
+        </h2>
         <div class="text">
-            Each App I develop takes months of learning and development. Added
-            to that are also the costs of hosting. With a higher budget I can
-            afford to not worry so much about how much I spend on the server,
-            giving you the best possible experience.<br />I care about giving
-            users all features without having to pay for it, neither having
-            intrusive ads which can be annoying.
-            <br /><br />
-            I would be really thankful if you could consider donating in order to
-            fund development and costs.
+            <p>
+                My apps are free to use, with every feature included and no
+                intrusive ads. Each app takes months of learning and development,
+                and donations go toward the time I spend building them.
+            </p>
+            <p>
+                I'm really thankful for any help in funding the development of
+                the apps.
+            </p>
         </div>
-        <div class="donation-wrapper">
-            <a
-                href="https://ko-fi.com/specy"
-                target="_blank"
-                class="donation-img"
-            >
-                <img src="/images/kofi.png" alt="kofi" />
-            </a>
-            <a
-                href="https://paypal.me/specyDev"
-                target="_blank"
-                class="donation-img"
-            >
-                <img src="/images/paypalme.png" alt="paypal" />
-            </a>
+        <div class="buttons">
+            <DonateButtons bind:active={heartBeating} />
         </div>
     </div>
 </div>
@@ -58,43 +46,36 @@
 
     .support {
         max-width: 50rem;
+        width: min(100%, 50rem);
         display: flex;
         flex-direction: column;
+        gap: 1rem;
         align-items: flex-start;
-        > .text {
-            color: #dbdbdb;
-            margin: 1rem;
-            line-height: 1.4;
-            font-size: 1.1rem;
-        }
     }
     .title {
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
         font-size: 1.6rem;
         font-weight: bold;
         margin: 0;
         line-height: inherit;
     }
-    .donation-wrapper {
+    .title-heart {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        width: 1em;
+        height: 1em;
+    }
+    .text {
+        color: #dbdbdb;
+        line-height: 1.4;
+        font-size: 1.1rem;
+        > p + p {
+            margin-top: 0.8rem;
+        }
+    }
+    .buttons {
         width: 100%;
-        justify-content: space-around;
-        margin-top: 2rem;
-    }
-    .donation-wrapper a {
         margin-top: 0.5rem;
-    }
-    .donation-img {
-        height: 4rem;
-        display: flex;
-        justify-content: center;
-        background-color: #efefef;
-        border-radius: var(--radius-2xl);
-        padding: 0 1rem;
-        align-items: center;
-    }
-    .donation-img img {
-        height: 3rem;
     }
 </style>

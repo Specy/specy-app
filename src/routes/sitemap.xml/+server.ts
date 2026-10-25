@@ -1,11 +1,12 @@
 import { serverGetPosts } from '../blog/postsUtils';
 import { SITE_URL } from '$lib/seo';
+import { appPageProjects } from '$lib/Projects';
 
 export const prerender = true;
 
-/** Routes that exist as files rather than as data. `/404` is deliberately absent —
+/** Routes that exist as files rather than as data. `/404` is deliberately absent:
  *  it is a real route in this app but has no business being in a sitemap. */
-const STATIC_PATHS = ['/', '/blog', '/donate'];
+const STATIC_PATHS = ['/', '/about', '/blog', '/donate'];
 
 /** The five characters that are not legal as-is in XML character data. URLs rarely
  *  contain them, but a slug with an `&` would otherwise produce an invalid document
@@ -19,6 +20,10 @@ function escapeXml(value: string) {
         .replace(/'/g, '&apos;');
 }
 
+function toSitemapDate(date: string) {
+    return new Date(date).toISOString().slice(0, 10);
+}
+
 function urlEntry(path: string, lastmod?: string) {
     const loc = escapeXml(`${SITE_URL}${path}`);
     return `        <url>
@@ -28,16 +33,16 @@ function urlEntry(path: string, lastmod?: string) {
 
 export const GET = async () => {
     const posts = await serverGetPosts();
-    // Build date stands in for pages with no content date of their own. Posts carry a
-    // real one, so their lastmod means something.
-    const buildDate = new Date().toISOString().slice(0, 10);
-
+    // Only posts carry a date of their own. Every other page gets no lastmod at all:
+    // stamping them with the build date would claim a change on every deploy, and
+    // crawlers learn to ignore a lastmod that is always new.
     const entries = [
-        ...STATIC_PATHS.map((path) => urlEntry(path, buildDate)),
+        ...STATIC_PATHS.map((path) => urlEntry(path)),
+        ...appPageProjects.map((project) => urlEntry(`/apps/${project.id}`)),
         ...posts.map((post) =>
             urlEntry(
                 post.url,
-                new Date(post.datePublished).toISOString().slice(0, 10),
+                toSitemapDate(post.dateModified ?? post.datePublished),
             ),
         ),
     ];

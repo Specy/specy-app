@@ -1,17 +1,37 @@
-import { projects, desktopProjects, type ProjectData } from './Projects';
+import {
+    projects,
+    desktopProjects,
+    type ProjectData,
+    type AppPageProject,
+} from './Projects';
 import { SITE_URL, toAbsoluteUrl, resolveShareImage } from './seo';
 import type { PostMetadata } from './post';
 
+export const PERSON_ID = `${SITE_URL}/#person`;
+const ABOUT_URL = `${SITE_URL}/about`;
+
 /** Schema.org identity reused by every graph on the site, so the author of a post
  *  and the author of an app resolve to the same entity. The `@id` makes the Person
- *  one node across separate JSON-LD blocks. */
+ *  one node across separate JSON-LD blocks, and the other sites use the same one.
+ *  Every `sameAs` profile was checked to belong to this person: the GitHub profile
+ *  links the LinkedIn one, the npm user maintains the @specy packages, the crates.io
+ *  user owns rooc and microlp. */
 const AUTHOR = {
     '@type': 'Person',
-    '@id': `${SITE_URL}/#person`,
+    '@id': PERSON_ID,
     name: 'Enrico Menichelli',
     alternateName: 'Specy',
+    // The hub stays the Person's url, the same value every other site gives this
+    // @id; /about is the page that describes the person
     url: SITE_URL,
-    sameAs: ['https://github.com/Specy'],
+    mainEntityOfPage: ABOUT_URL,
+    sameAs: [
+        'https://github.com/Specy',
+        'https://www.linkedin.com/in/enrico-menichelli-5862a4211',
+        'https://www.npmjs.com/~specy.dev',
+        'https://crates.io/users/Specy',
+        'https://portfolio.specy.app',
+    ],
 } as const;
 
 /**
@@ -27,23 +47,67 @@ export function serializeJsonLd(value: unknown) {
 }
 
 /** A web app of mine, described so crawlers and answer engines can state what it is
- *  rather than infer it from the page copy. */
-export function softwareApplicationLd(project: ProjectData) {
+ *  rather than infer it from the page copy. A node meant for a graph that also holds
+ *  the Person, so the author is a reference to it. The repository is what the app is
+ *  built from, not another name for it, hence `isBasedOn` rather than `sameAs`: the
+ *  two music apps share one. */
+function softwareApplicationNode(project: ProjectData) {
     return {
-        '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
         name: project.title,
-        description: project.description,
+        description: project.details?.metaDescription ?? project.description,
         url: project.url,
-        applicationCategory: 'DeveloperApplication',
-        operatingSystem: 'Any (web browser)',
+        ...(project.category ? { applicationCategory: project.category } : {}),
+        operatingSystem: project.operatingSystem ?? 'Any (web browser)',
         offers: {
             '@type': 'Offer',
             price: 0,
             priceCurrency: 'USD',
         },
-        author: AUTHOR,
-        ...(project.github ? { sameAs: [project.github] } : {}),
+        author: { '@id': PERSON_ID },
+        ...(project.github ? { isBasedOn: project.github } : {}),
+    };
+}
+
+/** An app's own page on the hub. The page is about the app, so the app is its main
+ *  entity, with the features and screenshots the page shows. Each screenshot is the
+ *  same preview image the page displays, with its caption or alt text. */
+export function appPageLd(project: AppPageProject) {
+    const { details } = project;
+    return {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                ...softwareApplicationNode(project),
+                mainEntityOfPage: toAbsoluteUrl(`/apps/${project.id}`),
+                featureList: details.features.map((feature) => feature.title),
+                screenshot: details.screenshots.map((screenshot) => ({
+                    '@type': 'ImageObject',
+                    url: resolveShareImage(screenshot.src).url,
+                    caption: screenshot.caption ?? screenshot.alt,
+                })),
+            },
+            AUTHOR,
+        ],
+    };
+}
+
+/** The About page describes the Person, so it is a ProfilePage with the Person as
+ *  its main entity. */
+export function aboutPageLd() {
+    return {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'ProfilePage',
+                '@id': ABOUT_URL,
+                url: ABOUT_URL,
+                name: 'About Specy',
+                isPartOf: { '@id': `${SITE_URL}/#website` },
+                mainEntity: { '@id': PERSON_ID },
+            },
+            AUTHOR,
+        ],
     };
 }
 
@@ -59,7 +123,7 @@ export function homePageLd() {
                 '@id': `${SITE_URL}/#website`,
                 url: SITE_URL,
                 name: 'Specy',
-                publisher: { '@id': `${SITE_URL}/#person` },
+                publisher: { '@id': PERSON_ID },
             },
             AUTHOR,
             {
@@ -68,15 +132,16 @@ export function homePageLd() {
                 itemListElement: listed.map((project, index) => ({
                     '@type': 'ListItem',
                     position: index + 1,
-                    item: softwareApplicationLd(project),
+                    item: softwareApplicationNode(project),
                 })),
             },
         ],
     };
 }
 
-/** A blog post. `datePublished` is the only date the frontmatter carries, so it stands
- *  in for `dateModified` too rather than inventing one. */
+/** A blog post. Most posts are never edited after publishing, so without a
+ *  `dateModified` in the frontmatter `datePublished` stands in for it rather than
+ *  inventing one. */
 export function blogPostingLd(metadata: PostMetadata) {
     const url = toAbsoluteUrl(metadata.url);
     return {
@@ -85,12 +150,14 @@ export function blogPostingLd(metadata: PostMetadata) {
         headline: metadata.title,
         description: metadata.description,
         datePublished: metadata.datePublished,
-        dateModified: metadata.datePublished,
+        dateModified: metadata.dateModified ?? metadata.datePublished,
         image: resolveShareImage(metadata.image).url,
         url,
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
         author: AUTHOR,
         publisher: AUTHOR,
-        ...(metadata.tags?.length ? { keywords: metadata.tags.join(', ') } : {}),
+        ...(metadata.tags?.length
+            ? { keywords: metadata.tags.join(', ') }
+            : {}),
     };
 }

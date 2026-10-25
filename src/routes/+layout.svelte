@@ -15,6 +15,15 @@
 
     let { children }: Props = $props();
 
+    // An app page wears its app's color across the whole site, not only in its own
+    // content: the theme (background, nav, footer, accents) and the animated
+    // background are recolored while it is open. In the layout because those live here.
+    let appAccent = $derived<string | undefined>(
+        page.route.id === '/apps/[id]'
+            ? page.data.project?.details?.accent
+            : undefined,
+    );
+
     onMount(() => {
         themeStorage.load();
     });
@@ -31,10 +40,11 @@
 
 <ThemeProvider
     theme={currentTheme}
+    accent={appAccent}
     style="color: var(--primary-text); flex: 1; background-color: var(--background);"
 >
     <ErrorLogger>
-        <Background>
+        <Background color={appAccent}>
             <Nav />
             <PageTransition refresh={page.url.pathname}>
                 {@render children?.()}
