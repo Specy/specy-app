@@ -1,9 +1,20 @@
 <script lang="ts">
     //Easter egg: a barely visible tea cup that morphs into a big beating heart when clicked.
-    type Segment = [number, number, number, number, number, number];
+    import {
+        BEAT_MS,
+        FLUSH_COLOR,
+        HEART_COLOR,
+        HEART_SEGMENTS,
+        HEART_START,
+        SWOLLEN_SEGMENTS,
+        SWOLLEN_START,
+        mix,
+        swellAt,
+        type Segment,
+    } from '$lib/heart';
 
-    //Every silhouette is built from the same six cubic segments, walked clockwise from the
-    //top center, so any two of them can be interpolated point by point to morph between.
+    //The cup is drawn with the same six cubic segments as the heart, walked clockwise
+    //from the top center, so the two can be interpolated point by point to morph between.
     const CUP_START: [number, number] = [50, 36];
     const CUP_SEGMENTS: Segment[] = [
         [62, 36, 74, 34, 82, 32],
@@ -14,38 +25,12 @@
         [26, 34, 38, 36, 50, 36],
     ];
 
-    //the heart at rest
-    const HEART_START: [number, number] = [50, 24];
-    const HEART_SEGMENTS: Segment[] = [
-        [53, 18, 60, 10, 70, 10],
-        [80, 10, 92, 18, 92, 34],
-        [92, 55, 68, 72, 50, 86],
-        [32, 72, 8, 55, 8, 34],
-        [8, 18, 20, 10, 30, 10],
-        [40, 10, 47, 18, 50, 24],
-    ];
-
-    //the same heart at the top of a beat: swollen and rounder, the lobes filling more
-    //than the apex, so a beat is an actual change of shape and not the whole icon zooming
-    const SWOLLEN_START: [number, number] = [50, 21];
-    const SWOLLEN_SEGMENTS: Segment[] = [
-        [53, 14, 62, 6, 73, 6],
-        [84, 6, 96, 14, 96, 33],
-        [96, 56, 70, 74, 50, 89],
-        [30, 74, 4, 56, 4, 33],
-        [4, 14, 16, 6, 27, 6],
-        [38, 6, 47, 14, 50, 21],
-    ];
-
     const MORPH_MS = 1100;
-    const BEAT_MS = 820; //~73bpm
     const BEATS = 2;
     const MORPH_END = MORPH_MS;
     const BEATS_END = MORPH_END + BEAT_MS * BEATS;
     const TOTAL_MS = BEATS_END + MORPH_MS;
 
-    const HEART_COLOR: [number, number, number] = [214, 48, 79];
-    const FLUSH_COLOR: [number, number, number] = [240, 74, 104];
     const IDLE_OPACITY = 0.15;
     const HEART_OPACITY = 0.98;
 
@@ -56,10 +41,6 @@
     let cupOnlyScale = $state(1);
     let animatedStyle = $state('');
     let playing = false;
-
-    function mix(from: number, to: number, t: number) {
-        return from + (to - from) * t;
-    }
 
     //t = 0 is the tea cup, t = 1 is the resting heart, swell expands that heart
     function shapeAt(t: number, swell = 0) {
@@ -81,29 +62,6 @@
 
     function easeInOut(t: number) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    //a single muscle twitch: snaps into the beat, releases out of it more slowly
-    function twitch(u: number, rise: number, fall: number) {
-        if (u <= 0 || u >= rise + fall) return 0;
-        if (u < rise) {
-            const x = u / rise;
-            return x * x * (3 - 2 * x);
-        }
-        const x = (u - rise) / fall;
-        return (1 - x) * (1 - x) * (1 + 2 * x);
-    }
-
-    //one cardiac cycle over u = 0..1: the "lub" that throws the heart wide open, the
-    //shorter, weaker "dub" behind it, then a long diastole where it settles back and
-    //recoils a little under its resting size before the next beat. The negative tail is
-    //what keeps it breathing rather than reading as a bouncing icon.
-    function swellAt(u: number) {
-        return (
-            0.62 * twitch(u, 0.07, 0.2) +
-            0.3 * twitch(u - 0.26, 0.05, 0.16) -
-            0.14 * twitch(u - 0.46, 0.16, 0.3)
-        );
     }
 
     function parseRgb(color: string): [number, number, number] {

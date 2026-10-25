@@ -389,7 +389,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 0.55rem 0.8rem;
+        padding: 0.4rem 0.8rem;
         background-color: #232833;
         border-bottom: solid 1px rgb(255 255 255 / 6%);
     }
@@ -408,7 +408,7 @@
         flex: 1;
         max-width: 18rem;
         margin: 0 auto;
-        padding: 0.2rem 0.8rem;
+        padding: 0.12rem 0.8rem;
         border-radius: var(--radius-full);
         corner-shape: var(--corner-shape-round, round);
         background-color: rgb(0 0 0 / 25%);

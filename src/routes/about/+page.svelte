@@ -5,6 +5,7 @@
     import { appPageProjects, libraries } from '$lib/Projects';
     import { aboutPageLd } from '$lib/jsonld';
     import FaGithub from '~icons/fa-brands/github';
+    import FaLinkedin from '~icons/fa-brands/linkedin';
     import FaNpm from '~icons/fa-brands/npm';
     import FaCube from '~icons/fa-solid/cube';
     import MdWeb from '~icons/mdi/web';
@@ -16,6 +17,11 @@
     // The same profiles the Person's sameAs lists, each one checked to be Specy's
     const profiles = [
         { label: 'GitHub', url: 'https://github.com/Specy', icon: FaGithub },
+        {
+            label: 'LinkedIn',
+            url: 'https://www.linkedin.com/in/enrico-menichelli-5862a4211',
+            icon: FaLinkedin,
+        },
         { label: 'npm', url: 'https://www.npmjs.com/~specy.dev', icon: FaNpm },
         {
             label: 'crates.io',
@@ -76,7 +82,7 @@
 
     <section class="university">
         <div>
-            <h2 class="section-title">University projects</h2>
+            <h2 class="section-title">Projects for Universities</h2>
             <p class="text">
                 While studying computer science at the University of L'Aquila, I
                 worked with professors on teaching tools.
@@ -133,8 +139,9 @@
         <p class="text">
             I use SvelteKit and TypeScript for most of these apps. ASM Editor
             and ROOC also use Rust compiled to WebAssembly. I like working with
-            browser APIs such as Web Audio, Web MIDI and workers, and making
-            apps that can be installed and used offline.
+            browser APIs such as Web Audio, Web MIDI and workers. I heavily use WASM
+            to push what can be done on the web. All the apps work offline and
+            save data on your browser.
         </p>
         <p class="text">
             I publish the emulators used by ASM Editor as libraries for M68K,
@@ -158,18 +165,6 @@
                 </li>
             {/each}
         </ul>
-        <p class="text">
-            While adding a solver to ROOC, I found a soundness bug in the Rust
-            compiler and reported it as
-            <a
-                href="https://github.com/rust-lang/rust/issues/132353"
-                target="_blank"
-                rel="noreferrer">rust-lang/rust#132353</a
-            >. I wrote about it in
-            <a href="/blog/posts/a-rustc-soundness-bug-in-the-wild"
-                >A rustc soundness bug in the wild</a
-            >.
-        </p>
     </section>
 
     <section>
@@ -213,12 +208,10 @@
         width: 10rem;
         height: 10rem;
         animation: rise 0.7s backwards cubic-bezier(0.2, 0.7, 0.46, 1);
-        /* Round like the logo's own corners, so the outline follows them */
         > img {
             width: 100%;
             height: 100%;
-            border-radius: 29%;
-            corner-shape: var(--corner-shape-round, round);
+            border-radius: var(--radius-icon);
             box-shadow:
                 0 1.5rem 3rem -1rem rgb(0 0 0 / 70%),
                 0 0 0 1px rgb(255 255 255 / 8%);

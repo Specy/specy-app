@@ -301,7 +301,7 @@
     .hero-icon {
         width: 5rem;
         height: 5rem;
-        border-radius: var(--radius-2xl);
+        border-radius: var(--radius-icon);
         box-shadow: 0 0 0 1px rgb(255 255 255 / 8%);
     }
 
@@ -554,7 +554,7 @@
     .links-cta-icon {
         width: 4rem;
         height: 4rem;
-        border-radius: var(--radius-xl);
+        border-radius: var(--radius-icon);
     }
     .links-cta-host {
         font-family: 'Fira Code', monospace;

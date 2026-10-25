@@ -25,6 +25,10 @@
     --radius-2xl: calc(0.8rem * var(--radius-scale));
     --radius-3xl: calc(1rem * var(--radius-scale));
     --radius-full: 999px;
+    /* app icons and the logo: the logo's own round corner, relative to the
+     * icon's size. Scaled for squircle it passes 50%, which the browser caps,
+     * so every icon becomes a full squircle */
+    --radius-icon: calc(29.3% * var(--radius-scale));
 
     /* The blog's type, whose heading font the app pages share */
     --paragraph-font: 'Noto Serif';

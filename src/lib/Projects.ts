@@ -105,15 +105,15 @@ const projects = [
             metaTitle:
                 'Sky Music Nightly - music app for Sky: Children of the Light | Specy',
             metaDescription:
-                'A free browser app for Sky: Children of the Light instruments, with song practice, multitrack composition, MIDI import and sheet export.',
+                'A free browser app for Sky: Children of the Light instruments, with song practice, multitrack song composition, MIDI import and sheet export.',
             tagline:
                 'A music player and composer for Sky: Children of the Light.',
             // The gold of the note and the star in the icon. Both music apps share a
             // teal theme color, which goes to Genshin Music, so the two stay apart.
             accent: '#ebd29a',
             about: [
-                'Sky Music Nightly is a browser app for playing instruments from Sky: Children of the Light. It uses their in-game key layouts, including the 15-key piano. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
-                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor. The zen keyboard lets you play freely.',
+                'Sky Music Nightly is a browser app for playing instruments from Sky: Children of the Light. It uses their in-game key layouts so you can learn how to play them and try it in the game. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
+                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor.',
                 'You can install the app for fullscreen and offline use. The interface is available in 12 languages.',
             ],
             audience: [
@@ -125,17 +125,17 @@ const projects = [
                 {
                     title: 'Player and practice mode',
                     description:
-                        'Play and record songs. Practice mode waits for you to press each note; approaching circles mode uses rings to show when to play.',
+                        'Play and record songs in any instrument. With the practice mode you can learn how to play a song, it is an interactive tool that shows you how to play the song and waits for you to copy it correctly.',
                 },
                 {
                     title: 'Composer',
                     description:
-                        'Arrange instruments on separate tracks, adjust their pitch and undo edits. The PRO composer places notes on a pitch grid.',
+                        'Arrange instruments on separate tracks, adjust their pitch and set effects. Use the easy to use Sky keyboard layout or use the PRO composer for a full music editor.',
                 },
                 {
                     title: 'MIDI and audio',
                     description:
-                        'Import MIDI files to edit as songs. Export songs as MIDI, WAV or MP3.',
+                        'Import MIDI files to create music sheets using the 15 key layout. Export songs as MIDI, WAV or MP3.',
                 },
                 {
                     title: 'Rhythm game',
@@ -148,9 +148,9 @@ const projects = [
                         'Use the zen keyboard to play freely, or view and print song sheets with the sheet visualizer.',
                 },
                 {
-                    title: 'Keybinds, themes and backups',
+                    title: 'Keybinds and themes',
                     description:
-                        'Change key bindings, create or choose a theme, connect a MIDI keyboard and back up your songs.',
+                        'Change key bindings, create or choose a theme, connect a MIDI keyboard.',
                 },
             ],
             screenshots: [
@@ -200,15 +200,15 @@ const projects = [
             metaTitle:
                 'Genshin Music Nightly - music app for Genshin Impact | Specy',
             metaDescription:
-                'A free browser app for Genshin Impact instruments, including the Windsong Lyre and Floral Zither, with song practice, composition and MIDI import.',
+                'A free browser app for Genshin Impact instruments, including the Windsong Lyre and Floral Zither, with song practice, multitrack song composition, MIDI import and sheet export.',
             tagline:
                 'A music player and composer for Genshin Impact instruments.',
             // The app's theme color, also the lyre strings in its icon
             accent: '#63aea7',
             about: [
-                'Genshin Music Nightly is a browser app for playing the Windsong Lyre, Floral Zither, Vintage Lyre and other Genshin Impact instruments. It uses their in-game key layouts, including the 21-key lyre. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
-                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor. The zen keyboard lets you play freely.',
-                'It shares its tools and code with Sky Music Nightly. You can install the app for fullscreen and offline use, and the interface is available in 12 languages.',
+                'Genshin Music Nightly is a browser app for playing the Windsong Lyre, Floral Zither, Vintage Lyre and other Genshin Impact instruments. It uses their in-game key layouts so you can learn how to play them and try it in the game. You can play with a computer keyboard, mouse, touch screen or MIDI keyboard.',
+                'It includes a song player, practice modes, a composer with multiple instrument tracks and a rhythm game with a chart editor.',
+                'You can install the app for fullscreen and offline use, and the interface is available in 12 languages.',
             ],
             audience: [
                 'Genshin players learning songs for the lyre, zither and other instruments',
@@ -219,17 +219,17 @@ const projects = [
                 {
                     title: 'Player and practice mode',
                     description:
-                        'Play and record songs. Practice mode waits for you to press each note; approaching circles mode uses rings to show when to play.',
+                        'Play and record songs with any instrument. Practice mode is an interactive tool that shows you how to play a song and waits for you to copy it correctly.',
                 },
                 {
                     title: 'Composer',
                     description:
-                        'Arrange instruments on separate tracks, adjust their pitch and undo edits. The PRO composer places notes on a pitch grid.',
+                        'Arrange instruments on separate tracks, adjust their pitch and set effects. Use the Genshin keyboard layout for easy editing or use the PRO composer for a full music editor.',
                 },
                 {
                     title: 'MIDI and audio',
                     description:
-                        'Import MIDI files to edit as songs. Export songs as MIDI, WAV or MP3.',
+                        'Import MIDI files to create music sheets using the 21-key layout. Export songs as MIDI, WAV or MP3.',
                 },
                 {
                     title: 'Rhythm game',
@@ -242,9 +242,9 @@ const projects = [
                         'Use the zen keyboard to play freely, or view and print song sheets with the sheet visualizer.',
                 },
                 {
-                    title: 'Keybinds, themes and backups',
+                    title: 'Keybinds and themes',
                     description:
-                        'Change key bindings, create or choose a theme, connect a MIDI keyboard and back up your songs.',
+                        'Change key bindings, create or choose a theme, connect a MIDI keyboard.',
                 },
             ],
             screenshots: [
@@ -301,7 +301,8 @@ const projects = [
             accent: '#f2a65a',
             about: [
                 'ASM Editor lets you write and run assembly in the browser. Step through a program one instruction at a time, inspect registers and memory, or step backwards to undo an instruction.',
-                'It supports M68K, MIPS, RISC-V, x86-64 and Z80, with instruction references and interactive courses. Teachers can create exams and embed the editor in other websites. On M68K, MIPS, RISC-V and Z80, programs can also draw on a screen, read the mouse and keyboard, and use a terminal.',
+                'It supports M68K, MIPS, RISC-V, x86-64 and Z80, with instruction references and interactive courses. Teachers can create exams and embed the editor in other websites.',
+                'All architectures support terminal input and output. M68K, MIPS, RISC-V and Z80 also support graphics, keyboard input and sound. Mouse input is available on M68K and Z80. M68K, MIPS and RISC-V include a programmable synthesizer, while Z80 includes an AY-3-8910 sound chip.',
                 'The project is described in the paper "ASM Editor: Understanding Language Abstractions Through Assembly Programming", presented at the 2026 IEEE Global Engineering Education Conference (EDUCON) in Cairo.',
             ],
             audience: [
@@ -328,7 +329,7 @@ const projects = [
                 {
                     title: 'From C and C++ to assembly',
                     description:
-                        'Compile C or C++ to MIPS or RISC-V assembly with Clang or GCC. Source mapping shows which instructions came from each line.',
+                        'Compile C or C++ to MIPS or 32-bit and 64-bit RISC-V assembly with Clang or GCC, or to x86-64 assembly with GCC. Source mapping shows which instructions came from each line.',
                 },
                 {
                     title: 'Courses',
@@ -629,8 +630,8 @@ const projects = [
             // The accent of the site's own theme, the same as the hub's
             accent: '#a65ee0',
             about: [
-                'Learn is where I publish the notes I took while studying computer science. They are in Italian and organized by course and year, covering subjects from first year calculus and physics to databases, networks, artificial intelligence and data mining. You can read them without an account.',
-                'Alongside lecture notes, there are formula sheets, summaries and exam exercises, with equations, diagrams, callouts and code examples. I keep the notes in an Obsidian vault and publish them as a static site.',
+                'Learn is where I publish the notes I took while studying computer science. They are in Italian and organized by course and year, covering subjects from first year calculus and physics to databases, networks, artificial intelligence and data mining.',
+                'Alongside lecture notes, there are formula sheets, summaries and exam exercises, with equations, diagrams, callouts and code examples.',
             ],
             audience: [
                 'Computer science students who read Italian',

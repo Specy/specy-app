@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ProjectData } from '$lib/Projects';
     import MdOpenInNew from '~icons/mdi/open-in-new';
-    import MdInformationVariant from '~icons/mdi/information-variant';
+    import MdBookOpenVariant from '~icons/mdi/book-open-variant';
     interface Props {
         data: ProjectData;
     }
@@ -19,35 +19,33 @@
         <h3 class="app-title">
             {data.title}
         </h3>
-        <!-- A sibling of the Open link rather than a wrapper around the card, so
-             neither link ends up nested inside the other -->
-        {#if data.details}
-            <a
-                href="/apps/{data.id}"
-                class="info-btn"
-                title="About {data.title}"
-                aria-label="About {data.title}"
-            >
-                <MdInformationVariant />
-            </a>
-        {/if}
     </div>
     <div class="description">
         {data.description}
     </div>
-    <a
-        href={data.url}
-        target="_blank"
-        class="open-btn"
-        style="background-color: {data.color}"
-    >
-        <div>
-            Open<span class="sr-only"> {data.title}</span>
-        </div>
-        <div class="icon">
-            <MdOpenInNew />
-        </div>
-    </a>
+    <!-- Siblings rather than a link wrapping the card, so neither link ends up
+         nested inside the other -->
+    <div class="actions">
+        {#if data.details}
+            <a href="/apps/{data.id}" class="info-btn">
+                <span class="info-icon"><MdBookOpenVariant /></span>
+                Info <span class="sr-only">about {data.title}</span>
+            </a>
+        {/if}
+        <a
+            href={data.url}
+            target="_blank"
+            class="open-btn"
+            style="background-color: {data.color}"
+        >
+            <div>
+                Open <span class="sr-only">{data.title}</span>
+            </div>
+            <div class="icon">
+                <MdOpenInNew />
+            </div>
+        </a>
+    </div>
 </div>
 
 <style lang="scss">
@@ -67,6 +65,9 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        > img {
+            border-radius: var(--radius-icon);
+        }
         > .app-title {
             font-size: 1rem;
             font-weight: bold;
@@ -74,21 +75,25 @@
             line-height: inherit;
         }
     }
+    .actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
     .info-btn {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 0.35rem;
         flex-shrink: 0;
-        width: 2rem;
-        height: 2rem;
-        padding: 0.3rem;
-        margin-left: auto;
-        align-self: flex-start;
-        border-radius: var(--radius-full);
-        corner-shape: var(--corner-shape-round, round);
+        padding: 0.5rem 0.9rem 0.5rem 0.7rem;
+        border-radius: var(--radius-lg);
         color: #dbdbdb;
         background-color: rgb(255 255 255 / 8%);
         transition: all 0.2s;
+    }
+    .info-icon {
+        display: flex;
+        width: 1.1rem;
     }
     .info-btn:hover,
     .info-btn:focus-visible {
@@ -101,9 +106,8 @@
         outline-offset: 2px;
     }
     .open-btn {
-        width: 100%;
+        flex: 1;
         padding: 0.5rem;
-        margin-top: 0.5rem;
         border-radius: var(--radius-lg);
         color: #dbdbdb;
         text-align: center;
@@ -129,6 +133,7 @@
         white-space: nowrap;
         border: 0;
     }
+    .info-btn,
     .open-btn {
         position: relative;
     }

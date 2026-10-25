@@ -9,7 +9,7 @@
         <h1>SPECY DEV</h1>
         <div class="hub-name">The hub of all apps</div>
     </div>
-    <div class="apps" id="web-apps" style="margin-top: 4rem;">
+    <div class="apps" id="web-apps">
         <h2 class="title project-title">Web Apps</h2>
         <div class="projects-wrapper">
             {#each projects.filter((p) => !p.hidden) as project (project.title)}
@@ -48,6 +48,7 @@
     }
     .main-title {
         margin-top: 4rem;
+        margin-bottom: 4rem;
         font-weight: bold;
         text-align: center;
         display: flex;
@@ -56,7 +57,7 @@
         justify-content: center;
         > :nth-child(1) {
             font-size: 5rem;
-            font-family: Arial;
+            font-family: var(--heading-font), Rubik, sans-serif;
             font-weight: bold;
             line-height: 1.1;
             margin: 0;
@@ -93,6 +94,14 @@
         }
     }
     @media (max-width: 600px) {
+        /* The title wraps to two lines here, closer to the nav and to the apps */
+        .main-title {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            > :nth-child(1) {
+                line-height: 1;
+            }
+        }
         .projects-wrapper {
             grid-template-columns: repeat(1, 1fr);
             margin-left: 0rem;

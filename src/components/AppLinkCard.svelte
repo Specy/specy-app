@@ -73,7 +73,7 @@
         width: 3rem;
         height: 3rem;
         flex-shrink: 0;
-        border-radius: var(--radius-lg);
+        border-radius: var(--radius-icon);
     }
     .app-link-text {
         flex: 1;

@@ -9,8 +9,13 @@
                 <div>Email:</div>
                 <div class="highlight">specy.dev@gmail.com</div>
 
-                <div>Discord:</div>
-                <div class="highlight">@Specy</div>
+                <div>LinkedIn:</div>
+                <a
+                    class="highlight"
+                    href="https://www.linkedin.com/in/enrico-menichelli-5862a4211"
+                    target="_blank"
+                    rel="me noreferrer">Enrico Menichelli</a
+                >
             </div>
         </div>
     </div>
@@ -28,9 +33,9 @@
 
     .contact-grid {
         display: grid;
-        gap: 0.5rem;
+        gap: 0.5rem 0.8rem;
         margin-top: 1rem;
-        grid-template-columns: 4rem 1fr;
+        grid-template-columns: max-content 1fr;
     }
 
     .contact {
@@ -45,6 +50,12 @@
     .highlight {
         color: var(--accent);
         user-select: all;
+    }
+    a.highlight {
+        justify-self: start;
+        user-select: auto;
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
     }
 
     .title {

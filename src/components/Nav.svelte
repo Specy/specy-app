@@ -2,13 +2,31 @@
     import MdClose from '~icons/mdi/close';
     import MdMenu from '~icons/mdi/menu';
     import Logo from './logo.svelte';
+    import BeatingHeart from './BeatingHeart.svelte';
     import { page } from '$app/stores';
     import { fromStore } from 'svelte/store';
 
     const _page = fromStore(page);
     let path = $derived(_page.current.url.pathname);
     let menuOpen = $state(false);
+    let donateHovered = $state(false);
 </script>
+
+{#snippet donateLink(onclick?: () => void)}
+    <a
+        href="/donate"
+        class="donate-link"
+        style={path === '/donate' ? 'color: var(--accent)' : ''}
+        {onclick}
+        onmouseenter={() => (donateHovered = true)}
+        onmouseleave={() => (donateHovered = false)}
+        onfocus={() => (donateHovered = true)}
+        onblur={() => (donateHovered = false)}
+    >
+        <span class="donate-heart"><BeatingHeart beating={donateHovered} /></span>
+        Donate
+    </a>
+{/snippet}
 
 <nav class="nav">
     <div class="desktop-menu">
@@ -28,12 +46,7 @@
                 href="/about"
                 style={path === '/about' ? 'color: var(--accent)' : ''}>About</a
             >
-
-            <a
-                href="/donate"
-                style={path === '/donate' ? 'color: var(--accent)' : ''}
-                >Donate</a
-            >
+            {@render donateLink()}
         </div>
     </div>
 
@@ -82,12 +95,7 @@
                 onclick={() => (menuOpen = false)}
                 style={path === '/about' ? 'color: var(--accent)' : ''}>About</a
             >
-            <a
-                href="/donate"
-                onclick={() => (menuOpen = false)}
-                style={path === '/donate' ? 'color: var(--accent)' : ''}
-                >Donate</a
-            >
+            {@render donateLink(() => (menuOpen = false))}
         </div>
     </div>
 </nav>
@@ -190,6 +198,22 @@
 
     .links a:hover {
         color: var(--accent);
+    }
+
+    .donate-link {
+        --heart-size: 1.2em;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .donate-heart {
+        display: flex;
+        width: var(--heart-size);
+        height: var(--heart-size);
+    }
+    /* The heart hangs in the margin, so the word lines up with the other links */
+    .links-mobile > .donate-link {
+        margin-left: calc(2rem - var(--heart-size) - 0.35rem);
     }
 
     .nav {
