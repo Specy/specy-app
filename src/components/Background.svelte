@@ -25,23 +25,22 @@
         typeof window !== 'undefined' ? document.createElement('canvas') : null;
     const offCtx = offCanvas?.getContext('2d');
     const defSize = 40;
-    let { width, height } = calculateSizes();
+    let width = defSize;
+    let height = defSize;
 
-    function calculateSizes() {
-        let aspectRatio =
-            typeof window !== 'undefined'
-                ? window.innerWidth / document.body.scrollHeight
-                : 1;
-        let screenAspectRatio =
-            typeof window !== 'undefined'
-                ? window.innerWidth / window.innerHeight
-                : 1;
-        let height = clampMultipleOf(defSize / aspectRatio, 4);
-        let width = defSize;
-        if (screenAspectRatio < 1) {
-            height = clampMultipleOf(defSize / aspectRatio / 2, 4);
-            width = defSize / 2;
-        }
+    /**
+     * The grid that keeps cells square once the canvas is stretched over `el`. The
+     * canvas is scaled with CSS, so a grid sized for any other height (the page before
+     * its images loaded, the window before a resize) shows up squashed or stretched.
+     * Measured on the container rather than the document, as the footer is outside it.
+     */
+    function gridSizeFor(el: HTMLElement) {
+        const portrait = window.innerWidth / window.innerHeight < 1;
+        const width = portrait ? defSize / 2 : defSize;
+        const height = clampMultipleOf(
+            (width * el.clientHeight) / el.clientWidth,
+            4,
+        );
         return { width, height };
     }
 
@@ -205,26 +204,62 @@
 
     let firstTime = true;
 
-    function createCanvas(
-        canvas: HTMLCanvasElement,
-        ctx: CanvasRenderingContext2D,
-    ) {
-        const sizes = calculateSizes();
-        width = sizes.width;
-        height = sizes.height;
-        canvas!.width = width * multiplier;
-        canvas!.height = height * multiplier;
+    function evolvedMatrix() {
         matrix = createMatrix();
         matrix = generateRandomMatrix(0.25);
-        offCanvas!.width = width * multiplier;
-        offCanvas!.height = height * multiplier;
-        ctx!.filter = `blur(${blur}px)`;
-        mainScreenPercentage =
-            ((window.innerHeight * 1.1) / document.body.scrollHeight) * 100;
         for (let i = 0; i < 20; i++) {
             matrix = calculateGeneration(matrix);
         }
-        drawCanvas(matrix, ctx!, tint ?? color?.toHex()!, true);
+        return matrix;
+    }
+
+    function paint(
+        canvas: HTMLCanvasElement,
+        ctx: CanvasRenderingContext2D,
+        container: HTMLElement,
+    ) {
+        canvas.width = width * multiplier;
+        canvas.height = height * multiplier;
+        offCanvas!.width = width * multiplier;
+        offCanvas!.height = height * multiplier;
+        // Resizing a canvas resets its context, the filter included
+        ctx.filter = `blur(${blur}px)`;
+        mainScreenPercentage =
+            ((window.innerHeight * 1.1) / container.clientHeight) * 100;
+        drawCanvas(matrix, ctx, tint ?? color?.toHex()!, true);
+    }
+
+    function resizeCanvas(
+        canvas: HTMLCanvasElement,
+        ctx: CanvasRenderingContext2D,
+        container: HTMLElement,
+    ) {
+        if (!container.clientWidth) return;
+        const size = gridSizeFor(container);
+        if (size.width === width && size.height === height) return;
+        const previous = matrix;
+        ({ width, height } = size);
+        const next = evolvedMatrix();
+        // Content that loads in after a navigation grows the page below the fold, so
+        // keep the cells already drawn and only fill in the rows that were added
+        if (previous[0]?.length === width) {
+            for (let i = 0; i < Math.min(previous.length, height); i++) {
+                next[i] = previous[i];
+            }
+        }
+        matrix = next;
+        paint(canvas, ctx, container);
+    }
+
+    function createCanvas(
+        canvas: HTMLCanvasElement,
+        ctx: CanvasRenderingContext2D,
+        container: HTMLElement,
+    ) {
+        if (!container.clientWidth) return;
+        ({ width, height } = gridSizeFor(container));
+        matrix = evolvedMatrix();
+        paint(canvas, ctx, container);
         canvas.animate(
             [
                 { opacity: firstTime ? 0 : hasFilter ? 0.5 : 0.2 },
@@ -238,15 +273,28 @@
         firstTime = false;
     }
 
+    let container = $state<HTMLDivElement | null>(null);
     const pageStore = $state(fromStore(page));
     $effect(() => {
-        if (!canvas || !ctx) return;
-        createCanvas(canvas, ctx);
+        if (!canvas || !ctx || !container) return;
+        createCanvas(canvas, ctx, container);
+    });
+
+    // The page keeps changing height after the canvas is created (images, embeds,
+    // window resizes), so re-fit the grid whenever the area it covers changes
+    $effect(() => {
+        if (!container) return;
+        const el = container;
+        const observer = new ResizeObserver(() => {
+            if (canvas && ctx) resizeCanvas(canvas, ctx, el);
+        });
+        observer.observe(el);
+        return () => observer.disconnect();
     });
 </script>
 
 <div class="column" style={`flex: 1; position: relative;`}>
-    <div class="background">
+    <div class="background" bind:this={container}>
         {#key pageStore.current.url}
             <canvas
                 class:noFilter={!hasFilter}
