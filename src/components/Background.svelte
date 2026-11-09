@@ -29,10 +29,10 @@
     let height = defSize;
 
     /**
-     * The grid that keeps cells square once the canvas is stretched over `el`. The
-     * canvas is scaled with CSS, so a grid sized for any other height (the page before
-     * its images loaded, the window before a resize) shows up squashed or stretched.
-     * Measured on the container rather than the document, as the footer is outside it.
+     * The grid of square cells it takes to cover `el`. The canvas spans the container's
+     * width and takes its height from the grid, so a cell's size depends on the width
+     * alone. Measured on the container rather than the document, as the footer is
+     * outside it.
      */
     function gridSizeFor(el: HTMLElement) {
         const portrait = window.innerWidth / window.innerHeight < 1;
@@ -224,8 +224,9 @@
         offCanvas!.height = height * multiplier;
         // Resizing a canvas resets its context, the filter included
         ctx.filter = `blur(${blur}px)`;
+        const displayedHeight = (container.clientWidth * height) / width;
         mainScreenPercentage =
-            ((window.innerHeight * 1.1) / container.clientHeight) * 100;
+            ((window.innerHeight * 1.1) / displayedHeight) * 100;
         drawCanvas(matrix, ctx, tint ?? color?.toHex()!, true);
     }
 
@@ -236,7 +237,9 @@
     ) {
         if (!container.clientWidth) return;
         const size = gridSizeFor(container);
-        if (size.width === width && size.height === height) return;
+        // Rows are only ever added. Spare ones just hang below the container, clipped,
+        // while dropping them would draw the bottom differently once the page grows back
+        if (size.width === width && size.height <= height) return;
         const previous = matrix;
         ({ width, height } = size);
         const next = evolvedMatrix();
@@ -313,8 +316,12 @@
         position: absolute;
 
         > .background-image {
+            // The height follows the canvas' own aspect ratio rather than the
+            // container's, so the cells stay square and in place as the page height
+            // changes (a section opening, images loading), instead of being re-stretched
+            display: block;
             width: 100%;
-            height: 100%;
+            height: auto;
         }
 
         overflow: hidden;
