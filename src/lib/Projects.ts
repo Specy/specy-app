@@ -3,7 +3,8 @@ export type AppCategory =
     | 'MultimediaApplication'
     | 'EducationalApplication'
     | 'DeveloperApplication'
-    | 'DesignApplication';
+    | 'DesignApplication'
+    | 'EntertainmentApplication';
 
 export type AppFeature = {
     title: string;
@@ -617,6 +618,18 @@ const projects = [
                 },
             ],
         },
+    },
+    {
+        title: 'Loom',
+        description:
+            'Follow every Marvel adaptation in release order and see what each one builds on',
+        image: '/images/loom.png',
+        url: 'https://loom-timeline.specy.app',
+        // The repository is private
+        github: '',
+        id: 'loom-timeline',
+        color: '#7e4baac8',
+        category: 'EntertainmentApplication',
     },
     {
         title: 'Learn',
