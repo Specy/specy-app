@@ -121,7 +121,9 @@
 
     <section class="links-card">
         <div class="links-text">
-            <h2 class="section-title">Source code and links</h2>
+            <h2 class="section-title">
+                {project.github ? 'Source code and links' : 'Links'}
+            </h2>
             <ul class="links-list">
                 {#if project.github}
                     <li>

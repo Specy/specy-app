@@ -620,9 +620,9 @@ const projects = [
         },
     },
     {
-        title: 'Loom',
+        title: 'Loom Timeline',
         description:
-            'Follow every Marvel adaptation in release order and see what each one builds on',
+            'Browse Marvel films, shows and specials on an interactive release timeline',
         image: '/images/loom.png',
         url: 'https://loom-timeline.specy.app',
         // The repository is private
@@ -630,6 +630,104 @@ const projects = [
         id: 'loom-timeline',
         color: '#7e4baac8',
         category: 'EntertainmentApplication',
+        details: {
+            metaTitle:
+                'Loom Timeline - Marvel adaptations in release order | Specy',
+            metaDescription:
+                'Explore Marvel releases across the MCU, X-Men and Spider-Man, look up character appearances, and share and compare what you’ve seen.',
+            tagline:
+                'Explore Marvel releases by year and see what’s coming next.',
+            accent: '#e7a94e',
+            about: [
+                'Loom Timeline puts Marvel films, seasons, shorts and specials on a release timeline. You can stick to the MCU or explore other continuities, from the Fox X-Men films to Spider-Verse. The Branches view shows which releases share a story world and where their stories cross.',
+                'Follow a character across films and shows, or browse a collection like the live-action Spider-Man films. Keep track of what you’ve seen as you go. If you’re picking something to watch together, compare lists to see what’s new to both of you.',
+            ],
+            audience: [
+                'Marvel fans exploring releases across different story worlds',
+                'Viewers catching up on a series or planning what to watch together',
+            ],
+            features: [
+                {
+                    title: 'Release timeline',
+                    description:
+                        'Jump to any year in the catalog, see upcoming releases, or narrow the timeline by continuity or media type.',
+                },
+                {
+                    title: 'Collections and continuities',
+                    description:
+                        'Browse phases, sagas and film series as collections. For continuities such as the MCU, you can also see the order in which the stories take place.',
+                },
+                {
+                    title: 'Character appearances',
+                    description:
+                        'Look up a character to see where each version appears and who played them. You can also find entries by an actor or a character’s alias.',
+                },
+                {
+                    title: 'Track and share progress',
+                    description:
+                        'Use Seen and Skip to keep track of what’s left and how long it will take. Loom Timeline saves your marks in your browser. A Share Link lets friends compare your list with theirs.',
+                },
+                {
+                    title: 'What to watch first',
+                    description:
+                        'Open an entry to see which earlier stories are Required, Recommended or Bonus. The graph also shows which later entries build on it.',
+                },
+                {
+                    title: 'Spoiler protection',
+                    description:
+                        'Details marked as spoilers stay covered until you reveal them or mark the relevant entry Seen.',
+                },
+            ],
+            screenshots: [
+                {
+                    src: '/images/apps/loom-timeline/01-endgame-road.webp',
+                    alt: 'The Avengers: Endgame entry page with a branching tree of connected titles beside its Before this list.',
+                    width: 1440,
+                    height: 900,
+                    caption: 'The Road for Avengers: Endgame',
+                },
+                {
+                    src: '/images/apps/loom-timeline/02-release-timeline.webp',
+                    alt: 'A graph of MCU releases beside the timeline, with upcoming entries and a counter for what is left to watch.',
+                    width: 1440,
+                    height: 900,
+                    caption: 'MCU releases and upcoming entries',
+                },
+                {
+                    src: '/images/apps/loom-timeline/03-phase-six.webp',
+                    alt: 'The Phase Six collection with its release graph and two entries marked Seen.',
+                    width: 1440,
+                    height: 900,
+                    caption: 'Phase Six releases and viewing progress',
+                },
+                {
+                    src: '/images/apps/loom-timeline/04-continuities.webp',
+                    alt: 'The Continuities page, with Marvel releases on separate branches for their shared story worlds.',
+                    width: 1440,
+                    height: 900,
+                    caption: 'Marvel continuities in the Branches view',
+                },
+            ],
+            links: [
+                {
+                    label: 'Collections',
+                    url: 'https://loom-timeline.specy.app/collections',
+                },
+                {
+                    label: 'Continuities',
+                    url: 'https://loom-timeline.specy.app/continuities',
+                },
+                {
+                    label: 'Characters',
+                    url: 'https://loom-timeline.specy.app/characters',
+                },
+                {
+                    label: 'Avengers: Doomsday',
+                    url: 'https://loom-timeline.specy.app/entry/avengers-doomsday-2026',
+                },
+            ],
+            disclaimer: 'Loom Timeline is an independent fan project.',
+        },
     },
     {
         title: 'Learn',
